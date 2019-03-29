@@ -1,4 +1,6 @@
-# The smallest `#![no_std]` program
+<!-- # The smallest `#![no_std]` program -->
+
+# 最小限の`#![no_std]`プログラム
 
 In this section we'll write the smallest `#![no_std]` program that *compiles*.
 
