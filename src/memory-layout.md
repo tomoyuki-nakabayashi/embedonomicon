@@ -1,4 +1,6 @@
-# Memory layout
+<!-- # Memory layout -->
+
+# メモリレイアウト
 
 The next step is to ensure the program has the right memory layout so that the target system will be
 able to execute it. In our example, we'll be working with a virtual Cortex-M3 microcontroller: the
