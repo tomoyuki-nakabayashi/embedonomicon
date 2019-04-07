@@ -1,4 +1,6 @@
-# A `main` interface
+<!-- # A `main` interface -->
+
+# `main`インタフェース
 
 We have a minimal working program now, but we need to package it in a way that the end user can build
 safe programs on top of it. In this section, we'll implement a `main` interface like the one standard
