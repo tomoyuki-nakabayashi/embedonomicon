@@ -3,16 +3,16 @@
 
 use core::panic::PanicInfo;
 
-// The reset handler
+// リセットハンドラ
 #[no_mangle]
 pub unsafe extern "C" fn Reset() -> ! {
     let _x = 42;
 
-    // can't return so we go into an infinite loop here
+    // 戻れないため、ここで無限ループに入ります
     loop {}
 }
 
-// The reset vector, a pointer into the reset handler
+// リセットベクタは、リセットハンドラへのポインタです
 #[link_section = ".vector_table.reset_vector"]
 #[no_mangle]
 pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = Reset;

@@ -1,12 +1,12 @@
-/* Memory layout of the LM3S6965 microcontroller */
-/* 1K = 1 KiBi = 1024 bytes */
+/* LM3S6965マイクロコントローラのメモリレイアウト */
+/* 1K = 1 KiBi = 1024バイト */
 MEMORY
 {
   FLASH : ORIGIN = 0x00000000, LENGTH = 256K
   RAM : ORIGIN = 0x20000000, LENGTH = 64K
 }
 
-/* The entry point is the reset handler */
+/* エントリポイントはリセットハンドラです */
 ENTRY(Reset);
 
 EXTERN(RESET_VECTOR);
@@ -15,10 +15,10 @@ SECTIONS
 {
   .vector_table ORIGIN(FLASH) :
   {
-    /* First entry: initial Stack Pointer value */
+    /* 1つ目のエントリ。スタックポインタの初期値 */
     LONG(ORIGIN(RAM) + LENGTH(RAM));
 
-    /* Second entry: reset vector */
+    /* 2つ目のエントリ。リセットベクタ */
     KEEP(*(.vector_table.reset_vector));
   } > FLASH
 
