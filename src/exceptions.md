@@ -1,4 +1,6 @@
-# Exception handling
+<!-- # Exception handling -->
+
+## 例外処理
 
 During the "Memory layout" section, we decided to start out simple and leave out handling of
 exceptions. In this section, we'll add support for handling them; this serves as an example of
