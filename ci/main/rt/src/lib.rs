@@ -2,7 +2,7 @@
 
 use core::panic::PanicInfo;
 
-// CHANGED!
+// 変更しました！
 #[no_mangle]
 pub unsafe extern "C" fn Reset() -> ! {
     extern "Rust" {
@@ -12,7 +12,7 @@ pub unsafe extern "C" fn Reset() -> ! {
     main()
 }
 
-// The reset vector, a pointer into the reset handler
+// リセットベクターは、リセットハンドラへのポインタです
 #[link_section = ".vector_table.reset_vector"]
 #[no_mangle]
 pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = Reset;
@@ -27,7 +27,7 @@ macro_rules! entry {
     ($path:path) => {
         #[export_name = "main"]
         pub unsafe fn __main() -> ! {
-            // type check the given path
+            // 与えられたパスの型チェック
             let f: fn() -> ! = $path;
 
             f()
