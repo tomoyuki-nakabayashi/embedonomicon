@@ -14,6 +14,6 @@ fn main() -> ! {
 
 #[no_mangle]
 pub extern "C" fn HardFault() -> ! {
-    // do something interesting here
+    // ここで何か面白いことをやります
     loop {}
 }
