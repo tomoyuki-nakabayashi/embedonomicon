@@ -5,8 +5,8 @@ use core::panic::PanicInfo;
 
 #[no_mangle]
 pub unsafe extern "C" fn Reset() -> ! {
-    // Omitted to simplify the `objdump` output
-    // Initialize RAM
+    // `objdump`の出力を簡単にするため削除します
+    // RAMの初期化
     extern "C" {
         // static mut _sbss: u8;
         // static mut _ebss: u8;
@@ -22,7 +22,7 @@ pub unsafe extern "C" fn Reset() -> ! {
     // let count = &_edata as *const u8 as usize - &_sdata as *const u8 as usize;
     // ptr::copy_nonoverlapping(&_sidata as *const u8, &mut _sdata as *mut u8, count);
 
-    // Call user entry point
+    // ユーザーエントリポイントを呼び出します
     extern "Rust" {
         fn main() -> !;
     }
@@ -30,7 +30,7 @@ pub unsafe extern "C" fn Reset() -> ! {
     main()
 }
 
-// The reset vector, a pointer into the reset handler
+// リセットベクタは、リセットハンドラへのポインタです
 #[link_section = ".vector_table.reset_vector"]
 #[no_mangle]
 pub static RESET_VECTOR: unsafe extern "C" fn() -> ! = Reset;
@@ -45,7 +45,7 @@ macro_rules! entry {
     ($path:path) => {
         #[export_name = "main"]
         pub unsafe fn __main() -> ! {
-            // type check the given path
+            // 与えられたパスの型チェック
             let f: fn() -> ! = $path;
 
             f()
@@ -60,7 +60,7 @@ pub union Vector {
 
 extern "C" {
     fn NMI();
-    fn HardFaultTrampoline(); // <- CHANGED!
+    fn HardFaultTrampoline(); // <- 変更点!
     fn MemManage();
     fn BusFault();
     fn UsageFault();
@@ -73,7 +73,7 @@ extern "C" {
 #[no_mangle]
 pub static EXCEPTIONS: [Vector; 14] = [
     Vector { handler: NMI },
-    Vector { handler: HardFaultTrampoline }, // <- CHANGED!
+    Vector { handler: HardFaultTrampoline }, // <- 変更点!
     Vector { handler: MemManage },
     Vector { handler: BusFault },
     Vector {

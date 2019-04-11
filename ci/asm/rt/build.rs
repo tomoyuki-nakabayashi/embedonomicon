@@ -3,17 +3,17 @@ use std::{env, error::Error, fs::File, io::Write, path::PathBuf};
 use cc::Build;
 
 fn main() -> Result<(), Box<Error>> {
-    // build directory for this crate
+    // このクレートのビルドディレクトリです
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
 
-    // extend the library search path
+    // ライブラリサーチパスを追加します
     println!("cargo:rustc-link-search={}", out_dir.display());
 
-    // put `link.x` in the build directory
+    // `link.x`をビルドディレクトリに置きます
     File::create(out_dir.join("link.x"))?.write_all(include_bytes!("link.x"))?;
 
-    // assemble the `asm.s` file
-    Build::new().file("asm.s").compile("asm"); // <- NEW!
+    // `asm.s`ファイルをアセンブルします
+    Build::new().file("asm.s").compile("asm"); // <- 追加!
 
     Ok(())
 }
