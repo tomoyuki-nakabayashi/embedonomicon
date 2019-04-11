@@ -4,7 +4,7 @@
 - [最小限の`#![no_std]`プログラム](./smallest-no-std.md)
 - [メモリレイアウト](./memory-layout.md)
 - [`main`インタフェース](./main.md)
-- [Exception handling](./exceptions.md)
+- [例外処理](./exceptions.md)
 - [Assembly on stable](./asm.md)
 - [Logging with symbols](./logging.md)
 - [Global singletons](./singleton.md)

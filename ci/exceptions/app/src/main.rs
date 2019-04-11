@@ -9,6 +9,6 @@ use rt::entry;
 entry!(main);
 
 fn main() -> ! {
-    // this executes the undefined instruction (UDF) and causes a HardFault exception
+    // これは未定義命令（UDF）を実行し、HardFault例外を引き起こします
     unsafe { intrinsics::abort() }
 }
