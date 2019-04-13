@@ -5,7 +5,7 @@
 - [メモリレイアウト](./memory-layout.md)
 - [`main`インタフェース](./main.md)
 - [例外処理](./exceptions.md)
-- [Assembly on stable](./asm.md)
+- [stableでのアセンブリ](./asm.md)
 - [Logging with symbols](./logging.md)
 - [Global singletons](./singleton.md)
 - [DMA](./dma.md)
