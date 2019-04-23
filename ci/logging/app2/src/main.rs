@@ -11,18 +11,18 @@ fn main() -> ! {
     let mut hstdout = hio::hstdout().unwrap();
 
     #[export_name = "Hello, world!"]
-    #[link_section = ".log"] // <- NEW!
+    #[link_section = ".log"] // <- 追加!
     static A: u8 = 0;
 
     let address = &A as *const u8 as usize as u8;
-    hstdout.write_all(&[address]).unwrap(); // <- CHANGED!
+    hstdout.write_all(&[address]).unwrap(); // <- 変更!
 
     #[export_name = "Goodbye"]
-    #[link_section = ".log"] // <- NEW!
+    #[link_section = ".log"] // <- 追加!
     static B: u8 = 0;
 
     let address = &B as *const u8 as usize as u8;
-    hstdout.write_all(&[address]).unwrap(); // <- CHANGED!
+    hstdout.write_all(&[address]).unwrap(); // <- 変更!
 
     debug::exit(debug::EXIT_SUCCESS);
 
