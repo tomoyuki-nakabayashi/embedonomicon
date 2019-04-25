@@ -7,7 +7,7 @@ This section will show you how to utilize symbols and the ELF format to achieve
 super cheap logging.
  -->
 
-このセクションでは、とてもちゃちなロギングを行うために、シンボルとELFフォーマットを利用する方法をお見せします。
+このセクションでは、極めて軽量なロギングを行うために、シンボルとELFフォーマットを利用する方法をお見せします。
 
 <!-- ## Arbitrary symbols -->
 
@@ -31,7 +31,7 @@ e.g. sentences, as the argument of the `export_name` attribute. As least when
 the output format is ELF anything that doesn't contain a null byte is fine.
  -->
 
-1単語の名前だけに限定されないことがわかりました。
+引数に取れる文字列は、1単語の名前だけに限定されないことがわかりました。
 例えば、文のような任意の文字列を`export_name`アトリビュートの引数として使うことができます。
 少なくても出力形式がELFの場合、nullバイトを含まないものならば何でも構いません。
 
@@ -65,7 +65,7 @@ foo-d26a39c34b4e80ce.3lnzqy0jbpxj4pld.rcgu.o:
 
 <!-- Can you see where this is going? -->
 
-このことがどこに繋がるか、わかりますか？
+これがどこに繋がるか、わかりますか？
 
 <!-- ## Encoding -->
 
@@ -80,7 +80,7 @@ the `static` variables but their addresses.
 
 やることは、次の通りです。ログメッセージごとに`static`変数を1つ作りますが、
 メッセージをその変数の*中に*格納せずに、変数の*シンボル名*にメッセージを格納します。
-ログ出力するもは、`static`変数の内容ではなく、そのアドレスです。
+ログ出力するものは、`static`変数の内容ではなく、そのアドレスです。
 
 <!-- 
 As long as the `static` variables are not zero sized each one will have a
@@ -132,13 +132,19 @@ process.
 プログラムがQEMUプロセスを終了できるようにするため、`debug::exit`も使えるようにしてあります。
 QEMUプロセスを手動で終了しなくて良いため、便利です。
 
+<!-- 
 And here's the `dependencies` section of the Cargo.toml:
+ -->
+
+そして、こちらはCargo.tomlの`dependencies`セクションです。
 
 ``` toml
 {{#include ../ci/logging/app/Cargo.toml:7:9}}
 ```
 
-Now we can build the program
+<!-- Now we can build the program -->
+
+これでプログラムをビルドできます。
 
 ``` console
 $ cargo build
@@ -215,7 +221,7 @@ It's important to note that the address of the symbols will likely change when
 optimizing the program. Let's check that.
  -->
 
-プログラムを最適化すると、シンボルのアドレスが変わる可能性があるため、注意することが重要です。
+プログラムを最適化すると、シンボルのアドレスが変わる可能性があるため、注意して下さい。
 確認してみましょう。
 
 <!-- 
@@ -291,7 +297,7 @@ little bit of linker script magic we can make them occupy *zero* space in Flash.
 
 現在の実装は、`static`変数を`.rodata`に配置しています。これは、その変数の値を決して使わないにも関わらず、
 Flashの容量を専有することを意味します。
-少しリンカスクリプトの魔法を使うことで、Flashの使用量を*ゼロ*にできます。
+リンカスクリプトの魔法を少し使うことで、Flashの使用量を*ゼロ*にできます。
 
 ``` console
 $ cat log.x
@@ -323,7 +329,7 @@ is a non-allocatable section. Non-allocatable sections are kept in the ELF
 binary as metadata but they are not loaded onto the target device.
  -->
 
-少し新しいことは、`(INFO)`の部分です。これは、リンカに、このセクションは割当不可セクションであることを教えます。
+少し新しい部分は、`(INFO)`の部分です。これは、リンカに、このセクションは割当不可セクションであることを教えます。
 割当不可セクションは、ELFバイナリにメタデータとして残りますが、ターゲットデバイスにはロードされません。
 
 <!-- 
@@ -339,8 +345,8 @@ binary I/O, that is send the addresses to the host as bytes rather than as
 strings.
  -->
 
-他にできる改善は、フォーマットされたI/O（`fmt::Write`）からバイナリI/Oに切り替えることです。
-これは、文字列としてではなく、バイトとしてホストにアドレスを送ります。
+他に改善点は、フォーマットされたI/O（`fmt::Write`）から、バイナリI/Oに切り替えることです。
+つまり、文字列としてではなく、バイトとしてホストにアドレスを送ります。
 
 <!-- 
 Binary serialization can be hard but we'll keep things super simple by
@@ -350,7 +356,7 @@ byte can only represent up to 256 different addresses.
  -->
 
 バイナリシリアライゼーションは、複雑になる可能性がありますが、各アドレスを1バイトとしてシリアライズすることで、
-極めて簡潔にします。この手法により、エンディアネスやフレーム化について悩まなくて済みます。
+極めて簡潔になります。この方法により、エンディアネスやフレーム化について悩まなくて済みます。
 この形式の欠点は、1バイトは256のアドレスしか表現できないことです。
 
 <!-- Let's make those changes: -->
@@ -435,7 +441,7 @@ refactor them into a macro that lives in its own crate. Also, we can make the
 logging library more reusable by abstracting the I/O part behind a trait.
  -->
 
-文字列をログ出力するステップが、常に一緒であることに気づいたでしょう。そこで、
+文字列をログ出力するステップは、常に一緒です。そこで、
 クレート内でだけ利用可能なマクロにリファクタリングします。
 また、I/O部分をトレイトで抽象化することで、ロギングライブラリをより再利用可能にできます。
 
@@ -528,7 +534,7 @@ is just a warning", etc. These log levels can be used to filter out unimportant
 messages when searching for e.g. error messages.
  -->
 
-多くのログフレームワークは、異なる*ログレベル*でメッセージをロギングする方法を、提供しています。
+多くのログフレームワークは、異なる*ログレベル*でメッセージをロギングする方法を提供しています。
 これらのログレベルは、メッセージの重要度を告げています。「これはエラーです」、「これはただの警告です」、など。
 これらのログレベルは、例えばエラーメッセージを検索する時に、重要でないメッセージを除去するために使用されます。
 
@@ -551,7 +557,7 @@ log levels.
  -->
 
 メッセージ用に、0以上、255以下のフラットなアドレス空間があります。
-簡単化のために、エラーメッセージと警告メッセージだけを区別したいだけ、としましょう。
+簡単化のために、エラーメッセージと警告メッセージを区別したいだけ、としましょう。
 全てのエラーメッセージをアドレス空間の最初に置き、警告メッセージをエラーメッセージの*後*に置きます。
 デコーダが最初の警告メッセージのアドレスを知っていれば、メッセージを分類可能です。
 このアイデアは、3つ以上のログレベルをサポートするときに拡張できます。
