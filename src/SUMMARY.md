@@ -6,7 +6,7 @@
 - [`main`インタフェース](./main.md)
 - [例外処理](./exceptions.md)
 - [stableでのアセンブリ](./asm.md)
-- [Logging with symbols](./logging.md)
+- [シンボルでのロギング](./logging.md)
 - [Global singletons](./singleton.md)
 - [DMA](./dma.md)
 ---
