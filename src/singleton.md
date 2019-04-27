@@ -1,4 +1,6 @@
-# Global singletons
+<!-- # Global singletons -->
+
+# グローバルシングルトン
 
 In this section we'll cover how to implement a global, shared singleton. The
 embedded Rust book covered local, owned singletons which are pretty much unique

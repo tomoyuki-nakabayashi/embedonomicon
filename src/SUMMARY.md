@@ -7,7 +7,7 @@
 - [例外処理](./exceptions.md)
 - [stableでのアセンブリ](./asm.md)
 - [シンボルでのロギング](./logging.md)
-- [Global singletons](./singleton.md)
+- [グローバルシングルトン](./singleton.md)
 - [DMA](./dma.md)
 ---
 [A note on compiler support](./compiler-support.md)
