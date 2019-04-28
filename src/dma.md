@@ -1,7 +1,11 @@
 # Direct Memory Access (DMA)
 
+<!-- 
 This section covers the core requirements for building a memory safe API around
 DMA transfers.
+ -->
+
+このセクションは、DMA転送に関するメモリ安全なAPIを構築するための主要な要件について、説明します。
 
 The DMA peripheral is used to perform memory transfers in parallel to the work
 of the processor (the execution of the main program). A DMA transfer is more or
