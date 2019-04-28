@@ -1,6 +1,6 @@
 #![no_std]
 
-// NEW!
+// 追加!
 pub trait GlobalLog: Sync {
     fn log(&self, address: u8);
 }
@@ -13,7 +13,7 @@ pub trait Log {
 
 #[macro_export]
 macro_rules! log {
-    // NEW!
+    // 追加!
     ($string:expr) => {
         unsafe {
             extern "Rust" {
@@ -37,7 +37,7 @@ macro_rules! log {
     }};
 }
 
-// NEW!
+// 追加!
 #[macro_export]
 macro_rules! global_logger {
     ($logger:expr) => {
