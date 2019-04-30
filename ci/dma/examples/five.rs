@@ -10,20 +10,20 @@ use shared::{Dma1Channel1, USART1_RX, USART1_TX};
 use as_slice::{AsMutSlice, AsSlice};
 
 impl Serial1 {
-    /// Receives data into the given `buffer` until it's filled
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn read_exact<B>(mut self, mut buffer: B) -> Transfer<B>
     where
         B: AsMutSlice<Element = u8>,
     {
-        // NOTE: added
+        // 注記：追加しました
         let slice = buffer.as_mut_slice();
         let (ptr, len) = (slice.as_mut_ptr(), slice.len());
 
         self.dma.set_source_address(USART1_RX, false);
 
-        // NOTE: tweaked
+        // 注記：微妙に変更しました
         self.dma.set_destination_address(ptr as usize, true);
         self.dma.set_transfer_length(len);
 
@@ -36,20 +36,20 @@ impl Serial1 {
         }
     }
 
-    /// Sends out the given `buffer`
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     fn write_all<B>(mut self, buffer: B) -> Transfer<B>
     where
         B: AsSlice<Element = u8>,
     {
-        // NOTE: added
+        // 注記：追加しました
         let slice = buffer.as_slice();
         let (ptr, len) = (slice.as_ptr(), slice.len());
 
         self.dma.set_destination_address(USART1_TX, false);
 
-        // NOTE: tweaked
+        // 注記：微妙に変更しました
         self.dma.set_source_address(ptr as usize, true);
         self.dma.set_transfer_length(len);
 
@@ -65,16 +65,16 @@ impl Serial1 {
 
 #[allow(dead_code, unused_variables)]
 fn reuse(serial: Serial1, msg: &'static mut [u8]) {
-    // send a message
+    // メッセージを送信します
     let t1 = serial.write_all(msg);
 
     // ..
 
-    let (msg, serial) = t1.wait(); // `msg` is now `&'static [u8]`
+    let (msg, serial) = t1.wait(); // `msg`は現在`&'static [u8]`です
 
     msg.reverse();
 
-    // now send it in reverse
+    // 今度は、逆順に送ります
     let t2 = serial.write_all(msg);
 
     // ..
@@ -95,7 +95,7 @@ fn invalidate(serial: Serial1) {
 
 #[inline(never)]
 fn start(serial: Serial1) -> Transfer<[u8; 16]> {
-    // array allocated in this frame
+    // このフレームで確保された配列です
     let buffer = [0; 16];
 
     serial.read_exact(buffer)
@@ -104,11 +104,11 @@ fn start(serial: Serial1) -> Transfer<[u8; 16]> {
 #[allow(unused_mut, unused_variables)]
 #[inline(never)]
 fn bar() {
-    // stack variables
+    // スタック変数です
     let mut x = 0;
     let mut y = 0;
 
-    // use `x` and `y`
+    // `x`と`y`を使います
 }
 
 // UNCHANGED

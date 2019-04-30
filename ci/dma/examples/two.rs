@@ -5,11 +5,11 @@
 use shared::{Dma1Channel1, USART1_RX, USART1_TX};
 
 impl Serial1 {
-    /// Receives data into the given `buffer` until it's filled
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn read_exact(&mut self, buffer: &'static mut [u8]) -> Transfer<&'static mut [u8]> {
-        // .. same as before ..
+        // .. 以前と同じです ..
         self.dma.set_source_address(USART1_RX, false);
         self.dma
             .set_destination_address(buffer.as_mut_ptr() as usize, true);
@@ -20,11 +20,11 @@ impl Serial1 {
         Transfer { buffer }
     }
 
-    /// Sends out the given `buffer`
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn write_all(mut self, buffer: &'static [u8]) -> Transfer<&'static [u8]> {
-        // .. same as before ..
+        // .. 以前と同じです ..
         self.dma.set_destination_address(USART1_TX, false);
         self.dma.set_source_address(buffer.as_ptr() as usize, true);
         self.dma.set_transfer_length(buffer.len());
@@ -39,25 +39,25 @@ use core::mem;
 
 #[allow(dead_code)]
 fn sound(mut serial: Serial1, buf: &'static mut [u8; 16]) {
-    // NOTE `buf` is moved into `foo`
+    // 注記 `buf`は`foo`にムーブされます
     foo(&mut serial, buf);
     bar();
 }
 
 #[inline(never)]
 fn foo(serial: &mut Serial1, buf: &'static mut [u8]) {
-    // start a DMA transfer and forget the returned `Transfer` value
+    // DMA転送を開始し、戻り値の`Transfer`を忘れます
     mem::forget(serial.read_exact(buf));
 }
 
 #[allow(unused_mut, unused_variables)]
 #[inline(never)]
 fn bar() {
-    // stack variables
+    // スタック変数です
     let mut x = 0;
     let mut y = 0;
 
-    // use `x` and `y`
+    // `x`と`y`を使います
 }
 
 // UNCHANGED
