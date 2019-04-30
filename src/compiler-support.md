@@ -1,4 +1,6 @@
-# A note on compiler support
+<!-- # A note on compiler support -->
+
+# コンパイラサポートに関する覚書
 
 This book makes use of a built-in *compiler* target, the `thumbv7m-none-eabi`, for which the Rust
 team distributes a `rust-std` component, which is a pre-compiled collection of crates like [`core`] and [`std`].
