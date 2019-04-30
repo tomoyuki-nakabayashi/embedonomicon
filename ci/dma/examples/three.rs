@@ -4,18 +4,18 @@
 
 use shared::{Dma1Channel1, USART1_RX, USART1_TX};
 
-/// A DMA transfer
+/// 1回のDMA転送です
 pub struct Transfer<B> {
     buffer: B,
-    // NOTE: added
+    // 注記：追加しました
     serial: Serial1,
 }
 
 impl<B> Transfer<B> {
-    /// Blocks until the transfer is done and returns the buffer
-    // NOTE: the return value has changed
+    /// 転送が完了するまでブロックし、バッファを返します。
+    /// 注記：戻り値が変わっています
     pub fn wait(self) -> (B, Serial1) {
-        // Busy wait until the transfer is done
+        // 転送が完了するまでビジーウェイトします
         while !self.is_done() {}
 
         (self.buffer, self.serial)
@@ -25,10 +25,10 @@ impl<B> Transfer<B> {
 }
 
 impl Serial1 {
-    /// Receives data into the given `buffer` until it's filled
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
-    // NOTE we now take `self` by value
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    // 注記 今回は、`self`を値として受け取ります
     pub fn read_exact(mut self, buffer: &'static mut [u8]) -> Transfer<&'static mut [u8]> {
         self.dma.set_source_address(USART1_RX, false);
         self.dma
@@ -37,19 +37,19 @@ impl Serial1 {
 
         self.dma.start();
 
-        // .. same as before ..
+        // .. 以前と同じです ..
 
         Transfer {
             buffer,
-            // NOTE: added
+            // 注記：追加しました
             serial: self,
         }
     }
 
-    /// Sends out the given `buffer`
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
-    // NOTE we now take `self` by value
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    // 注記 今回は、`self`を値として受け取ります
     pub fn write_all(mut self, buffer: &'static [u8]) -> Transfer<&'static [u8]> {
         self.dma.set_destination_address(USART1_TX, false);
         self.dma.set_source_address(buffer.as_ptr() as usize, true);
@@ -57,11 +57,11 @@ impl Serial1 {
 
         self.dma.start();
 
-        // .. same as before ..
+        // .. 以前と同じです ..
 
         Transfer {
             buffer,
-            // NOTE: added
+            // 注記：追加しました
             serial: self,
         }
     }
@@ -73,30 +73,30 @@ fn read(serial: Serial1, buf: &'static mut [u8; 16]) {
 
     // let byte = serial.read(); //~ ERROR: `serial` has been moved
 
-    // .. do stuff ..
+    // .. 何かやります ..
 
     let (serial, buf) = t.wait();
 
-    // .. do more stuff ..
+    // .. さらに何かやります ..
 }
 
 #[allow(dead_code, unused_variables)]
 fn reorder(serial: Serial1, buf: &'static mut [u8]) {
-    // zero the buffer (for no particular reason)
+    // バッファをゼロクリアします（特別な理由はありません）
     buf.iter_mut().for_each(|byte| *byte = 0);
 
     let t = serial.read_exact(buf);
 
-    // ... do other stuff ..
+    // ... 何か別のことをやります ..
 
     let (buf, serial) = t.wait();
 
     buf.reverse();
 
-    // .. do stuff with `buf` ..
+    // .. `buf`で何かやります ..
 }
 
-// UNCHANGED
+// 変更ありません
 
 fn main() {}
 

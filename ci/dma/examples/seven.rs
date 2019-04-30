@@ -13,16 +13,16 @@ use as_slice::{AsMutSlice, AsSlice};
 use shared::{Dma1Channel1, USART1_RX, USART1_TX};
 
 impl Serial1 {
-    /// Receives data into the given `buffer` until it's filled
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn read_exact<B>(mut self, mut buffer: Pin<B>) -> Transfer<B>
     where
-        // NOTE: added 'static bound
+        // 注記：'static境界を追加しました
         B: DerefMut + 'static,
         B::Target: AsMutSlice<Element = u8> + Unpin,
     {
-        // .. same as before ..
+        // .. 以前と同じです ..
         let slice = buffer.as_mut_slice();
         let (ptr, len) = (slice.as_mut_ptr(), slice.len());
 
@@ -39,16 +39,16 @@ impl Serial1 {
         }
     }
 
-    /// Sends out the given `buffer`
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn write_all<B>(mut self, buffer: Pin<B>) -> Transfer<B>
     where
-        // NOTE: added 'static bound
+        // 注記：'static境界を追加しました
         B: Deref + 'static,
         B::Target: AsSlice<Element = u8>,
     {
-        // .. same as before ..
+        // .. 以前と同じです ..
         let slice = buffer.as_slice();
         let (ptr, len) = (slice.as_ptr(), slice.len());
 

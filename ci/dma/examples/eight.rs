@@ -15,20 +15,20 @@ use core::{
 use as_slice::{AsMutSlice, AsSlice};
 use shared::{Dma1Channel1, USART1_RX, USART1_TX};
 
-/// A DMA transfer
+/// 1回のDMA転送です
 pub struct Transfer<B> {
-    // NOTE: always `Some` variant
+    // 注記：常に`Some`ヴァリアントです
     inner: Option<Inner<B>>,
 }
 
-// NOTE: previously named `Transfer<B>`
+// 注記：以前は、`Transfer<B>という名前でした
 struct Inner<B> {
     buffer: Pin<B>,
     serial: Serial1,
 }
 
 impl<B> Transfer<B> {
-    /// Blocks until the transfer is done and returns the buffer
+    /// 転送が完了するまでブロックし、バッファを返します。
     pub fn wait(mut self) -> (Pin<B>, Serial1) {
         while !self.is_done() {}
 
@@ -45,31 +45,31 @@ impl<B> Transfer<B> {
 impl<B> Drop for Transfer<B> {
     fn drop(&mut self) {
         if let Some(inner) = self.inner.as_mut() {
-            // NOTE: this is a volatile write
+            // 注記：これはvolatileな書き込みです
             inner.serial.dma.stop();
 
-            // we need a read here to make the Acquire fence effective
-            // we do *not* need this if `dma.stop` does a RMW operation
+            // Acquireフェンスを有効化するため、ここで読み込みが必要です
+            // `dma.stop`がRMW操作をするのであれば、これは*不要*です
             unsafe {
                 ptr::read_volatile(&0);
             }
 
-            // we need a fence here for the same reason we need one in `Transfer.wait`
+            // `Transfer.wait`と同じ理由でフェンスが必要です。
             atomic::compiler_fence(Ordering::Acquire);
         }
     }
 }
 
 impl Serial1 {
-    /// Receives data into the given `buffer` until it's filled
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn read_exact<B>(mut self, mut buffer: Pin<B>) -> Transfer<B>
     where
         B: DerefMut + 'static,
         B::Target: AsMutSlice<Element = u8> + Unpin,
     {
-        // .. same as before ..
+        // .. 以前と同じです ..
         let slice = buffer.as_mut_slice();
         let (ptr, len) = (slice.as_mut_ptr(), slice.len());
 
@@ -88,15 +88,15 @@ impl Serial1 {
         }
     }
 
-    /// Sends out the given `buffer`
-    ///
-    /// Returns a value that represents the in-progress DMA transfer
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
     pub fn write_all<B>(mut self, buffer: Pin<B>) -> Transfer<B>
     where
         B: Deref + 'static,
         B::Target: AsSlice<Element = u8>,
     {
-        // .. same as before ..
+        // .. 以前と同じです ..
         let slice = buffer.as_slice();
         let (ptr, len) = (slice.as_ptr(), slice.len());
 
@@ -124,13 +124,13 @@ fn reuse(serial: Serial1) {
 
     // ..
 
-    // this stops the DMA transfer and frees memory
+    // これはDMA転送を中断し、メモリを解放します
     mem::drop(t); // compiler_fence(Ordering::Acquire) ▼
 
-    // this likely reuses the previous memory allocation
+    // これは、前のメモリ割り当てを再利用する可能性が高いです
     let mut buf = Box::new([0; 16]);
 
-    // .. do stuff with `buf` ..
+    // `buf`で何かやります
 }
 
 // UNCHANGED
