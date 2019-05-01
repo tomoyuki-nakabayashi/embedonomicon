@@ -2,25 +2,44 @@
 
 # コンパイラサポートに関する覚書
 
+<!-- 
 This book makes use of a built-in *compiler* target, the `thumbv7m-none-eabi`, for which the Rust
 team distributes a `rust-std` component, which is a pre-compiled collection of crates like [`core`] and [`std`].
+ -->
+
+本書は`thumbv7m-none-eabi`という*コンパイラ*組込みのターゲットを使いました。
+このターゲットに対しては、Rustチームが、
+[`core`]や[`std`]のようなコンパイル済みのクレート一式を`rust-std`コンポーネントとして配布しています。
 
 [`core`]: https://doc.rust-lang.org/core/index.html
 [`std`]: https://doc.rust-lang.org/std/index.html
 
+<!-- 
 If you want to attempt replicating the contents of this book for a different target architecture, you
 need to take into account the different levels of support that Rust provides for (compilation)
 targets.
+ -->
 
-## LLVM support
+本書の内容を異なるターゲットアーキテクチャで再現したい場合、
+Rustが（コンパイル）ターゲットに対して提供している異なるサポートレベルを考慮しなければなりません。
 
+<!-- ## LLVM support -->
+
+## LLVMサポート
+
+<!-- 
 As of Rust 1.28, the official Rust compiler, `rustc`, uses LLVM for (machine) code generation. The
 minimal level of support Rust provides for an architecture is having its LLVM backend enabled in
 `rustc`. You can see all the architectures that `rustc` supports, through LLVM, by running the
 following command:
+ -->
+
+Rust 1.28現在、公式のRustコンパイラである`rustc`は、（機械語）コード生成にLLVMを使用しています。
+あるアーキテクチャに対して、Rustが提供する最低レベルのサポートは、`rustc`で有効化されているLLVMバックエンドがあることです。
+次のコマンドを実行することで、LLVMを通して、`rustc`がサポートする全てのアーキテクチャを見ることができます。
 
 ``` console
-$ # you need to have `cargo-binutils` installed to run this command
+$ # このコマンドを実行するためには、`cargo-binutils`のインストールが必要です
 $ cargo objdump -- -version
 LLVM (http://llvm.org/):
   LLVM version 7.0.0svn
@@ -57,33 +76,66 @@ LLVM (http://llvm.org/):
     x86-64     - 64-bit X86: EM64T and AMD64
 ```
 
+<!-- 
 If LLVM supports the architecture you are interested in, but `rustc` is built with the backend
 disabled (which is the case of AVR as of Rust 1.28), then you will need to modify the Rust source
 enabling it. The first two commits of PR [rust-lang/rust#52787] give you an idea of the required
 changes.
+ -->
+
+LLVMが興味のあるアーキテクチャをサポートしており、`rustc`がそのバックエンドを無効化してビルドされた（Rust 1.28でのAVR）場合、
+ターゲットを有効化するためにRustのソースコードを修正しなければなりません。
+Pull Request [rust-lang/rust#52787]の最初の2つのコミットが、必要な変更のヒントになります。
 
 [rust-lang/rust#52787]: https://github.com/rust-lang/rust/pull/52787
 
+<!-- 
 On the other hand, if LLVM doesn't support the architecture, but a fork of LLVM does, you will have
 to replace the original version of LLVM with the fork before building `rustc`. The Rust build system
 allows this and in principle it should just require changing the `llvm` submodule to point to the fork.
+ -->
 
+その一方、LLVMがアーキテクチャをサポートしていませんが、LLVMのフォークがサポートできる場合、
+`rustc`をビルドする前に、オリジナルのLLVMをフォークで置き換えなければなりません。
+Rustビルドシステムはこれができるようになっており、原則としては、フォークを指すように`llvm`サブモジュールを単に変更するだけです。
+
+<!-- 
 If your target architecture is only supported by some vendor provided GCC, you have the option of
 using [`mrustc`], an unofficial Rust compiler, to translate your Rust program into C code and then
 compile that using GCC.
+ -->
+
+もしベンダ提供のGCCでしかターゲットアーキテクチャがサポートされていない場合、[`mrustc`]を使う選択肢があります。
+これは、非公式のRustコンパイラで、RustプログラムをCコードに変換し、その後、GCCを使ってコンパイルします。
 
 [`mrustc`]: https://github.com/thepowersgang/mrustc
 
-## Built-in target
+<!-- ## Built-in target -->
 
+## 組込みのターゲット
+
+<!-- 
 A compilation target is more than just its architecture. Each target has a [specification]
 associated to it that describes, among other things, its architecture, its operating system
 and the default linker.
+ -->
 
+コンパイルターゲットは、アーキテクチャだけではありません。各ターゲットは関連する[仕様]があり、
+特に、アーキテクチャ、オペレーティングシステム、デフォルトリンカが記載されています。
+
+<!-- 
 [specification]: https://github.com/rust-lang/rfcs/blob/master/text/0131-target-specification.md
+ -->
 
+[仕様]: https://github.com/rust-lang/rfcs/blob/master/text/0131-target-specification.md
+
+<!-- 
 The Rust compiler knows about several targets. These are said to be *built into* the compiler and
 can be listed by running the following command:
+ -->
+
+Rustコンパイラはいくつかのターゲットについて知っています。これらのターゲットは、コンパイラに*組み込まれている*、
+と呼ばれており、次のコマンドでリストを表示できます。
 
 ``` console
 $ rustc --print target-list | column
@@ -131,7 +183,11 @@ mips-unknown-linux-uclibc       x86_64-unknown-openbsd
 mips64-unknown-linux-gnuabi64   x86_64-unknown-redox
 ```
 
+<!-- 
 You can print the specification of any of these targets using the following command:
+ -->
+
+次のコマンドを使って、これらターゲットの仕様を表示できます。
 
 ``` console
 $ rustc +nightly -Z unstable-options --print target-spec-json --target thumbv7m-none-eabi
@@ -164,24 +220,40 @@ $ rustc +nightly -Z unstable-options --print target-spec-json --target thumbv7m-
 }
 ```
 
+<!-- 
 If none of these built-in targets seems appropriate for your target system, you'll have to create a
 custom target by writing your own target specification file in JSON format. The recommended way is to
 dump the specification of a built-in target that's similar to your target system into a file and then
 tweak it to match the properties of your target system. To do so, use the previously shown command,
 `rustc --print target-spec-json`. As of Rust 1.28, there's no up to date documentation on what each of
 the fields of a target specification mean, other than [the compiler source code].
+ -->
 
+ターゲットシステムに対して適切な組込みのターゲットが無い場合、JSON形式のファイルにターゲット仕様を記述するカスタムターゲットを作らなければなりません。
+推奨する方法は、ターゲットシステムに似ている組込みターゲットの仕様をファイルに書き出し、ターゲットシステムに適合するように微調整することです。
+そのために、先程見せた`rustc --print target-spec-json`コマンドを使用します。
+Rust 1.28では、ターゲット仕様の各フィールドが何を意味するか説明する最新のドキュメントが[コンパイラソースコード]以外ありません。
+
+<!-- 
 [the compiler source code]: https://github.com/rust-lang/rust/blob/1.27.2/src/librustc_target/spec/mod.rs#L376-L400
+ -->
 
+[コンパイラソースコード]: https://github.com/rust-lang/rust/blob/1.27.2/src/librustc_target/spec/mod.rs#L376-L400
+
+<!-- 
 Once you have a target specification file you can refer to it by its path or by its name if its in
 the current directory or in `$RUST_TARGET_PATH`. 
+ -->
+
+ターゲット仕様ファイルを作れば、ファイルパスを指定するか、カレントディレクトリか`$RUST_TARGET_PATH`にあるのであれば、
+その名前で参照することができます。
 
 ``` console
 $ rustc +nightly -Z unstable-options --print target-spec-json \
       --target thumbv7m-none-eabi \
       > foo.json
 
-$ rustc --print cfg --target foo.json # or just --target foo
+$ rustc --print cfg --target foo.json # もしくは単に --target foo
 debug_assertions
 target_arch="arm"
 target_endian="little"
@@ -198,14 +270,26 @@ target_pointer_width="32"
 target_vendor=""
 ```
 
-## `rust-std` component
+<!-- ## `rust-std` component -->
 
+## `rust-std`コンポーネント
+
+<!-- 
 For some of the built-in target the Rust team distributes `rust-std` components via `rustup`. This
 component is a collection of pre-compiled crates like `core` and `std`, and it's required for
 cross compilation.
+ -->
 
+いくつかの組込みターゲットに対して、Rustチームは`rustup`経由で`rust-std`コンポーネントを配布しています。
+このコンポーネントは、コンパイル済みの`core`や`std`といったクレート一式です。
+そして、このコンポーネントは、クロスコンパイルに必要です。
+
+<!-- 
 You can find the list of targets that have a `rust-std` component available via `rustup` by running
 the following command:
+ -->
+
+次のコマンドを実行すると、`rustup`経由で利用可能な`rust-std`コンポーネントを持つターゲット一覧が得られます。
 
 ``` console
 $ rustup target list | column
@@ -242,9 +326,16 @@ mips-unknown-linux-gnu                  x86_64-unknown-netbsd
 mips-unknown-linux-musl                 x86_64-unknown-redox
 ```
 
+<!-- 
 If there's no `rust-std` component for your target or you are using a custom target, then you'll have
 to use a tool like [Xargo] to have Cargo compile the `core` crate on the fly. Note that Xargo
 requires a nightly toolchain; the long term plan is to upstream Xargo's functionality into Cargo
 and eventually have that functionality available on stable.
+ -->
+
+ターゲットに`rust-std`コンポーネントがない場合、あるいは、カスタムターゲットを使っている場合、
+`core`クレートをCargoでコンパイルさせるために、[Xargo]のようなツールが必要です。
+Xargoはnightlyツールチェインを要求することに注意して下さい。長期計画では、Xargoの機能はCargoに取り込まれ、
+最終的には安定版でその機能が利用可能になるはずです。
 
 [Xargo]: https://github.com/japaric/xargo
