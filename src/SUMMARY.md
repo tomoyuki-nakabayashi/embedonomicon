@@ -10,4 +10,4 @@
 - [グローバルシングルトン](./singleton.md)
 - [DMA](./dma.md)
 ---
-[A note on compiler support](./compiler-support.md)
+[コンパイラサポートに関する覚書](./compiler-support.md)
