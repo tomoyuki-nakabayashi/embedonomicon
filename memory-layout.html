@@ -1,0 +1,669 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>メモリレイアウト - The Embedonomicon</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">序文</a></li><li class="chapter-item expanded "><a href="smallest-no-std.html"><strong aria-hidden="true">1.</strong> 最小限の#![no_std]プログラム</a></li><li class="chapter-item expanded "><a href="memory-layout.html" class="active"><strong aria-hidden="true">2.</strong> メモリレイアウト</a></li><li class="chapter-item expanded "><a href="main.html"><strong aria-hidden="true">3.</strong> mainインタフェース</a></li><li class="chapter-item expanded "><a href="exceptions.html"><strong aria-hidden="true">4.</strong> 例外処理</a></li><li class="chapter-item expanded "><a href="asm.html"><strong aria-hidden="true">5.</strong> stableでのアセンブリ</a></li><li class="chapter-item expanded "><a href="logging.html"><strong aria-hidden="true">6.</strong> シンボルでのロギング</a></li><li class="chapter-item expanded "><a href="singleton.html"><strong aria-hidden="true">7.</strong> グローバルシングルトン</a></li><li class="chapter-item expanded "><a href="dma.html"><strong aria-hidden="true">8.</strong> DMA</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="compiler-support.html">コンパイラサポートに関する覚書</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Embedonomicon</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- # Memory layout -->
+<h1><a class="header" href="#メモリレイアウト" id="メモリレイアウト">メモリレイアウト</a></h1>
+<!-- 
+The next step is to ensure the program has the right memory layout so that the target system will be
+able to execute it. In our example, we'll be working with a virtual Cortex-M3 microcontroller: the
+[LM3S6965]. Our program will be the only process running on the device so it must also take care of
+initializing the device.
+ -->
+<p>次のステップは、ターゲットシステムがプログラムを実行できるように、プログラムに正しいメモリレイアウトを持たせることです。
+例では、<a href="http://www.ti.com/product/LM3S6965">LM3S6965</a>という仮想のCortex-M3マイクロコントローラを取り扱います。
+私達のプログラムは、デバイス上で動作する唯一のプロセスになります。そのため、デバイスの初期化も面倒を見る必要があります。</p>
+<!-- ## Background information -->
+<h2><a class="header" href="#背景となる情報" id="背景となる情報">背景となる情報</a></h2>
+<!-- 
+Cortex-M devices require a [vector table] to be present at the start of their [code memory region].
+The vector table is an array of pointers; the first two pointers are required to boot the device;
+the rest of pointers are related to exceptions -- we'll ignore them for now.
+ -->
+<p>Cortex-Mデバイスは、<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/memory-model">コードメモリ領域</a>の開始地点に<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table">ベクタテーブル</a>があること、を要求します。
+ベクタテーブルはポインタの配列です。最初の2つのポインタは、デバイスが起動するときに必要です。
+残りのポインタは例外に関係するもので、今は無視します。</p>
+<!-- 
+[code memory region]: https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/memory-model
+[vector table]: https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table
+ -->
+<!-- 
+Linkers decide the final memory layout of programs, but we can use [linker scripts] to have some
+control over it. The control granularity that linker scripts give us over the layout
+is at the level of *sections*. A section is a collection of *symbols* laid out in contiguous memory.
+Symbols, in turn, can be data (a static variable), or instructions (a Rust function).
+ -->
+<p>リンカは、プログラムの最終的なメモリレイアウトを決定します。しかし、<a href="https://sourceware.org/binutils/docs/ld/Scripts.html">リンカスクリプト</a>を使うことで、メモリレイアウトを制御できます。
+リンカスクリプトによる制御の粒度は、<em>セクション</em>レベルです。セクションは、連続したメモリに置かれる<em>シンボル</em>の集まりです。
+ここで、シンボルはデータ（静的変数）か命令（Rustの関数）になります。</p>
+<!-- 
+[linker scripts]: https://sourceware.org/binutils/docs/ld/Scripts.html
+ -->
+<!-- 
+Every symbol has a name assigned by the compiler. As of Rust 1.28 , the Rust compiler assigns to
+symbols names of the form: `_ZN5krate6module8function17he1dfc17c86fe16daE`, which demangles to
+`krate::module::function::he1dfc17c86fe16da` where `krate::module::function` is the path of the
+function or variable and `he1dfc17c86fe16da` is some sort of hash. The Rust compiler will place each
+symbol into its own and unique section; for example the symbol mentioned before will be placed in a
+section named `.text._ZN5krate6module8function17he1dfc17c86fe16daE`.
+ -->
+<p>全てのシンボルは、コンパイラによって割り当てられた名前を持ちます。Rust 1.28以降では、Rustコンパイラは、
+<code>_ZN5krate6module8function17he1dfc17c86fe16daE</code>、のような形式でシンボル名を割り当てます。
+このシンボルは、<code>krate::module::function::he1dfc17c86fe16da</code>にデマングルできます。
+ここで、<code>krate::module::function</code>は、関数か変数のパスです。そして、<code>he1dfc17c86fe16da</code>は何らかのハッシュです。
+Rustコンパイラは、各シンボルをシンボル固有のセクションに配置します。例えば、上述したシンボルは、
+<code>.text._ZN5krate6module8function17he1dfc17c86fe16daE</code>というセクションの配置されます。</p>
+<!-- 
+These compiler generated symbol and section names are not guaranteed to remain constant across
+different releases of the Rust compiler. However, the language lets us control symbol names and
+section placement via these attributes:
+ -->
+<p>コンパイラが生成したシンボル名とセクション名は、Rustコンパイラのリリースごとに変わる可能性があります。
+しかし、次のアトリビュートを使って、シンボル名やセクション配置を制御することができます。</p>
+<!-- 
+- `#[export_name = "foo"]` sets the symbol name to `foo`.
+- `#[no_mangle]` means: use the function or variable name (not its full path) as its symbol name.
+  `#[no_mangle] fn bar()` will produce a symbol named `bar`.
+- `#[link_section = ".bar"]` places the symbol in a section named `.bar`.
+ -->
+<ul>
+<li><code>#[export_name = &quot;foo&quot;]</code>は、シンボル名を<code>foo</code>に設定します。</li>
+<li><code>#[no_mangle]</code>は、関数名や変数名を（フルパスではなく）シンボル名として使うことを意味します。<code>#[no_mangle] fn bar()</code>は、<code>bar</code>というシンボル名を生成します。</li>
+<li><code>#[link_section = &quot;.bar&quot;]</code>は、シンボルを<code>.bar</code>という名前のセクションに配置します。</li>
+</ul>
+<!-- 
+With these attributes, we can expose a stable ABI of the program and use it in the linker script.
+ -->
+<p>これらのアトリビュートにより、プログラムの安定的なABIを公開することができ、リンカスクリプトで利用することができます。</p>
+<!-- ## The Rust side -->
+<h2><a class="header" href="#rust側" id="rust側">Rust側</a></h2>
+<!-- 
+Like mentioned before, for Cortex-M devices, we need to populate the first two entries of the
+vector table. The first one, the initial value for the stack pointer, can be populated using
+only the linker script. The second one, the reset vector, needs to be created in Rust code
+and placed correctly using the linker script.
+ -->
+<p>上述の通り、Cortex-Mデバイスに対して、ベクタテーブルの最初の2つのエントリを配置する必要があります。
+1つ目は、スタックポインタの初期値で、リンカスクリプトだけを使って配置することができます。
+2つ目のリセットベクタは、Rustのコードを作成する必要があり、リンカスクリプトを使って正しく配置しなければなりません。</p>
+<!-- 
+The reset vector is a pointer into the reset handler. The reset handler is the function that the
+device will execute after a system reset, or after it powers up for the first time. The reset
+handler is always the first stack frame in the hardware call stack; returning from it is undefined
+behavior as there's no other stack frame to return to. We can enforce that the reset handler never
+returns by making it a divergent function, which is a function with signature `fn(/* .. */) -> !`.
+ -->
+<p>リセットベクタは、リセットハンドラのポインタです。リセットハンドラは、デバイスがシステムリセットの後、もしくは、
+最初に電源が入った後に実行する関数です。リセットハンドラは、常にハードウェアコールスタックの最初のスタックフレームになります。
+戻るためのスタックフレームがないため、リセットハンドラから戻ることは、未定義動作です。
+発散関数のマーキングを行うことで、リセットハンドラが決して戻らないように強制できます。
+発散関数は、<code>fn(/* .. */) -&gt; !</code>というシグネチャがついた関数です。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    let _x = 42;
+
+    // 戻れないため、ここで無限ループに入ります
+    loop {}
+}
+
+// リセットベクタは、リセットハンドラへのポインタです
+#[link_section = &quot;.vector_table.reset_vector&quot;]
+#[no_mangle]
+pub static RESET_VECTOR: unsafe extern &quot;C&quot; fn() -&gt; ! = Reset;
+
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+The hardware expects a certain format here, to which we adhere by using `extern "C"` to tell the
+compiler to lower the function using the C ABI, instead of the Rust ABI, which is unstable.
+ -->
+<p>ここで、ハードウェアは、特定の形式を期待しています。これに従うため、<code>extern &quot;C&quot;</code>を使うことで、コンパイラがこの関数をC ABIを使うように指示します。
+そうしなければ、安定していないRust ABIが使われます。</p>
+<!-- 
+To refer to the reset handler and reset vector from the linker script, we need them to have a stable
+symbol name so we use `#[no_mangle]`. We need fine control over the location of `RESET_VECTOR`, so we
+place it in a known section, `.vector_table.reset_vector`. The exact location of the reset handler
+itself, `Reset`, is not important. We just stick to the default compiler generated section.
+ -->
+<p>リンカスクリプトからリセットハンドラとリセットベクタを参照するために、<code>#[no_mangle]</code>を使って安定したシンボル名を与えます。
+<code>RESET_VECTOR</code>の位置を細かく制御しなければなりません。そこで、<code>.vector_table.reset_vector</code>と呼ばれるセクションに配置します。
+リセットハンドラである<code>Reset</code>自身の正確な位置は重要ではありません。これに対しては、デフォルトでコンパイラが生成するセクションを使用します。</p>
+<!-- 
+Also, the linker will ignore symbols with internal linkage, AKA internal symbols, while traversing
+the list of input object files, so we need our two symbols to have external linkage. The only way to
+make a symbol external in Rust is to make its corresponding item public (`pub`) and *reachable* (no
+private module between the item and the root of the crate).
+ -->
+<p>また、入力のオブジェクトファイルを解析する間、リンカは、内部シンボルと呼ばれる内部リンケージのシンボルを無視します。
+そこで、2つのシンボルが外部リンケージを持つようにする必要があります。Rustでシンボルを外部向けにする唯一の方法は、
+関連するアイテムをpublic (<code>pub</code>) にして、<em>到達可能</em>（アイテムとクレートのトップレベルとの間にプライベートなモジュールがない）なものにすることです。</p>
+<!-- ## The linker script side -->
+<h2><a class="header" href="#リンカスクリプト側" id="リンカスクリプト側">リンカスクリプト側</a></h2>
+<!-- 
+Below is shown a minimal linker script that places the vector table in the right location. Let's
+walk through it.
+ -->
+<p>下記に、正しい位置にベクタテーブルを配置する最小限のリンカスクリプトを示します。
+全体に目を通してみましょう。</p>
+<pre><code class="language-console">$ cat link.x
+</code></pre>
+<pre><code class="language-text">/* LM3S6965マイクロコントローラのメモリレイアウト */
+/* 1K = 1 KiBi = 1024バイト */
+MEMORY
+{
+  FLASH : ORIGIN = 0x00000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 64K
+}
+
+/* エントリポイントはリセットハンドラです */
+ENTRY(Reset);
+
+EXTERN(RESET_VECTOR);
+
+SECTIONS
+{
+  .vector_table ORIGIN(FLASH) :
+  {
+    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+  } &gt; FLASH
+
+  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /DISCARD/ :
+  {
+    *(.ARM.exidx.*);
+  }
+}
+</code></pre>
+<h3><a class="header" href="#memory" id="memory"><code>MEMORY</code></a></h3>
+<!-- 
+This section of the linker script describes the location and size of blocks of memory in the target.
+Two memory blocks are defined: `FLASH` and `RAM`; they correspond to the physical memory available
+in the target. The values used here correspond to the LM3S6965 microcontroller.
+ -->
+<p>リンカスクリプトのこのセクションは、ターゲット内のメモリブロックの位置とサイズを記述します。
+2つのメモリブロックが定義されています。<code>FLASH</code>と<code>RAM</code>です。これらは、ターゲットで利用可能な物理メモリと関連しています。
+ここで使用されている値は、LM3S6965マイクロコントローラのものです。</p>
+<h3><a class="header" href="#entry" id="entry"><code>ENTRY</code></a></h3>
+<!-- 
+Here we indicate to the linker that the reset handler -- whose symbol name is `Reset` -- is the
+*entry point* of the program. Linkers aggressively discard unused sections. Linkers consider the
+entry point and functions called from it as *used* so they won't discard them. Without this line,
+the linker would discard the `Reset` function and all subsequent functions called from it.
+ -->
+<p>ここでは、リンカに<code>Reset</code>というシンボル名を持つリセットハンドラが、プログラムの<em>エントリポイント</em>であることを教えています。
+リンカは、不要なセクションを積極的に破棄します。リンカは、エントリポイントと、エントリポイント関数から呼ばれる関数を<em>使用される</em>と考え、
+破棄しなくなります。この行がないと、リンカは、<code>Reset</code>関数と、そこから呼ばれる全ての関数を破棄するでしょう。</p>
+<h3><a class="header" href="#extern" id="extern"><code>EXTERN</code></a></h3>
+<!-- 
+Linkers are lazy; they will stop looking into the input object files once they have found all the
+symbols that are recursively referenced from the entry point. `EXTERN` forces the linker to look
+for `EXTERN`'s argument even after all other referenced symbols have been found. As a rule of thumb,
+if you need a symbol that's not called from the entry point to always be present in the output binary,
+you should use `EXTERN` in conjunction with `KEEP`.
+ -->
+<p>リンカは怠け者です。エントリポイントから再帰的に参照されるシンボルが全て見つかった時点で、入力オブジェクトファイルの解析を停止します。
+<code>EXTERN</code>により、他の参照されるシンボルが全て見つかった後でも、リンカは<code>EXTERN</code>の引数が見つかるまで探し続けます。
+基本、エントリポイントから呼ばれないシンボルが出力バイナリで必要な場合、<code>KEEP</code>と関連付けて<code>EXTERN</code>を使う必要があります。</p>
+<h3><a class="header" href="#sections" id="sections"><code>SECTIONS</code></a></h3>
+<!-- 
+This part describes how sections in the input object files, AKA *input sections*, are to be arranged
+in the sections of the output object file, AKA output sections; or if they should be discarded. Here
+we define two output sections:
+ -->
+<p>ここでは、入力オブジェクトファイル内のセクション（<em>入力セクション</em>）がどのように出力オブジェクトファイルのセクション（出力セクション）に配置されるのか、
+もしくは破棄されるのか、を説明します。
+2つの出力セクションを定義します。</p>
+<pre><code class="language-text">  .vector_table ORIGIN(FLASH) : { /* .. */ } &gt; FLASH
+</code></pre>
+<!-- 
+`.vector_table`, which contains the vector table and is located at the start of `FLASH` memory,
+ -->
+<p><code>.vector_table</code>は、ベクタテーブルを含んでおり、<code>FLASH</code>メモリの開始地点に配置されます。</p>
+<pre><code class="language-text">  .text : { /* .. */ } &gt; FLASH
+</code></pre>
+<!-- 
+and `.text`, which contains the program subroutines and is located somewhere in `FLASH`. Its start
+address is not specified, but the linker will place it after the previous output section,
+`.vector_table`.
+ -->
+<p>そして、<code>.text</code>は、プログラムのサブルーチンを含んでおり、<code>FLASH</code>のどこかに配置されます。開始アドレスは指定されていませんが、
+リンカは直前の出力セクションである<code>.vector_table</code>の後ろに、このセクションを配置するでしょう。</p>
+<!-- The output `.vector_table` section contains: -->
+<p>出力セクションの<code>.vecotr_table</code>は、次のものを含んでいます。</p>
+<pre><code class="language-text">    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+</code></pre>
+<!-- 
+We'll place the (call) stack at the end of RAM (the stack is *full descending*; it grows towards
+smaller addresses) so the end address of RAM will be used as the initial Stack Pointer (SP) value.
+That address is computed in the linker script itself using the information we entered for the `RAM`
+memory block.
+ -->
+<p>（コール）スタックをRAMの最後に配置します。スタックは、<em>完全な降順</em>です。すなわち、小さいアドレスに向かって伸びます。
+そのため、RAMの最後のアドレスをスタックポインタ（SPモード）の初期値として使用します。
+このアドレスは、リンカスクリプト内で<code>RAM</code>メモリブロックに入力した情報を使って、計算されます。</p>
+<pre><code>    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+</code></pre>
+<!-- 
+Next, we use `KEEP` to force the linker to insert all input sections named
+`.vector_table.reset_vector` right after the initial SP value. The only symbol located in that
+section is `RESET_VECTOR`, so this will effectively place `RESET_VECTOR` second in the vector table.
+ -->
+<p>次に、SPの初期値の直後に<code>.vector_table.reset_vector</code>と名付けられた全ての入力セクションがリンカによって挿入されるように、<code>KEEP</code>を使います。
+<code>RESET_VECTOR</code>がこのセクションに配置される唯一のシンボルです。これは、ベクタテーブルの2つ目に<code>RESET_VECTOR</code>を配置するのに効率的な方法です。</p>
+<!-- The output `.text` section contains: -->
+<p>出力セクションの<code>.text</code>は、次の内容を含んでいます。</p>
+<pre><code class="language-text">    *(.text .text.*);
+</code></pre>
+<!-- 
+This includes all the input sections named `.text` and `.text.*`. Note that we don't use `KEEP`
+here to let the linker discard unused sections.
+ -->
+<p>これは、<code>.text</code>と<code>.text.*</code>という名前の入力セクションを全て含んでいます。
+リンカが不必要なセクションを破棄しないようにさせるための、<code>KEEP</code>を、ここでは使わないことに留意して下さい。</p>
+<!-- Finally, we use the special `/DISCARD/` section to discard -->
+<p>最後に、破棄用の特別な<code>/DISCARD/</code>セクションを使います。</p>
+<pre><code class="language-text">    *(.ARM.exidx.*);
+</code></pre>
+<!-- 
+input sections named `.ARM.exidx.*`. These sections are related to exception handling but we are not
+doing stack unwinding on panics and they take up space in Flash memory, so we just discard them.
+ -->
+<p><code>.ARM.exidx.*</code>という入力セクションを破棄します。これらのセクションは、例外処理に関連したものですが、
+パニック時のスタック巻き戻しを行わないのと、これらのセクションはFlashメモリの容量を使うため、単に破棄します。</p>
+<!-- ## Putting it all together -->
+<h2><a class="header" href="#1つにまとめる" id="1つにまとめる">1つにまとめる</a></h2>
+<!-- Now we can link the application. For reference, here's the complete Rust program: -->
+<p>これで、アプリケーションをリンクできます。参考用に、完全なRustプログラムを示します。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_main]
+#![no_std]
+
+<span class="boring">fn main() {
+</span>use core::panic::PanicInfo;
+
+// リセットハンドラ
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    let _x = 42;
+
+    // 戻れないため、ここで無限ループに入ります
+    loop {}
+}
+
+// リセットベクタは、リセットハンドラへのポインタです
+#[link_section = &quot;.vector_table.reset_vector&quot;]
+#[no_mangle]
+pub static RESET_VECTOR: unsafe extern &quot;C&quot; fn() -&gt; ! = Reset;
+
+#[panic_handler]
+fn panic(_panic: &amp;PanicInfo&lt;'_&gt;) -&gt; ! {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+We have to tweak linker process to make it use our linker script. This is done
+passing the `-C link-arg` flag to `rustc` but there are two ways to do it: you
+can use the `cargo-rustc` subcommand instead of `cargo-build` as shown below:
+ -->
+<p>私達のリンカスクリプトを使うために、リンカプロセスに手を加えなければなりません。これは、<code>rustc</code>に<code>-C link-arg</code>フラグを渡すことで達成できます。
+しかし、2つのやり方があります。下記のように<code>cargo-rustc</code>サブコマンドを<code>cargo-build</code>の代わりに使用することができます。</p>
+<!-- 
+**IMPORTANT**: Make sure you have the `.cargo/config` file that was added at the
+end of the last section before running this command.
+ -->
+<p><strong>重要</strong>：このコマンドを実行する前に、前回のセクションの最後に追加した<code>.cargo/config</code>ファイルがあることを確認して下さい。</p>
+<pre><code class="language-console">$ cargo rustc -- -C link-arg=-Tlink.x
+</code></pre>
+<!-- 
+Or you can set the rustflags in `.cargo/config` and continue using the
+`cargo-build` subcommand. We'll do the latter because it better integrates with
+`cargo-binutils`.
+ -->
+<p>もしくは、<code>.cargo/config</code>にrustflagsを設定し、<code>cargo-build</code>サブコマンドを使い続けることもできます。
+<code>cargo-binutils</code>との統合がやりやすいため、2つ目の方法を使います。</p>
+<pre><code class="language-console"># .cargo/configを次の内容で修正します
+$ cat .cargo/config
+</code></pre>
+<pre><code class="language-toml">[target.thumbv7m-none-eabi]
+rustflags = [&quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;]
+
+[build]
+target = &quot;thumbv7m-none-eabi&quot;
+</code></pre>
+<!-- 
+The `[target.thumbv7m-none-eabi]` part says that these flags will only be used
+when cross compiling to that target.
+ -->
+<p><code>[target.thumbv7m-none-eabi]</code>の部分は、このフラグがターゲット向けのクロスコンパイル時のみ有効であることを意味しています。</p>
+<!-- ## Inspecting it -->
+<h2><a class="header" href="#調査" id="調査">調査</a></h2>
+<!-- 
+Now let's inspect the output binary to confirm the memory layout looks the way we want:
+ -->
+<p>それでは、望み通りのメモリレイアウトになっているか確認するため、出力バイナリを調査してみましょう。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -d -no-show-raw-insn
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+Reset:
+	sub	sp, #4
+	movs	r0, #42
+	str	r0, [sp]
+	b	#-2 &lt;Reset+0x8&gt;
+	b	#-4 &lt;Reset+0x8&gt;
+</code></pre>
+<!-- 
+This is the disassembly of the `.text` section. We see that the reset handler, named `Reset`, is
+located at address `0x8`.
+ -->
+<p>これは<code>.text</code>セクションの逆アセンブリです。<code>Reset</code>というリセットハンドラが<code>0x8</code>番地に位置していることがわかります。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -s -section .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 09000000                    ... ....
+</code></pre>
+<!-- 
+This shows the contents of the `.vector_table` section. We can see that the section starts at
+address `0x0` and that the first word of the section is `0x2001_0000` (the `objdump` output is in
+little endian format). This is the initial SP value and matches the end address of RAM. The second
+word is `0x9`; this is the *thumb mode* address of the reset handler. When a function is to be
+executed in thumb mode the first bit of its address is set to 1.
+ -->
+<p>これは、<code>.vector_table</code>セクションの内容を示しています。セクションは<code>0x0</code>番地から開始しており、セクションの1つ目のワードは、<code>0x2001_0000</code>であることがわかります
+（<code>objdump</code>はリトリエンディアン形式で出力します）。これはSPの初期値で、RAMの最後のアドレスと一致します。
+2つ目のワードは<code>0x9</code>です。これは、リセットハンドラの<em>thumbモード</em>アドレスです。
+関数がthumbモードで実行される場合、そのアドレスの1ビット目は1に設定されます。</p>
+<!-- ## Testing it -->
+<h2><a class="header" href="#テスト" id="テスト">テスト</a></h2>
+<!-- 
+This program is a valid LM3S6965 program; we can execute it in a virtual microcontroller (QEMU) to
+test it out.
+ -->
+<p>このプログラムは、有効なLM3S6965プログラムです。このプログラムをテストするため、仮想のマイクロコントローラ（QEMU）で実行できます。</p>
+<pre><code class="language-console">$ # this program will block
+$ qemu-system-arm \
+      -cpu cortex-m3 \
+      -machine lm3s6965evb \
+      -gdb tcp::3333 \
+      -S \
+      -nographic \
+      -kernel target/thumbv7m-none-eabi/debug/app
+</code></pre>
+<pre><code class="language-console">$ # 別ターミナル
+$ arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app
+Reading symbols from target/thumbv7m-none-eabi/debug/app...done.
+
+(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at src/main.rs:8
+8       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) # SPがベクタテーブルにプログラムした初期値を持っています
+(gdb) print/x $sp
+$1 = 0x20010000
+
+(gdb) step
+9           let _x = 42;
+
+(gdb) step
+12          loop {}
+
+(gdb) # 次にスタック変数の`_x`を調査します
+(gdb) print _x
+$2 = 42
+
+(gdb) print &amp;_x
+$3 = (i32 *) 0x2000fffc
+
+(gdb) quit
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="smallest-no-std.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="main.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="smallest-no-std.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="main.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

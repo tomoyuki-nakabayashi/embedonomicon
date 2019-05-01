@@ -1,0 +1,654 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>例外処理 - The Embedonomicon</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">序文</a></li><li class="chapter-item expanded "><a href="smallest-no-std.html"><strong aria-hidden="true">1.</strong> 最小限の#![no_std]プログラム</a></li><li class="chapter-item expanded "><a href="memory-layout.html"><strong aria-hidden="true">2.</strong> メモリレイアウト</a></li><li class="chapter-item expanded "><a href="main.html"><strong aria-hidden="true">3.</strong> mainインタフェース</a></li><li class="chapter-item expanded "><a href="exceptions.html" class="active"><strong aria-hidden="true">4.</strong> 例外処理</a></li><li class="chapter-item expanded "><a href="asm.html"><strong aria-hidden="true">5.</strong> stableでのアセンブリ</a></li><li class="chapter-item expanded "><a href="logging.html"><strong aria-hidden="true">6.</strong> シンボルでのロギング</a></li><li class="chapter-item expanded "><a href="singleton.html"><strong aria-hidden="true">7.</strong> グローバルシングルトン</a></li><li class="chapter-item expanded "><a href="dma.html"><strong aria-hidden="true">8.</strong> DMA</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="compiler-support.html">コンパイラサポートに関する覚書</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Embedonomicon</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- # Exception handling -->
+<h2><a class="header" href="#例外処理" id="例外処理">例外処理</a></h2>
+<!-- 
+During the "Memory layout" section, we decided to start out simple and leave out handling of
+exceptions. In this section, we'll add support for handling them; this serves as an example of
+how to achieve compile time overridable behavior in stable Rust (i.e. without relying on the
+unstable `#[linkage = "weak"]` attribute, which makes a symbol weak).
+ -->
+<p>「メモリレイアウト」セクションでは、簡単なところから始め、例外処理を省くことにしました。
+このセクションでは、例外処理サポートを追加します。stable Rustでコンパル時にオーバーライド可能な振る舞いを実装する例を示します
+（すなわち、シンボルをウィークにするunstableの<code>#[linkage = &quot;weak&quot;]</code>アトリビュートに頼りません）。</p>
+<!-- ## Background information -->
+<h2><a class="header" href="#背景となる情報" id="背景となる情報">背景となる情報</a></h2>
+<!-- 
+In a nutshell, *exceptions* are a mechanism the Cortex-M and other architectures provide to let
+applications respond to asynchronous, usually external, events. The most prominent type of exception,
+that most people will know, is the classical (hardware) interrupt.
+ -->
+<p>一言で言えば、<em>例外</em>は、アプリケーションが（主に外部からの）非同期イベントに応答するための、
+Cortex-Mや他のアーキテクチャが提供する機構です。最も有名なほとんどの人々が知っているであろう例外の種別は、
+古典的な（ハードウェア）割り込みです。</p>
+<!-- 
+The Cortex-M exception mechanism works like this:
+When the processor receives a signal or event associated to a type of exception, it suspends
+the execution of the current subroutine (by stashing the state in the call stack) and then proceeds
+to execute the corresponding exception handler, another subroutine, in a new stack frame. After
+finishing the execution of the exception handler (i.e. returning from it), the processor resumes the
+execution of the suspended subroutine.
+ -->
+<p>Cortex-Mの例外機能は次のように動きます。
+プロセッサが例外の種別に応じたシグナルもしくはイベントを受信すると、
+（コールスタックに現在の状態を入れておくことで）現在のサブルーチンの実行を一時停止し、
+関連する例外ハンドラ（別のサブルーチン）の実行を新しいスタックフレームで開始します。
+例外ハンドラの実行が終了すると（つまり例外ハンドラから戻ると）、プロセッサは一時停止したサブルーチンの実行を再開します。</p>
+<!-- 
+The processor uses the vector table to decide what handler to execute. Each entry in the table
+contains a pointer to a handler, and each entry corresponds to a different exception type. For
+example, the second entry is the reset handler, the third entry is the NMI (Non Maskable Interrupt)
+handler, and so on.
+ -->
+<p>プロセッサはどのハンドラを実行するか、を決めるためにベクタテーブルを使います。テーブルの各エントリはハンドラへのポインタです。
+そして、各エントリは、異なる例外種別に対応しています。例えば、2つ目のエントリはリセットハンドラで、3つ目のエントリは、
+NMI（Non Maskable Interrupt）と言った具合です。</p>
+<!-- 
+As mentioned before, the processor expects the vector table to be at some specific location in memory,
+and each entry in it can potentially be used by the processor at runtime. Hence, the entries must always
+contain valid values. Furthermore, we want the `rt` crate to be flexible so the end user can customize the
+behavior of each exception handler. Finally, the vector table resides in read only memory, or rather in not
+easily modified memory, so the user has to register the handler statically, rather than at runtime.
+ -->
+<p>これまで述べた通り、プロセッサはベクタテーブルがメモリ内の所定の位置にあることを期待しています。そして、各エントリは、
+実行時にプロセッサによって使用される可能性があります。したがって、エントリは必ず値を持たなければなりません。
+加えて、<code>rt</code>クレートにはエンドユーザーが各例外ハンドラの動作をカスタマイズできる柔軟さを持たせたいです。
+最後に、ベクタテーブルは読み込み専用メモリ、もしくは、変更が容易でないメモリにあるため、ユーザーは実行時ではなく、
+静的にハンドラを登録しなければなりません。</p>
+<!-- 
+To satisfy all these constraints, we'll assign a *default* value to all the entries of the vector
+table in the `rt` crate, but make these values kind of *weak* to let the end user override them
+at compile time.
+ -->
+<p>これら全ての制約を満たすため、<code>rt</code>クレートのベクタテーブルの全エントリに<em>デフォルト</em>値を割り当てますが、
+このデフォルト値は、ユーザーがコンパイル時にオーバーライドできるように<em>ウィーク</em>相当のものにします。</p>
+<!-- ## Rust side -->
+<h2><a class="header" href="#rust側" id="rust側">Rust側</a></h2>
+<!-- 
+Let's see how all this can be implemented. For simplicity, we'll only work with the first 16 entries
+of the vector table; these entries are not device specific so they have the same function on any
+kind of Cortex-M microcontroller.
+ -->
+<p>これを全て実装できる方法を見ていきましょう。簡単化のために、ベクタテーブルの最初の16エントリだけを扱います。
+これらのエントリは、デバイス固有のものではなく、全てのCortex-Mマイクロコントローラ上に同じ機能があります。</p>
+<!-- 
+The first thing we'll do is create an array of vectors (pointers to exception handlers) in the
+`rt` crate's code:
+ -->
+<p>まず最初にやることは、<code>rt</code>クレートのコードにベクタ配列（例外ハンドラへのポインタ）を作ることです。</p>
+<pre><code class="language-console">$ sed -n 56,91p ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub union Vector {
+    reserved: u32,
+    handler: unsafe extern &quot;C&quot; fn(),
+}
+
+extern &quot;C&quot; {
+    fn NMI();
+    fn HardFault();
+    fn MemManage();
+    fn BusFault();
+    fn UsageFault();
+    fn SVCall();
+    fn PendSV();
+    fn SysTick();
+}
+
+#[link_section = &quot;.vector_table.exceptions&quot;]
+#[no_mangle]
+pub static EXCEPTIONS: [Vector; 14] = [
+    Vector { handler: NMI },
+    Vector { handler: HardFault },
+    Vector { handler: MemManage },
+    Vector { handler: BusFault },
+    Vector {
+        handler: UsageFault,
+    },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: SVCall },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: PendSV },
+    Vector { handler: SysTick },
+];
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Some of the entries in the vector table are *reserved*; the ARM documentation states that they
+should be assigned the value `0` so we use a union to do exactly that. The entries that must point
+to a handler make use of *external* functions; this is important because it lets the end user
+*provide* the actual function definition.
+ -->
+<p>ベクタテーブル内のいくつかのエントリは<em>予約済み</em>です。ARMのドキュメントには、これらのエントリに<code>0</code>を割り当てなければならないと書いてあります。
+そこで、ユニオンを使って正確に実装します。
+エントリは<em>外部</em>関数として使えるようにしたハンドラを指している必要があります。
+これは、エンドユーザーが実際の関数定義を<em>提供する</em>ために重要です。</p>
+<!-- 
+Next, we define a default exception handler in the Rust code. Exceptions that have not been assigned
+a handler by the end user will make use of this default handler.
+ -->
+<p>次に、Rustコードにデフォルトの例外ハンドラを定義します。
+エンドユーザーによってハンドラが割り当てられない例外は、このデフォルトハンドラを使います。</p>
+<pre><code class="language-console">$ tail -n4 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub extern &quot;C&quot; fn DefaultExceptionHandler() {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- ## Linker script side -->
+<h2><a class="header" href="#リンカスクリプト側" id="リンカスクリプト側">リンカスクリプト側</a></h2>
+<!-- 
+On the linker script side, we place these new exception vectors right after the reset vector.
+ -->
+<p>リンカスクリプト側では、リセットベクタの直後に新しい例外ベクタを配置します。</p>
+<pre><code class="language-console">$ sed -n 12,25p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">EXTERN(RESET_VECTOR);
+EXTERN(EXCEPTIONS); /* &lt;- 追加 */
+
+SECTIONS
+{
+  .vector_table ORIGIN(FLASH) :
+  {
+    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+
+    /* 続く14エントリは例外ベクタです */
+    KEEP(*(.vector_table.exceptions)); /* &lt;- 追加 */
+  } &gt; FLASH
+</code></pre>
+<!-- 
+And we use `PROVIDE` to give a default value to the handlers that we left undefined in `rt` (`NMI`
+and the others above):
+ -->
+<p><code>rt</code>で未定義のハンドラ（<code>NMI</code>など）にデフォルト値を与えるため、<code>PROVIDE</code>を使います。</p>
+<pre><code class="language-console">$ tail -n8 ../rt/link.x
+</code></pre>
+<pre><code class="language-text">PROVIDE(NMI = DefaultExceptionHandler);
+PROVIDE(HardFault = DefaultExceptionHandler);
+PROVIDE(MemManage = DefaultExceptionHandler);
+PROVIDE(BusFault = DefaultExceptionHandler);
+PROVIDE(UsageFault = DefaultExceptionHandler);
+PROVIDE(SVCall = DefaultExceptionHandler);
+PROVIDE(PendSV = DefaultExceptionHandler);
+PROVIDE(SysTick = DefaultExceptionHandler);
+</code></pre>
+<!-- 
+`PROVIDE` only takes effect when the symbol to the left of the equal sign is still undefined after
+inspecting all the input object files. This is the scenario where the user didn't implement the
+handler for the respective exception.
+ -->
+<p><code>PROVIDE</code>は、全ての入力オブジェクトファイルを調べた後、=の左辺が未定義のときのみ効果を発揮します。
+これは、ユーザーが各例外についてハンドラを実装しなかった場合です。</p>
+<!-- ## Testing it -->
+<h2><a class="header" href="#テスト" id="テスト">テスト</a></h2>
+<!-- 
+That's it! The `rt` crate now has support for exception handlers. We can test it out with following
+application:
+ -->
+<p>これで全てです！これで、<code>rt</code>クレートは例外ハンドラをサポートします。
+次のアプリケーションを使って、テストができます。</p>
+<!-- 
+> **NOTE**: Turns out it's hard to generate an exception in QEMU. On real
+> hardware a read to an invalid memory address (i.e. outside of the Flash and
+> RAM regions) would be enough but QEMU happily accepts the operation and
+> returns zero. A trap instruction works on both QEMU and hardware but
+> unfortunately it's not available on stable so you'll have to temporarily
+> switch to nightly to run this and the next example.
+ -->
+<blockquote>
+<p><strong>注記</strong> QEMU上で例外を生成するのは難しいことがわかりました。実際のハードウェアでは、
+不正なメモリアドレス（つまりFlashとRAM領域の外側）を読むだけで十分ですが、QEMUは幸運なことにこの操作を受け付け、ゼロを返します。
+トラップ命令はQEMUとハードウェア両方で機能しますが、不運なことにstableのRustでは利用できません。
+そのため、今回と次の例を動かすために、一時的にnightlyに切り替える必要があります。</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">#![feature(core_intrinsics)]
+#![no_main]
+#![no_std]
+
+use core::intrinsics;
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    // これは未定義命令（UDF）を実行し、HardFault例外を引き起こします
+    unsafe { intrinsics::abort() }
+}
+</code></pre></pre>
+<pre><code class="language-console">(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at ../rt/src/lib.rs:7
+7       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) b DefaultExceptionHandler
+Breakpoint 1 at 0xec: file ../rt/src/lib.rs, line 95.
+
+(gdb) continue
+Continuing.
+
+Breakpoint 1, DefaultExceptionHandler ()
+    at ../rt/src/lib.rs:95
+95          loop {}
+
+(gdb) list
+90          Vector { handler: SysTick },
+91      ];
+92
+93      #[no_mangle]
+94      pub extern &quot;C&quot; fn DefaultExceptionHandler() {
+95          loop {}
+96      }
+</code></pre>
+<!-- 
+And for completeness, here's the disassembly of the optimized version of the program:
+ -->
+<p>完全を期するため、最適化されたバージョンのプログラムの逆アセンブリを見せます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -d -no-show-raw-insn -print-imm-hex
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+main:
+	trap
+	trap
+
+Reset:
+	movw	r1, #0x0
+	movw	r0, #0x0
+	movt	r1, #0x2000
+	movt	r0, #0x2000
+	subs	r1, r1, r0
+	bl	#0xd2
+	movw	r1, #0x0
+	movw	r0, #0x0
+	movt	r1, #0x2000
+	movt	r0, #0x2000
+	subs	r2, r1, r0
+	movw	r1, #0x0
+	movt	r1, #0x0
+	bl	#0x8
+	bl	#-0x3c
+	trap
+
+DefaultExceptionHandler:
+	b	#-0x4 &lt;DefaultExceptionHandler&gt;
+</code></pre>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -s -j .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 45000000 7f000000 7f000000  ... E...........
+ 0010 7f000000 7f000000 7f000000 00000000  ................
+ 0020 00000000 00000000 00000000 7f000000  ................
+ 0030 00000000 00000000 7f000000 7f000000  ................
+</code></pre>
+<!-- 
+The vector table now resembles the results of all the code snippets in this book
+  so far. To summarize:
+- In the [_Inspecting it_] section of the earlier memory chapter, we learned
+  that:
+    - The first entry in the vector table contains the initial value of the
+      stack pointer.
+    - Objdump prints in `little endian` format, so the stack starts at
+      `0x2001_0000`.
+    - The second entry points to address `0x0000_0045`, the Reset handler.
+        - The address of the Reset handler can be seen in the disassembly above,
+          being `0x44`.
+        - The first bit being set to 1 does not alter the address due to
+          alignment requirements. Instead, it causes the function to be executed
+          in _thumb mode_.
+- Afterwards, a pattern of addresses alternating between `0x7f` and `0x00` is
+  visible.
+    - Looking at the disassembly above, it is clear that `0x7f` refers to the
+      `DefaultExceptionHandler` (`0x7e` executed in thumb mode).
+    - Cross referencing the pattern to the vector table that was set up earlier
+      in this chapter (see the definition of `pub static EXCEPTIONS`) with [the
+      vector table layout for the Cortex-M], it is clear that the address of the
+      `DefaultExceptionHandler` is present each time a respective handler entry
+      is present in the table.
+    - In turn, it is also visible that the layout of the vector table data
+      structure in the Rust code is aligned with all the reserved slots in the
+      Cortex-M vector table. Hence, all reserved slots are correctly set to a
+      value of zero.
+ -->
+<p>ベクタテーブルは、この本にあるこれまでのコードスニペット全ての結果を象徴しています。まとめると</p>
+<ul>
+<li>メモリレイアウトの章の<a href="https://docs.rust-embedded.org/embedonomicon/memory-layout.html#inspecting-it"><em>調査</em></a>セクションで、次のことを学びました。
+<ul>
+<li>ベクタテーブルの1つ目のエントリは、スタックポインタの初期値です。</li>
+<li>objdumpは、<code>little endin</code>フォーマットで出力され、スタックは<code>0x2001_0000</code>から始まります。</li>
+<li><code>0x0000_0045</code>番地を指す2つ目のエントリは、リセットハンドラです。
+<ul>
+<li>リセットハンドラのアドレスは、上の逆アセンブリで<code>0x44</code>であることがわかります。</li>
+<li>最初のビットが1に設定されていますが、アライメント要件のため、アドレスは変わりません。代わりに、<em>thumbモード</em>で関数が実行されるようになります。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>その後は、<code>0x7f</code>と<code>0x00</code>が交互に現れるアドレスのパターンが見えます。
+<ul>
+<li>上の逆アセンブリを見ると、<code>0x7f</code>が<code>DefaultExceptionHandler</code>（<code>0x7e</code>がthumbモードで実行される）を参照しているのは明らかです。</li>
+<li>この章の前半で設定したベクタテーブルへのパターン（<code>pub static EXCEPTIONS</code>の定義を見て下さい）と<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table">Cortex-Mのベクタテーブルレイアウト</a>とを相互参照すると、<code>DefaultExceptionHandler</code>のアドレスがテーブル内の各ハンドラエントリにあることが明らかです。</li>
+<li>次に、Rustコードのベクタテーブルのデータ構造のレイアウトが予約済みスロットも含めて、Cortex-Mベクタテーブルにアライメントされていることも見ることができます。そのため。全ての予約済みスロットは、正しくゼロに設定されています。</li>
+</ul>
+</li>
+</ul>
+<!-- ## Overriding a handler -->
+<h2><a class="header" href="#ハンドラのオーバーライド" id="ハンドラのオーバーライド">ハンドラのオーバーライド</a></h2>
+<!-- 
+To override an exception handler, the user has to provide a function whose symbol name exactly
+matches the name we used in `EXCEPTIONS`.
+ -->
+<p>例外ハンドラをオーバーライドするため、ユーザーは<code>EXCEPTIONS</code>で使った名前と完全に一致するシンボルの関数を提供しなければなりません。</p>
+<pre><pre class="playground"><code class="language-rust">#![feature(core_intrinsics)]
+#![no_main]
+#![no_std]
+
+use core::intrinsics;
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    unsafe { intrinsics::abort() }
+}
+
+#[no_mangle]
+pub extern &quot;C&quot; fn HardFault() -&gt; ! {
+    // ここで何か面白いことをやります
+    loop {}
+}
+</code></pre></pre>
+<!-- You can test it in QEMU -->
+<p>QEMUでテストできます。</p>
+<pre><code class="language-console">(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at /home/japaric/rust/embedonomicon/ci/exceptions/rt/src/lib.rs:7
+7       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) b HardFault
+Breakpoint 1 at 0x44: file src/main.rs, line 18.
+
+(gdb) continue
+Continuing.
+
+Breakpoint 1, HardFault () at src/main.rs:18
+18          loop {}
+
+(gdb) list
+13      }
+14
+15      #[no_mangle]
+16      pub extern &quot;C&quot; fn HardFault() -&gt; ! {
+17          // ここで何か面白いことをして下さい
+18          loop {}
+19      }
+</code></pre>
+<!-- 
+The program now executes the user defined `HardFault` function instead of the
+`DefaultExceptionHandler` in the `rt` crate.
+ -->
+<p>今回は、プログラムは、<code>rt</code>クレートの<code>DefaultExceptionHandler</code>ではなく、ユーザーが定義した<code>HardFault</code>関数を実行します。</p>
+<!-- 
+Like our first attempt at a `main` interface, this first implementation has the problem of having no
+type safety. It's also easy to mistype the name of the exception, but that doesn't produce an error
+or warning. Instead the user defined handler is simply ignored. Those problems can be fixed using a
+macro like the [`exception!`] macro defined in `cortex-m-rt` v0.5.x or the
+[`exception`] attribute in `cortex-m-rt` v0.6.x.
+ -->
+<p><code>main</code>インタフェースでの最初の試みのように、最初の実装は型安全でないという問題があります。
+簡単に、例外の名前を間違ってしまいますが、エラーも警告も発しません。
+代わりに、ユーザー定義のハンドラは単に無視されます。
+これらの問題は、<code>cortex-m-rt</code> v0.5.xの<a href="https://github.com/japaric/cortex-m-rt/blob/v0.5.1/src/lib.rs#L792"><code>exception!</code></a>マクロか、<code>cortex-m-rt</code> v0.6.x.の<a href="https://github.com/rust-embedded/cortex-m-rt/blob/v0.6.3/macros/src/lib.rs#L254"><code>exception</code></a>アトリビュートにより解決できます。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="main.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="asm.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="main.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="asm.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

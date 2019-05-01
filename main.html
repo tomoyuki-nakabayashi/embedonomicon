@@ -1,0 +1,651 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>mainインタフェース - The Embedonomicon</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">序文</a></li><li class="chapter-item expanded "><a href="smallest-no-std.html"><strong aria-hidden="true">1.</strong> 最小限の#![no_std]プログラム</a></li><li class="chapter-item expanded "><a href="memory-layout.html"><strong aria-hidden="true">2.</strong> メモリレイアウト</a></li><li class="chapter-item expanded "><a href="main.html" class="active"><strong aria-hidden="true">3.</strong> mainインタフェース</a></li><li class="chapter-item expanded "><a href="exceptions.html"><strong aria-hidden="true">4.</strong> 例外処理</a></li><li class="chapter-item expanded "><a href="asm.html"><strong aria-hidden="true">5.</strong> stableでのアセンブリ</a></li><li class="chapter-item expanded "><a href="logging.html"><strong aria-hidden="true">6.</strong> シンボルでのロギング</a></li><li class="chapter-item expanded "><a href="singleton.html"><strong aria-hidden="true">7.</strong> グローバルシングルトン</a></li><li class="chapter-item expanded "><a href="dma.html"><strong aria-hidden="true">8.</strong> DMA</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="compiler-support.html">コンパイラサポートに関する覚書</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Embedonomicon</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <!-- # A `main` interface -->
+<h1><a class="header" href="#mainインタフェース" id="mainインタフェース"><code>main</code>インタフェース</a></h1>
+<!-- 
+We have a minimal working program now, but we need to package it in a way that the end user can build
+safe programs on top of it. In this section, we'll implement a `main` interface like the one standard
+Rust programs use.
+ -->
+<p>現在、最小限の動くプログラムがあります。しかし、エンドユーザーが安全なプログラムをビルドできるようにパッケージを作る必要があります。
+このセクションでは、標準のRustプログラムが使うような<code>main</code>インタフェースを実装します。</p>
+<!-- First, we'll convert our binary crate into a library crate: -->
+<p>まず最初に、バイナリクレートをライブラリクレートに変換します。</p>
+<pre><code class="language-console">$ mv src/main.rs src/lib.rs
+</code></pre>
+<!-- And then rename it to `rt` which stands for "runtime". -->
+<p>そして、クレートを「runtime」を意味する<code>rt</code>という名前に変えます。</p>
+<pre><code class="language-console">$ sed -i s/app/rt/ Cargo.toml
+
+$ head -n4 Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[package]
+edition = &quot;2018&quot;
+name = &quot;rt&quot; # &lt;-
+version = &quot;0.1.0&quot;
+</code></pre>
+<!-- The first change is to have the reset handler call an external `main` function: -->
+<p>最初の変更は、リセットハンドから外部の<code>main</code>関数を呼び出すようにすることです。</p>
+<pre><code class="language-console">$ head -n13 src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+
+use core::panic::PanicInfo;
+
+// 変更しました！
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    extern &quot;Rust&quot; {
+        fn main() -&gt; !;
+    }
+
+    main()
+}
+</code></pre></pre>
+<!-- We also drop the `#![no_main]` attribute has it has no effect on library crates. -->
+<p><code>#![no_main]</code>アトリビュートも取り除いています。このアトリビュートはライブラリクレートには効果がありません。</p>
+<!-- 
+> There's an orthogonal question that arises at this stage: Should the `rt`
+> library provide a standard panicking behavior, or should it *not* provide a
+> `#[panic_handler]` function and leave the end user choose the panicking
+> behavior? This document won't delve into that question and for simplicity will
+> leave the dummy `#[panic_handler]` function in the `rt` crate. However, we
+> wanted to inform the reader that there are other options.
+ -->
+<blockquote>
+<p>ここで、直交する疑問が湧きます。<code>rt</code>ライブラリは標準のパニック動作を提供すべきでしょうか？それとも、
+<code>#[panic_handler]</code>関数を提供せずに、ユーザーがパニック動作を選べるように残しておくべきでしょうか？
+本ドキュメントでは、この疑問を深堀りせず、単純化のために<code>rt</code>クレートにダミーの<code>#[panic_handler]</code>関数を残しておきます。
+しかしながら、他の選択肢があることを読者に伝えておきます。</p>
+</blockquote>
+<!-- 
+The second change involves providing the linker script we wrote before to the application crate. You
+see the linker will search for linker scripts in the library search path (`-L`) and in the directory
+from which it's invoked. The application crate shouldn't need to carry around a copy of `link.x` so
+we'll have the `rt` crate put the linker script in the library search path using a [build script].
+ -->
+<p>2つ目の変更は、これまでに書いたリンカスクリプトを、アプリケーションクレートに提供することです。
+リンカがライブラリサーチパス（<code>-L</code>）とリンカを呼び出したディレクトリから、リンカスクリプトを探すことはご存知でしょう。
+アプリケーションクレートが<code>link.x</code>のコピーを持たなくて済むように、<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">ビルドスクリプト</a>を使って<code>rt</code>クレートが、
+ライブラリサーチパスにリンカスクリプトを置くようにします。</p>
+<!-- [build script]: https://doc.rust-lang.org/cargo/reference/build-scripts.html -->
+<pre><code class="language-console">$ # `rt`のルートディレクトリに、以下の内容でbuild.rsを作ります
+$ cat build.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">use std::{env, error::Error, fs::File, io::Write, path::PathBuf};
+
+fn main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {
+    // このクレート用のビルドディレクトリです
+    let out_dir = PathBuf::from(env::var_os(&quot;OUT_DIR&quot;).unwrap());
+
+    // ライブラリサーチパスを追加します
+    println!(&quot;cargo:rustc-link-search={}&quot;, out_dir.display());
+
+    // `link.x`をビルドディレクトリに置きます
+    File::create(out_dir.join(&quot;link.x&quot;))?.write_all(include_bytes!(&quot;link.x&quot;))?;
+
+    Ok(())
+}
+</code></pre></pre>
+<!-- 
+Now the user can write an application that exposes the `main` symbol and link it to the `rt` crate.
+The `rt` will take care of giving the program the right memory layout.
+ -->
+<p>これで、ユーザーは<code>main</code>シンボルを公開するアプリケーションを書くことができ、<code>rt</code>クレートとリンクすることができます。
+<code>rt</code>は、アプリケーションプログラムに正しいメモリレイアウトを提供します。</p>
+<pre><code class="language-console">$ cd ..
+
+$ cargo new --edition 2018 --bin app
+
+$ cd app
+
+$ # Cargo.tomlを`rt`クレートとの依存関係を持つように修正します
+$ tail -n2 Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[dependencies]
+rt = { path = &quot;../rt&quot; }
+</code></pre>
+<pre><code class="language-console">$ # デフォルトターゲットとリンカ呼び出しを微調整した設定ファイルをコピーします
+$ cp -r ../rt/.cargo .
+
+$ # `main.rs`の内容を下記の通り変更します
+$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+extern crate rt;
+
+#[no_mangle]
+pub fn main() -&gt; ! {
+    let _x = 42;
+
+    loop {}
+}
+</code></pre></pre>
+<!-- The disassembly will be similar but will now include the user `main` function. -->
+<p>逆アセンブリの結果は似ていますが、ここではユーザーの<code>main</code>関数を含んでいます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -d -no-show-raw-insn
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+main:
+	sub	sp, #4
+	movs	r0, #42
+	str	r0, [sp]
+	b	#-2 &lt;main+0x8&gt;
+	b	#-4 &lt;main+0x8&gt;
+
+Reset:
+	bl	#-14
+	trap
+</code></pre>
+<!-- ## Making it type safe -->
+<h2><a class="header" href="#型安全にする" id="型安全にする">型安全にする</a></h2>
+<!-- 
+The `main` interface works, but it's easy to get it wrong: For example, the user could write `main`
+as a non-divergent function, and they would get no compile time error and undefined behavior (the
+compiler will misoptimize the program).
+ -->
+<p><code>main</code>インタフェースは機能しますが、簡単に誤った使い方ができてしまいます。
+例えば、ユーザーは発散しない関数として<code>main</code>関数を書くかもしれません。その結果、コンパイルエラーは発生しませんが、
+未定義動作になるでしょう（コンパイラはプログラムに誤った最適化を行います）。</p>
+<!-- 
+We can add type safety by exposing a macro to the user instead of the symbol interface. In the
+`rt` crate, we can write this macro:
+ -->
+<p>シンボルインタフェースではなくマクロをユーザーに公開することで、型安全性を追加することができます。
+<code>rt</code>クレートに、次のマクロを書くことができます。</p>
+<pre><code class="language-console">$ tail -n12 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[macro_export]
+macro_rules! entry {
+    ($path:path) =&gt; {
+        #[export_name = &quot;main&quot;]
+        pub unsafe fn __main() -&gt; ! {
+            // 与えられたパスの型チェック
+            let f: fn() -&gt; ! = $path;
+
+            f()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- Then the application writers can invoke it like this: -->
+<p>そして、アプリケーション作成者は、このマクロを次のように呼び出します。</p>
+<pre><code class="language-console">$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let _x = 42;
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+Now the author will get an error if they change the signature of `main` to be
+non divergent function, e.g. `fn()`.
+ -->
+<p>今度は、アプリケーション作成者は、<code>main</code>のシグネチャを<code>fn()</code>のような発散しない関数に変更すると、
+エラーに遭遇するでしょう。</p>
+<!-- ## Life before main -->
+<h2><a class="header" href="#main前の生活" id="main前の生活">main前の生活</a></h2>
+<!-- 
+`rt` is looking good but it's not feature complete! Applications written against it can't use
+`static` variables or string literals because `rt`'s linker script doesn't define the standard
+`.bss`, `.data` and `.rodata` sections. Let's fix that!
+ -->
+<p><code>rt</code>は良さそうに見えますが、まだ機能が完全ではありません！rtクレートに対して書かれたアプリケーションは、
+<code>static</code>変数や文字列リテラルを使うことができません。<code>rt</code>のリンカスクリプトが、
+標準の<code>.bss</code>、<code>.data</code>、<code>.rodata</code>セクションを定義していないからです。これを直していきましょう！</p>
+<!-- The first step is to define these sections in the linker script: -->
+<p>最初のステップはリンカスクリプトに下記のセクションを定義することです。</p>
+<pre><code class="language-console">$ # ファイルの一部のみを見せます
+$ sed -n 25,46p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /* 追加! */
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+
+  .bss :
+  {
+    *(.bss .bss.*);
+  } &gt; RAM
+
+  .data :
+  {
+    *(.data .data.*);
+  } &gt; RAM
+
+  /DISCARD/ :
+</code></pre>
+<!-- 
+They just re-export the input sections and specify in which memory region each output section will
+go.
+ -->
+<p>これらは入力セクションを単に再度エスクポートし、各メモリ領域のどこに出力セクションが置かれるかを指定しているだけです。</p>
+<!-- With these changes, the following program will compile: -->
+<p>これらの変更で、下記のプログラムがコンパイル可能になります。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+use rt::entry;
+
+entry!(main);
+
+static RODATA: &amp;[u8] = b&quot;Hello, world!&quot;;
+static mut BSS: u8 = 0;
+static mut DATA: u16 = 1;
+
+fn main() -&gt; ! {
+    let _x = RODATA;
+    let _y = unsafe { &amp;BSS };
+    let _z = unsafe { &amp;DATA };
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+However if you run this program on real hardware and debug it, you'll observe that the `static`
+variables `BSS` and `DATA` don't have the values `0` and `1` by the time `main` has been reached.
+Instead, these variables will have junk values. The problem is that the contents of RAM are
+random after powering up the device. You won't be able to observe this effect if you run the
+program in QEMU.
+ -->
+<p>しかし、実際のハードウェア上でプログラムを実行し、デバッグすると、<code>main</code>に到達した時点で、
+<code>static</code>変数の<code>BSS</code>と<code>DATA</code>が、<code>0</code>と<code>1</code>になっていないことに気づくでしょう。
+代わりに、これらの変数はゴミデータを持っています。この問題は、デバイスの電源投入時、RAMがランダムなデータを持つためです。
+プログラムをQEMUで実行すると、この現象は観測できません。</p>
+<!-- 
+As things stand if your program reads any `static` variable before performing a write to it then
+your program has undefined behavior. Let's fix that by initializing all `static` variables before
+calling `main`.
+ -->
+<p>実は、プログラムが<code>static</code>変数に書き込みを行う前に、その変数を読むことは、未定義動作です。
+<code>main</code>を呼ぶ前に、全ての<code>static</code>変数を初期化するように修正しましょう。</p>
+<!-- We'll need to tweak the linker script a bit more to do the RAM initialization: -->
+<p>RAM初期化のために、リンカスクリプトをさらに微修正しなければなりません。</p>
+<pre><code class="language-console">$ # ファイルの一部のみを見せます
+$ sed -n 25,52p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /* 変更! */
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+
+  .bss :
+  {
+    _sbss = .;
+    *(.bss .bss.*);
+    _ebss = .;
+  } &gt; RAM
+
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+  {
+    _sdata = .;
+    *(.data .data.*);
+    _edata = .;
+  } &gt; RAM
+
+  _sidata = LOADADDR(.data);
+
+  /DISCARD/ :
+</code></pre>
+<!-- Let's go into the details of these changes: -->
+<p>変更内容を詳細に見ていきましょう。</p>
+<pre><code class="language-text">    _sbss = .;
+</code></pre>
+<pre><code class="language-text">    _ebss = .;
+</code></pre>
+<pre><code class="language-text">    _sdata = .;
+</code></pre>
+<pre><code class="language-text">    _edata = .;
+</code></pre>
+<!-- 
+We associate symbols to the start and end addresses of the `.bss` and `.data` sections, which we'll
+later use from Rust code.
+ -->
+<p>シンボルを<code>.bss</code>セクションと<code>.data</code>セクションの開始アドレスと終了アドレスに関連付けます。
+これらは後ほど、Rustコードで使用します。</p>
+<pre><code class="language-text">  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+</code></pre>
+<!-- 
+We set the Load Memory Address (LMA) of the `.data` section to the end of the `.rodata`
+section. The `.data` contains `static` variables with a non-zero initial value; the Virtual Memory
+Address (VMA) of the `.data` section is somewhere in RAM -- this is where the `static` variables are
+located. The initial values of those `static` variables, however, must be allocated in non volatile
+memory (Flash); the LMA is where in Flash those initial values are stored.
+ -->
+<p><code>.rodata</code>セクションの終わりに、<code>.data</code>セクションのロードメモリアドレス（LMA; Load Memory Address）を設定します。
+<code>.data</code>はゼロでない初期値をもった<code>static</code>変数が含まれています。<code>.data</code>セクションの仮想メモリアドレス（VMA; Virtual Memory Address）は、
+RAMのどこかにあります。これは、<code>static</code>変数が配置されている場所です。
+しかし、これらの<code>static</code>変数の初期値は、不揮発性メモリ（Flash）に割り当てられなければなりません。
+LMAは、これらの初期値が格納されるFlashの場所を示しています。</p>
+<pre><code class="language-text">  _sidata = LOADADDR(.data);
+</code></pre>
+<!-- Finally, we associate a symbol to the LMA of `.data`. -->
+<p>最後に、<code>.data</code>セクションのLMAをシンボルに関連付けます。</p>
+<!-- 
+On the Rust side, we zero the `.bss` section and initialize the `.data` section. We can reference
+the symbols we created in the linker script from the Rust code. The *addresses*[^1] of these symbols are
+the boundaries of the `.bss` and `.data` sections.
+ -->
+<p>Rust側では、<code>.bss</code>セクションをゼロクリアし、<code>.data</code>セクションを初期化します。Rustコードからリンカスクリプトで作成したシンボルを参照できます。
+これらのシンボルの<em>アドレス</em><sup class="footnote-reference"><a href="#1">1</a></sup>は、<code>.bss</code>セクションと<code>.data</code>セクションの境界になります。</p>
+<!-- The updated reset handler is shown below: -->
+<p>リセットハンドラを、次のように更新します。</p>
+<pre><code class="language-console">$ head -n32 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+
+use core::panic::PanicInfo;
+use core::ptr;
+
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    // 追加!
+    // RAMの初期化
+    extern &quot;C&quot; {
+        static mut _sbss: u8;
+        static mut _ebss: u8;
+
+        static mut _sdata: u8;
+        static mut _edata: u8;
+        static _sidata: u8;
+    }
+
+    let count = &amp;_ebss as *const u8 as usize - &amp;_sbss as *const u8 as usize;
+    ptr::write_bytes(&amp;mut _sbss as *mut u8, 0, count);
+
+    let count = &amp;_edata as *const u8 as usize - &amp;_sdata as *const u8 as usize;
+    ptr::copy_nonoverlapping(&amp;_sidata as *const u8, &amp;mut _sdata as *mut u8, count);
+
+    // ユーザーエントリポイントを呼び出します
+    extern &quot;Rust&quot; {
+        fn main() -&gt; !;
+    }
+
+    main()
+}
+</code></pre></pre>
+<!-- 
+Now end users can directly and indirectly make use of `static` variables without running into
+undefined behavior!
+ -->
+<p>これで、未定義動作なしに、エンドユーザーは直接的にも間接的にも<code>static</code>変数を使うことができます。</p>
+<!-- 
+> In the code above we performed the memory initialization in a bytewise fashion. It's possible to
+> force the `.bss` and `.data` sections to be aligned to, say, 4 bytes. This fact can then be used
+> in the Rust code to perform the initialization wordwise while omitting alignment checks. If you
+> are interested in learning how this can be achieved check the [`cortex-m-rt`] crate.
+ -->
+<blockquote>
+<p>上記のコードでは、メモリ初期化をバイト単位の方法で初期化しています。<code>.bss</code>セクションと<code>.data</code>セクションを例えば4バイトでアライメントすることが可能です。
+このことは、アライメントチェックなしにワード単位の初期化を行うために、Rustコードで使うことができます。
+どのようにやるのか興味がある場合、<a href="https://github.com/japaric/cortex-m-rt/tree/v0.5.1"><code>cortex-m-rt</code></a>クレートをチェックして下さい。</p>
+</blockquote>
+<!-- 
+[^1]: The fact that the addresses of the linker script symbols must be used here can be confusing and
+unintuitive. An elaborate explanation for this oddity can be found [here](https://stackoverflow.com/a/40392131).
+ -->
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>ここで使っているリンカスクリプトシンボルのアドレスを使用する必要があるということは、混乱を招きやすく、直感的ではありません。
+この奇妙さについての詳細な説明は、<a href="https://stackoverflow.com/a/40392131">ここ</a>にあります。</p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="memory-layout.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="exceptions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="memory-layout.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="exceptions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

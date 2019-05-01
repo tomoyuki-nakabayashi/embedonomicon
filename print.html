@@ -1,0 +1,4779 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>The Embedonomicon</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">序文</a></li><li class="chapter-item expanded "><a href="smallest-no-std.html"><strong aria-hidden="true">1.</strong> 最小限の#![no_std]プログラム</a></li><li class="chapter-item expanded "><a href="memory-layout.html"><strong aria-hidden="true">2.</strong> メモリレイアウト</a></li><li class="chapter-item expanded "><a href="main.html"><strong aria-hidden="true">3.</strong> mainインタフェース</a></li><li class="chapter-item expanded "><a href="exceptions.html"><strong aria-hidden="true">4.</strong> 例外処理</a></li><li class="chapter-item expanded "><a href="asm.html"><strong aria-hidden="true">5.</strong> stableでのアセンブリ</a></li><li class="chapter-item expanded "><a href="logging.html"><strong aria-hidden="true">6.</strong> シンボルでのロギング</a></li><li class="chapter-item expanded "><a href="singleton.html"><strong aria-hidden="true">7.</strong> グローバルシングルトン</a></li><li class="chapter-item expanded "><a href="dma.html"><strong aria-hidden="true">8.</strong> DMA</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="compiler-support.html">コンパイラサポートに関する覚書</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Embedonomicon</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#the-embedonomicon" id="the-embedonomicon">The embedonomicon</a></h1>
+<!-- 
+The embedonomicon walks you through the process of creating a `#![no_std]` application from scratch
+and through the iterative process of building architecture-specific functionality for Cortex-M
+microcontrollers.
+ -->
+<p>embedonomiconは、<code>#![no_std]</code>アプリケーションをスクラッチから作成するプロセスと、
+Cortex-Mマイクロコントローラ向けにアーキテクチャ固有の機能を作るイテレーティブなプロセスを案内します。</p>
+<!-- ## Objectives -->
+<h2><a class="header" href="#目的" id="目的">目的</a></h2>
+<!-- By reading this book you will learn -->
+<p>本書を読むことで、次のことを学べます。</p>
+<!-- 
+- How to build a `#![no_std]` application. This is much more complex than building a `#![no_std]`
+  library because the target system may not be running an OS (or you could be aiming to build an
+  OS!) and the program could be the only process running in the target (or the first one).
+  In that case, the program may need to be customized for the target system.
+ -->
+<ul>
+<li><code>#[no_std]</code>アプリケーションのビルド方法。これは、<code>#![no_std]</code>ライブラリをビルドするより、はるかに複雑です。
+なぜなら、ターゲットシステムではOSが動いていないからです（もしくは、OSを作ろうとしているかもしれません！）。
+そして、プログラムは、ターゲット上で動作する唯一（もしくは、最初の1つ）のプロセスになります。
+この場合、プログラムは、ターゲットシステム向けにカスタマイズが必要です。</li>
+</ul>
+<!-- 
+- Tricks to finely control the memory layout of a Rust program. You'll learn about linkers, linker
+  scripts and about the Rust features that let you control a bit of the ABI of Rust programs.
+ -->
+<ul>
+<li>Rustプログラムのメモリレイアウトを細かく制御するためのコツ。
+リンカ、リンカスクリプト、および、RustプログラムのABIの一部を制御できるようにするRustの機能について学びます。</li>
+</ul>
+<!-- 
+- A trick to implement default functionality that can be statically overridden (no runtime cost).
+ -->
+<ul>
+<li>（実行時にコストがかからない）静的オーバーライド可能なデフォルト機能を実装する秘訣。</li>
+</ul>
+<!-- ## Target audience -->
+<h2><a class="header" href="#対象読者" id="対象読者">対象読者</a></h2>
+<!-- This book mainly targets to two audiences: -->
+<p>本書は主に、2つの読者を対象としています。</p>
+<!-- 
+- People that wish to bootstrap bare metal support for an architecture that the ecosystem doesn't
+  yet support (e.g. Cortex-R as of Rust 1.28), or for an architecture that Rust just gained support
+  for (e.g. maybe Xtensa some time in the future).
+ -->
+<ul>
+<li>エコシステムがまだサポートしていないアーキテクチャ（例えば、Rust 1.28におけるCortex-R）や、
+Rustがサポートを始めたばかりのアーキテクチャ（例えば、Extensaは将来サポートされるかもしれません）に対して、
+ベアメタルでのブートを提供したい人々</li>
+</ul>
+<!-- 
+- People that are curious about the unusual implementation of *runtime* crates like [`cortex-m-rt`],
+  [`msp430-rt`] and [`riscv-rt`].
+ -->
+<ul>
+<li><a href="https://crates.io/crates/cortex-m-rt"><code>cortex-m-rt</code></a>、<a href="https://crates.io/crates/msp430-rt"><code>msp430-rt</code></a>、<a href="https://crates.io/crates/riscv-rt"><code>riscv-rt</code></a>のような<em>ランタイム</em>クレートの珍しい実装方法について興味がある人々。</li>
+</ul>
+<!-- ## Requirements -->
+<h2><a class="header" href="#要求事項" id="要求事項">要求事項</a></h2>
+<!-- 
+This book is self contained. The reader doesn't need to be familiar with the
+Cortex-M architecture, nor is access to a Cortex-M microcontroller needed -- all
+the examples included in this book can be tested in QEMU. You will, however,
+need to install the following tools to run and inspect the examples in this
+book:
+ -->
+<p>本書は、自己完結しています。読者は、Cortex-Mアーキテクチャについて詳しかったり、Cortex-Mマイクロコントローラを持っている必要はありません。
+本書内の例は、全てQEMU上でテストできます。しかしながら、本書内の例を実行したり調査するため、次のツールをインストールする必要があります。</p>
+<!-- 
+- All the code in this book uses the 2018 edition. If you are not familiar with
+  the 2018 features and idioms check the [`edition guide`].
+ -->
+<ul>
+<li>本書内の全コードは、2018エディションを使います。2018エディションの機能やイディオムを知らない場合は、
+<a href="https://rust-lang-nursery.github.io/edition-guide/"><code>エディションガイド</code></a>を確認して下さい。</li>
+</ul>
+<!-- - Rust 1.31 or a newer toolchain PLUS ARM Cortex-M compilation support. -->
+<ul>
+<li>Rust 1.31以上のツールチェインとARM Cortex-Mコンパイルのサポート</li>
+</ul>
+<!-- - [`cargo-binutils`](https://github.com/japaric/cargo-binutils). v0.1.4 or newer. -->
+<ul>
+<li>
+<p><a href="https://github.com/japaric/cargo-binutils"><code>cargo-binutils</code></a>。v0.1.4以上。</p>
+</li>
+<li>
+<p><a href="https://crates.io/crates/cargo-edit"><code>cargo-edit</code></a>.</p>
+</li>
+</ul>
+<!-- 
+- QEMU with support for ARM emulation. The `qemu-system-arm` program must be
+  installed on your computer.
+ -->
+<ul>
+<li>ARMエミュレーションをサポートしているQEMU。<code>qemu-system-arm</code>がインストールされていなければなりません。</li>
+</ul>
+<!-- - GDB with ARM support. -->
+<ul>
+<li>ARMサポートのGDB。</li>
+</ul>
+<!-- [`edition guide`]: https://rust-lang-nursery.github.io/edition-guide/ -->
+<!-- ### Example setup -->
+<h3><a class="header" href="#設定例" id="設定例">設定例</a></h3>
+<!-- Instructions common to all OSes -->
+<p>全てのOSに共通する手順です。</p>
+<pre><code class="language-console">$ # Rustツールチェイン
+$ # 1からやる場合、https://rustup.rs/からrustupを入手して下さい
+$ rustup default stable
+
+$ # ツールチェインは、これより新しくなければなりません
+$ rustc -V
+rustc 1.31.0 (abe02cefd 2018-12-04)
+
+$ rustup target add thumbv7m-none-eabi
+
+$ # cargo-binutils
+$ cargo install cargo-binutils
+
+$ rustup component add llvm-tools-preview
+
+</code></pre>
+<h4><a class="header" href="#macos" id="macos">macOS</a></h4>
+<pre><code class="language-console">$ # arm-none-eabi-gdb
+$ # 最初に`brew tap Caskroom/tap`を実行しなければならないかもしれません
+$ brew cask install gcc-arm-embedded
+
+$ # QEMU
+$ brew install qemu
+</code></pre>
+<h4><a class="header" href="#ubuntu-1604" id="ubuntu-1604">Ubuntu 16.04</a></h4>
+<pre><code class="language-console">$ # arm-none-eabi-gdb
+$ sudo apt install gdb-arm-none-eabi
+
+$ # QEMU
+$ sudo apt install qemu-system-arm
+</code></pre>
+<h4><a class="header" href="#ubuntu-1804-or-debian" id="ubuntu-1804-or-debian">Ubuntu 18.04 or Debian</a></h4>
+<pre><code class="language-console">$ # gdb-multiarch。gdbを起動する時は、`gdb-multiarch`を使って下さい
+$ sudo apt install gdb-multiarch
+
+$ # QEMU
+$ sudo apt install qemu-system-arm
+</code></pre>
+<h4><a class="header" href="#windows" id="windows">Windows</a></h4>
+<!-- 
+- [arm-none-eabi-gdb](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads).
+  The GNU Arm Embedded Toolchain includes GDB.
+ -->
+<ul>
+<li>
+<p><a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">arm-none-eabi-gdb</a>。
+GDBを含むGNU Arm Embeddedツールチェイン</p>
+</li>
+<li>
+<p><a href="https://www.qemu.org/download/#windows">QEMU</a></p>
+</li>
+</ul>
+<!-- ## Installing a toolchain bundle from ARM (optional step) (tested on Ubuntu 18.04) -->
+<h2><a class="header" href="#オプションのステップubuntu-1804でテスト済みarmからツールチェイン一式をインストール" id="オプションのステップubuntu-1804でテスト済みarmからツールチェイン一式をインストール">（オプションのステップ）（Ubuntu 18.04でテスト済み）ARMからツールチェイン一式をインストール</a></h2>
+<!-- 
+- With the late 2018 switch from
+[GCC's linker to LLD](https://rust-embedded.github.io/blog/2018-08-2x-psa-cortex-m-breakage/) for Cortex-M 
+microcontrollers, [gcc-arm-none-eabi][1] is no longer 
+required.  But for those wishing to use the toolchain 
+anyway, install from [here][1] and follow the steps outlined below:
+ -->
+<ul>
+<li>最近の2018では、Cortex-Mマイクロコントローラ向けのリンカが、<a href="https://rust-embedded.github.io/blog/2018-08-2x-psa-cortex-m-breakage/">GCCのリンカからLLD</a>に切り替わりました。
+<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">gcc-arm-none-eabi</a>はもはや必要ありません。しかし、このツールチェインを使いたい人は、<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">ここ</a>から下記の手順でインストールできます。</li>
+</ul>
+<pre><code class="language-console">$ tar xvjf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
+$ mv gcc-arm-none-eabi-&lt;version_downloaded&gt; &lt;your_desired_path&gt; # オプション
+$ export PATH=${PATH}:&lt;path_to_arm_none_eabi_folder&gt;/bin # 設定を永続的にするため、この行を.bashrcに追加します。
+</code></pre>
+<!-- # The smallest `#![no_std]` program -->
+<h1><a class="header" href="#最小限のno_stdプログラム" id="最小限のno_stdプログラム">最小限の<code>#![no_std]</code>プログラム</a></h1>
+<!-- In this section we'll write the smallest `#![no_std]` program that *compiles*. -->
+<p>このセクションでは、コンパイルできる最小限の<code>#![no_std]</code>プログラムを書きます。</p>
+<!-- ## What does `#![no_std]` mean? -->
+<h2><a class="header" href="#no_stdはどういう意味でしょうか" id="no_stdはどういう意味でしょうか"><code>#![no_std]</code>はどういう意味でしょうか？</a></h2>
+<!-- 
+`#![no_std]` is a crate level attribute that indicates that the crate will link to the [`core`] crate
+instead of the [`std`] crate, but what does this mean for applications?
+ -->
+<p><code>#![no_std]</code>は、クレートレベルのアトリビュートです。これは、このクレートに<a href="https://doc.rust-lang.org/std/"><code>std</code></a>クレートではなく<a href="https://doc.rust-lang.org/core/"><code>core</code></a>クレートをリンクすることを示します。
+しかし、アプリケーションにとって、これは何を意味するのでしょうか？</p>
+<!-- 
+The `std` crate is Rust's standard library. It contains functionality that assumes that the program
+will run on an operating system rather than [*directly on the metal*]. `std` also assumes that the
+operating system is a general purpose operating system, like the ones one would find in servers and
+desktops. For this reason, `std` provides a standard API over functionality one usually finds in
+such operating systems: Threads, files, sockets, a filesystem, processes, etc.
+ -->
+<p><code>std</code>クレートはRustの標準ライブラリです。
+標準ライブラリは、プログラムがベアメタルではなく、オペレーティングシステム上で動作することを仮定した機能を、含んでいます。
+<code>std</code>は、オペレーティングシステムが、サーバやデスクトップで使うような汎用オペレーティングシステムであることも仮定します。
+この理由から、<code>std</code>は、スレッド、ファイル、ソケット、ファイルシステム、プロセス、など汎用オペレーティングシステムにある機能に対して標準APIを提供します。</p>
+<!-- [*directly on the metal*]: https://en.wikipedia.org/wiki/Bare_machine -->
+<!-- 
+On the other hand, the `core` crate is a subset of the `std` crate that makes zero assumptions about
+the system the program will run on. As such, it provides APIs for language primitives like floats,
+strings and slices, as well as APIs that expose processor features like atomic operations and SIMD
+instructions. However it lacks APIs for anything that involves heap memory allocations and I/O.
+ -->
+<p>その一方、<code>core</code>クレートは、<code>std</code>クレートのサブセットで、プログラムが動作するシステムについて、一切の仮定を置きません。
+そのため、<code>core</code>クレートは、浮動小数点や文字列、スライスのような言語のプリミティブと、
+アトミック操作やSIMD命令のようなプロセッサ機能を利用するためのAPIを提供します。
+しかし、<code>core</code>クレートは、ヒープメモリアロケーションやI/Oといったものに対するAPIがありません。</p>
+<!-- 
+For an application, `std` does more than just providing a way to access OS abstractions. `std` also
+takes care of, among other things, setting up stack overflow protection, processing command line
+arguments and spawning the main thread before a program's `main` function is invoked. A `#![no_std]`
+application lacks all that standard runtime, so it must initialize its own runtime, if any is
+required.
+ -->
+<p>アプリケーションに対しては、<code>std</code>は単に抽象化されたOS機能へのアクセス方法を提供するだけに留まりません。
+<code>std</code>は、とりわけ、スタックオーバーフロープロテクションの設定、コマンドライン引数の処理、
+プログラムの<code>main</code>関数が呼び出される前のメインスレッド生成、の面倒をみます。
+<code>#![no_std]</code>アプリケーションは、これらの標準的なランタイムを持ちません。そのため、必要に応じて、自身のランタイムを初期化しなければなりません。</p>
+<!-- 
+Because of these properties, a `#![no_std]` application can be the first and / or the only code that
+runs on a system. It can be many things that a standard Rust application can never be, for example:
+- The kernel of an OS.
+- Firmware.
+- A bootloader.
+ -->
+<p>これらの性質から、<code>#![no_std]</code>アプリケーションは、システム上で動作する最初の / 唯一のコードになれます。
+標準のRustアプリケーションでは決して作ることができない、次のようなプログラムを書くことができます。</p>
+<ul>
+<li>OSのカーネル</li>
+<li>ファームウェア</li>
+<li>ブートローダ</li>
+</ul>
+<!-- ## The code -->
+<h2><a class="header" href="#コード" id="コード">コード</a></h2>
+<!-- With that out of the way, we can move on to the smallest `#![no_std]` program that compiles: -->
+<p>この普通でない方法で、コンパイル可能な最小限の<code>#![no_std]</code>プログラムに取り掛かることができます。</p>
+<pre><code class="language-console">$ cargo new --edition 2018 --bin app
+
+$ cd app
+</code></pre>
+<pre><code class="language-console">$ # main.rsを下記の内容に修正して下さい
+$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_main]
+#![no_std]
+
+<span class="boring">fn main() {
+</span>use core::panic::PanicInfo;
+
+#[panic_handler]
+fn panic(_panic: &amp;PanicInfo&lt;'_&gt;) -&gt; ! {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- This program contains some things that you won't see in standard Rust programs: -->
+<p>このプログラムは、標準的なRustプログラムでは目にすることがない内容を含んでいます。</p>
+<!-- The `#![no_std]` attribute which we have already extensively covered. -->
+<p><code>#![no_std]</code>アトリビュートについては、既に十分に説明しました。</p>
+<!-- 
+The `#![no_main]` attribute which means that the program won't use the standard `main` function as
+its entry point. At the time of writing, Rust's `main` interface makes some assumptions about the
+environment the program executes in: For example, it assumes the existence of command line
+arguments, so in general, it's not appropriate for `#![no_std]` programs.
+ -->
+<p><code>#![no_main]</code>アトリビュートは、エントリポイントとして標準の<code>main</code>関数を使わないプログラムであることを意味します。
+本書を書いている時点では、Rustの<code>main</code>インタフェースは、プログラムを実行する環境について、いくつかの仮定を置いています。
+例えば、コマンドライン引数が存在していることですが、これは一般的に<code>#![no_std]</code>プログラムにはふさわしくありません。</p>
+<!-- 
+The `#[panic_handler]` attribute. The function marked with this attribute defines the behavior
+of panics, both library level panics (`core::panic!`) and language level panics (out of bounds
+indexing).
+ -->
+<p><code>#[panic_handler]</code>アトリビュートでマーキングされた関数は、パニック発生時の動作を定義します。
+ライブラリレベルのパニック（<code>core::panic!</code>）と言語レベルのパニック（範囲外のインデックスアクセス）両方が対象です。</p>
+<!-- This program doesn't produce anything useful. In fact, it will produce an empty binary. -->
+<p>このプログラムは、役に立つものではありません。実際、空のバイナリを生成します。</p>
+<pre><code class="language-console">$ $ `size target/thumbv7m-none-eabi/debug/app`と同じです
+$ cargo size --target thumbv7m-none-eabi --bin app
+</code></pre>
+<pre><code class="language-text">   text	   data	    bss	    dec	    hex	filename
+      0	      0	      0	      0	      0	app
+</code></pre>
+<!-- Before linking the crate does contain the panicking symbol. -->
+<p>リンク前、このクレートはパニックのシンボルを含んでいます。</p>
+<pre><code class="language-console">$ cargo rustc --target thumbv7m-none-eabi -- --emit=obj
+
+$ cargo nm -- target/thumbv7m-none-eabi/debug/deps/app-*.o | grep '[0-9]* [^n] '
+</code></pre>
+<pre><code class="language-text">00000000 T rust_begin_unwind
+</code></pre>
+<!-- 
+However, it's our starting point. In the next section, we'll build something useful. But before
+continuing, let's set a default build target to avoid having to pass the `--target` flag to every
+Cargo invocation.
+ -->
+<p>しかしながら、これがスタート地点です。次のセクションでは、役に立つものをビルドします。
+しかしその前に、Cargo呼び出しごとに<code>--target</code>フラグを付けなくて良いように、デフォルトビルドターゲットを設定しましょう。</p>
+<pre><code class="language-console">$ mkdir .cargo
+
+$ # .cargo/configが下記内容になるように修正します
+$ cat .cargo/config
+</code></pre>
+<pre><code class="language-toml">[build]
+target = &quot;thumbv7m-none-eabi&quot;
+</code></pre>
+<!-- # Memory layout -->
+<h1><a class="header" href="#メモリレイアウト" id="メモリレイアウト">メモリレイアウト</a></h1>
+<!-- 
+The next step is to ensure the program has the right memory layout so that the target system will be
+able to execute it. In our example, we'll be working with a virtual Cortex-M3 microcontroller: the
+[LM3S6965]. Our program will be the only process running on the device so it must also take care of
+initializing the device.
+ -->
+<p>次のステップは、ターゲットシステムがプログラムを実行できるように、プログラムに正しいメモリレイアウトを持たせることです。
+例では、<a href="http://www.ti.com/product/LM3S6965">LM3S6965</a>という仮想のCortex-M3マイクロコントローラを取り扱います。
+私達のプログラムは、デバイス上で動作する唯一のプロセスになります。そのため、デバイスの初期化も面倒を見る必要があります。</p>
+<!-- ## Background information -->
+<h2><a class="header" href="#背景となる情報" id="背景となる情報">背景となる情報</a></h2>
+<!-- 
+Cortex-M devices require a [vector table] to be present at the start of their [code memory region].
+The vector table is an array of pointers; the first two pointers are required to boot the device;
+the rest of pointers are related to exceptions -- we'll ignore them for now.
+ -->
+<p>Cortex-Mデバイスは、<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/memory-model">コードメモリ領域</a>の開始地点に<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table">ベクタテーブル</a>があること、を要求します。
+ベクタテーブルはポインタの配列です。最初の2つのポインタは、デバイスが起動するときに必要です。
+残りのポインタは例外に関係するもので、今は無視します。</p>
+<!-- 
+[code memory region]: https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/memory-model
+[vector table]: https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table
+ -->
+<!-- 
+Linkers decide the final memory layout of programs, but we can use [linker scripts] to have some
+control over it. The control granularity that linker scripts give us over the layout
+is at the level of *sections*. A section is a collection of *symbols* laid out in contiguous memory.
+Symbols, in turn, can be data (a static variable), or instructions (a Rust function).
+ -->
+<p>リンカは、プログラムの最終的なメモリレイアウトを決定します。しかし、<a href="https://sourceware.org/binutils/docs/ld/Scripts.html">リンカスクリプト</a>を使うことで、メモリレイアウトを制御できます。
+リンカスクリプトによる制御の粒度は、<em>セクション</em>レベルです。セクションは、連続したメモリに置かれる<em>シンボル</em>の集まりです。
+ここで、シンボルはデータ（静的変数）か命令（Rustの関数）になります。</p>
+<!-- 
+[linker scripts]: https://sourceware.org/binutils/docs/ld/Scripts.html
+ -->
+<!-- 
+Every symbol has a name assigned by the compiler. As of Rust 1.28 , the Rust compiler assigns to
+symbols names of the form: `_ZN5krate6module8function17he1dfc17c86fe16daE`, which demangles to
+`krate::module::function::he1dfc17c86fe16da` where `krate::module::function` is the path of the
+function or variable and `he1dfc17c86fe16da` is some sort of hash. The Rust compiler will place each
+symbol into its own and unique section; for example the symbol mentioned before will be placed in a
+section named `.text._ZN5krate6module8function17he1dfc17c86fe16daE`.
+ -->
+<p>全てのシンボルは、コンパイラによって割り当てられた名前を持ちます。Rust 1.28以降では、Rustコンパイラは、
+<code>_ZN5krate6module8function17he1dfc17c86fe16daE</code>、のような形式でシンボル名を割り当てます。
+このシンボルは、<code>krate::module::function::he1dfc17c86fe16da</code>にデマングルできます。
+ここで、<code>krate::module::function</code>は、関数か変数のパスです。そして、<code>he1dfc17c86fe16da</code>は何らかのハッシュです。
+Rustコンパイラは、各シンボルをシンボル固有のセクションに配置します。例えば、上述したシンボルは、
+<code>.text._ZN5krate6module8function17he1dfc17c86fe16daE</code>というセクションの配置されます。</p>
+<!-- 
+These compiler generated symbol and section names are not guaranteed to remain constant across
+different releases of the Rust compiler. However, the language lets us control symbol names and
+section placement via these attributes:
+ -->
+<p>コンパイラが生成したシンボル名とセクション名は、Rustコンパイラのリリースごとに変わる可能性があります。
+しかし、次のアトリビュートを使って、シンボル名やセクション配置を制御することができます。</p>
+<!-- 
+- `#[export_name = "foo"]` sets the symbol name to `foo`.
+- `#[no_mangle]` means: use the function or variable name (not its full path) as its symbol name.
+  `#[no_mangle] fn bar()` will produce a symbol named `bar`.
+- `#[link_section = ".bar"]` places the symbol in a section named `.bar`.
+ -->
+<ul>
+<li><code>#[export_name = &quot;foo&quot;]</code>は、シンボル名を<code>foo</code>に設定します。</li>
+<li><code>#[no_mangle]</code>は、関数名や変数名を（フルパスではなく）シンボル名として使うことを意味します。<code>#[no_mangle] fn bar()</code>は、<code>bar</code>というシンボル名を生成します。</li>
+<li><code>#[link_section = &quot;.bar&quot;]</code>は、シンボルを<code>.bar</code>という名前のセクションに配置します。</li>
+</ul>
+<!-- 
+With these attributes, we can expose a stable ABI of the program and use it in the linker script.
+ -->
+<p>これらのアトリビュートにより、プログラムの安定的なABIを公開することができ、リンカスクリプトで利用することができます。</p>
+<!-- ## The Rust side -->
+<h2><a class="header" href="#rust側" id="rust側">Rust側</a></h2>
+<!-- 
+Like mentioned before, for Cortex-M devices, we need to populate the first two entries of the
+vector table. The first one, the initial value for the stack pointer, can be populated using
+only the linker script. The second one, the reset vector, needs to be created in Rust code
+and placed correctly using the linker script.
+ -->
+<p>上述の通り、Cortex-Mデバイスに対して、ベクタテーブルの最初の2つのエントリを配置する必要があります。
+1つ目は、スタックポインタの初期値で、リンカスクリプトだけを使って配置することができます。
+2つ目のリセットベクタは、Rustのコードを作成する必要があり、リンカスクリプトを使って正しく配置しなければなりません。</p>
+<!-- 
+The reset vector is a pointer into the reset handler. The reset handler is the function that the
+device will execute after a system reset, or after it powers up for the first time. The reset
+handler is always the first stack frame in the hardware call stack; returning from it is undefined
+behavior as there's no other stack frame to return to. We can enforce that the reset handler never
+returns by making it a divergent function, which is a function with signature `fn(/* .. */) -> !`.
+ -->
+<p>リセットベクタは、リセットハンドラのポインタです。リセットハンドラは、デバイスがシステムリセットの後、もしくは、
+最初に電源が入った後に実行する関数です。リセットハンドラは、常にハードウェアコールスタックの最初のスタックフレームになります。
+戻るためのスタックフレームがないため、リセットハンドラから戻ることは、未定義動作です。
+発散関数のマーキングを行うことで、リセットハンドラが決して戻らないように強制できます。
+発散関数は、<code>fn(/* .. */) -&gt; !</code>というシグネチャがついた関数です。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    let _x = 42;
+
+    // 戻れないため、ここで無限ループに入ります
+    loop {}
+}
+
+// リセットベクタは、リセットハンドラへのポインタです
+#[link_section = &quot;.vector_table.reset_vector&quot;]
+#[no_mangle]
+pub static RESET_VECTOR: unsafe extern &quot;C&quot; fn() -&gt; ! = Reset;
+
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+The hardware expects a certain format here, to which we adhere by using `extern "C"` to tell the
+compiler to lower the function using the C ABI, instead of the Rust ABI, which is unstable.
+ -->
+<p>ここで、ハードウェアは、特定の形式を期待しています。これに従うため、<code>extern &quot;C&quot;</code>を使うことで、コンパイラがこの関数をC ABIを使うように指示します。
+そうしなければ、安定していないRust ABIが使われます。</p>
+<!-- 
+To refer to the reset handler and reset vector from the linker script, we need them to have a stable
+symbol name so we use `#[no_mangle]`. We need fine control over the location of `RESET_VECTOR`, so we
+place it in a known section, `.vector_table.reset_vector`. The exact location of the reset handler
+itself, `Reset`, is not important. We just stick to the default compiler generated section.
+ -->
+<p>リンカスクリプトからリセットハンドラとリセットベクタを参照するために、<code>#[no_mangle]</code>を使って安定したシンボル名を与えます。
+<code>RESET_VECTOR</code>の位置を細かく制御しなければなりません。そこで、<code>.vector_table.reset_vector</code>と呼ばれるセクションに配置します。
+リセットハンドラである<code>Reset</code>自身の正確な位置は重要ではありません。これに対しては、デフォルトでコンパイラが生成するセクションを使用します。</p>
+<!-- 
+Also, the linker will ignore symbols with internal linkage, AKA internal symbols, while traversing
+the list of input object files, so we need our two symbols to have external linkage. The only way to
+make a symbol external in Rust is to make its corresponding item public (`pub`) and *reachable* (no
+private module between the item and the root of the crate).
+ -->
+<p>また、入力のオブジェクトファイルを解析する間、リンカは、内部シンボルと呼ばれる内部リンケージのシンボルを無視します。
+そこで、2つのシンボルが外部リンケージを持つようにする必要があります。Rustでシンボルを外部向けにする唯一の方法は、
+関連するアイテムをpublic (<code>pub</code>) にして、<em>到達可能</em>（アイテムとクレートのトップレベルとの間にプライベートなモジュールがない）なものにすることです。</p>
+<!-- ## The linker script side -->
+<h2><a class="header" href="#リンカスクリプト側" id="リンカスクリプト側">リンカスクリプト側</a></h2>
+<!-- 
+Below is shown a minimal linker script that places the vector table in the right location. Let's
+walk through it.
+ -->
+<p>下記に、正しい位置にベクタテーブルを配置する最小限のリンカスクリプトを示します。
+全体に目を通してみましょう。</p>
+<pre><code class="language-console">$ cat link.x
+</code></pre>
+<pre><code class="language-text">/* LM3S6965マイクロコントローラのメモリレイアウト */
+/* 1K = 1 KiBi = 1024バイト */
+MEMORY
+{
+  FLASH : ORIGIN = 0x00000000, LENGTH = 256K
+  RAM : ORIGIN = 0x20000000, LENGTH = 64K
+}
+
+/* エントリポイントはリセットハンドラです */
+ENTRY(Reset);
+
+EXTERN(RESET_VECTOR);
+
+SECTIONS
+{
+  .vector_table ORIGIN(FLASH) :
+  {
+    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+  } &gt; FLASH
+
+  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /DISCARD/ :
+  {
+    *(.ARM.exidx.*);
+  }
+}
+</code></pre>
+<h3><a class="header" href="#memory" id="memory"><code>MEMORY</code></a></h3>
+<!-- 
+This section of the linker script describes the location and size of blocks of memory in the target.
+Two memory blocks are defined: `FLASH` and `RAM`; they correspond to the physical memory available
+in the target. The values used here correspond to the LM3S6965 microcontroller.
+ -->
+<p>リンカスクリプトのこのセクションは、ターゲット内のメモリブロックの位置とサイズを記述します。
+2つのメモリブロックが定義されています。<code>FLASH</code>と<code>RAM</code>です。これらは、ターゲットで利用可能な物理メモリと関連しています。
+ここで使用されている値は、LM3S6965マイクロコントローラのものです。</p>
+<h3><a class="header" href="#entry" id="entry"><code>ENTRY</code></a></h3>
+<!-- 
+Here we indicate to the linker that the reset handler -- whose symbol name is `Reset` -- is the
+*entry point* of the program. Linkers aggressively discard unused sections. Linkers consider the
+entry point and functions called from it as *used* so they won't discard them. Without this line,
+the linker would discard the `Reset` function and all subsequent functions called from it.
+ -->
+<p>ここでは、リンカに<code>Reset</code>というシンボル名を持つリセットハンドラが、プログラムの<em>エントリポイント</em>であることを教えています。
+リンカは、不要なセクションを積極的に破棄します。リンカは、エントリポイントと、エントリポイント関数から呼ばれる関数を<em>使用される</em>と考え、
+破棄しなくなります。この行がないと、リンカは、<code>Reset</code>関数と、そこから呼ばれる全ての関数を破棄するでしょう。</p>
+<h3><a class="header" href="#extern" id="extern"><code>EXTERN</code></a></h3>
+<!-- 
+Linkers are lazy; they will stop looking into the input object files once they have found all the
+symbols that are recursively referenced from the entry point. `EXTERN` forces the linker to look
+for `EXTERN`'s argument even after all other referenced symbols have been found. As a rule of thumb,
+if you need a symbol that's not called from the entry point to always be present in the output binary,
+you should use `EXTERN` in conjunction with `KEEP`.
+ -->
+<p>リンカは怠け者です。エントリポイントから再帰的に参照されるシンボルが全て見つかった時点で、入力オブジェクトファイルの解析を停止します。
+<code>EXTERN</code>により、他の参照されるシンボルが全て見つかった後でも、リンカは<code>EXTERN</code>の引数が見つかるまで探し続けます。
+基本、エントリポイントから呼ばれないシンボルが出力バイナリで必要な場合、<code>KEEP</code>と関連付けて<code>EXTERN</code>を使う必要があります。</p>
+<h3><a class="header" href="#sections" id="sections"><code>SECTIONS</code></a></h3>
+<!-- 
+This part describes how sections in the input object files, AKA *input sections*, are to be arranged
+in the sections of the output object file, AKA output sections; or if they should be discarded. Here
+we define two output sections:
+ -->
+<p>ここでは、入力オブジェクトファイル内のセクション（<em>入力セクション</em>）がどのように出力オブジェクトファイルのセクション（出力セクション）に配置されるのか、
+もしくは破棄されるのか、を説明します。
+2つの出力セクションを定義します。</p>
+<pre><code class="language-text">  .vector_table ORIGIN(FLASH) : { /* .. */ } &gt; FLASH
+</code></pre>
+<!-- 
+`.vector_table`, which contains the vector table and is located at the start of `FLASH` memory,
+ -->
+<p><code>.vector_table</code>は、ベクタテーブルを含んでおり、<code>FLASH</code>メモリの開始地点に配置されます。</p>
+<pre><code class="language-text">  .text : { /* .. */ } &gt; FLASH
+</code></pre>
+<!-- 
+and `.text`, which contains the program subroutines and is located somewhere in `FLASH`. Its start
+address is not specified, but the linker will place it after the previous output section,
+`.vector_table`.
+ -->
+<p>そして、<code>.text</code>は、プログラムのサブルーチンを含んでおり、<code>FLASH</code>のどこかに配置されます。開始アドレスは指定されていませんが、
+リンカは直前の出力セクションである<code>.vector_table</code>の後ろに、このセクションを配置するでしょう。</p>
+<!-- The output `.vector_table` section contains: -->
+<p>出力セクションの<code>.vecotr_table</code>は、次のものを含んでいます。</p>
+<pre><code class="language-text">    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+</code></pre>
+<!-- 
+We'll place the (call) stack at the end of RAM (the stack is *full descending*; it grows towards
+smaller addresses) so the end address of RAM will be used as the initial Stack Pointer (SP) value.
+That address is computed in the linker script itself using the information we entered for the `RAM`
+memory block.
+ -->
+<p>（コール）スタックをRAMの最後に配置します。スタックは、<em>完全な降順</em>です。すなわち、小さいアドレスに向かって伸びます。
+そのため、RAMの最後のアドレスをスタックポインタ（SPモード）の初期値として使用します。
+このアドレスは、リンカスクリプト内で<code>RAM</code>メモリブロックに入力した情報を使って、計算されます。</p>
+<pre><code>    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+</code></pre>
+<!-- 
+Next, we use `KEEP` to force the linker to insert all input sections named
+`.vector_table.reset_vector` right after the initial SP value. The only symbol located in that
+section is `RESET_VECTOR`, so this will effectively place `RESET_VECTOR` second in the vector table.
+ -->
+<p>次に、SPの初期値の直後に<code>.vector_table.reset_vector</code>と名付けられた全ての入力セクションがリンカによって挿入されるように、<code>KEEP</code>を使います。
+<code>RESET_VECTOR</code>がこのセクションに配置される唯一のシンボルです。これは、ベクタテーブルの2つ目に<code>RESET_VECTOR</code>を配置するのに効率的な方法です。</p>
+<!-- The output `.text` section contains: -->
+<p>出力セクションの<code>.text</code>は、次の内容を含んでいます。</p>
+<pre><code class="language-text">    *(.text .text.*);
+</code></pre>
+<!-- 
+This includes all the input sections named `.text` and `.text.*`. Note that we don't use `KEEP`
+here to let the linker discard unused sections.
+ -->
+<p>これは、<code>.text</code>と<code>.text.*</code>という名前の入力セクションを全て含んでいます。
+リンカが不必要なセクションを破棄しないようにさせるための、<code>KEEP</code>を、ここでは使わないことに留意して下さい。</p>
+<!-- Finally, we use the special `/DISCARD/` section to discard -->
+<p>最後に、破棄用の特別な<code>/DISCARD/</code>セクションを使います。</p>
+<pre><code class="language-text">    *(.ARM.exidx.*);
+</code></pre>
+<!-- 
+input sections named `.ARM.exidx.*`. These sections are related to exception handling but we are not
+doing stack unwinding on panics and they take up space in Flash memory, so we just discard them.
+ -->
+<p><code>.ARM.exidx.*</code>という入力セクションを破棄します。これらのセクションは、例外処理に関連したものですが、
+パニック時のスタック巻き戻しを行わないのと、これらのセクションはFlashメモリの容量を使うため、単に破棄します。</p>
+<!-- ## Putting it all together -->
+<h2><a class="header" href="#1つにまとめる" id="1つにまとめる">1つにまとめる</a></h2>
+<!-- Now we can link the application. For reference, here's the complete Rust program: -->
+<p>これで、アプリケーションをリンクできます。参考用に、完全なRustプログラムを示します。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_main]
+#![no_std]
+
+<span class="boring">fn main() {
+</span>use core::panic::PanicInfo;
+
+// リセットハンドラ
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    let _x = 42;
+
+    // 戻れないため、ここで無限ループに入ります
+    loop {}
+}
+
+// リセットベクタは、リセットハンドラへのポインタです
+#[link_section = &quot;.vector_table.reset_vector&quot;]
+#[no_mangle]
+pub static RESET_VECTOR: unsafe extern &quot;C&quot; fn() -&gt; ! = Reset;
+
+#[panic_handler]
+fn panic(_panic: &amp;PanicInfo&lt;'_&gt;) -&gt; ! {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+We have to tweak linker process to make it use our linker script. This is done
+passing the `-C link-arg` flag to `rustc` but there are two ways to do it: you
+can use the `cargo-rustc` subcommand instead of `cargo-build` as shown below:
+ -->
+<p>私達のリンカスクリプトを使うために、リンカプロセスに手を加えなければなりません。これは、<code>rustc</code>に<code>-C link-arg</code>フラグを渡すことで達成できます。
+しかし、2つのやり方があります。下記のように<code>cargo-rustc</code>サブコマンドを<code>cargo-build</code>の代わりに使用することができます。</p>
+<!-- 
+**IMPORTANT**: Make sure you have the `.cargo/config` file that was added at the
+end of the last section before running this command.
+ -->
+<p><strong>重要</strong>：このコマンドを実行する前に、前回のセクションの最後に追加した<code>.cargo/config</code>ファイルがあることを確認して下さい。</p>
+<pre><code class="language-console">$ cargo rustc -- -C link-arg=-Tlink.x
+</code></pre>
+<!-- 
+Or you can set the rustflags in `.cargo/config` and continue using the
+`cargo-build` subcommand. We'll do the latter because it better integrates with
+`cargo-binutils`.
+ -->
+<p>もしくは、<code>.cargo/config</code>にrustflagsを設定し、<code>cargo-build</code>サブコマンドを使い続けることもできます。
+<code>cargo-binutils</code>との統合がやりやすいため、2つ目の方法を使います。</p>
+<pre><code class="language-console"># .cargo/configを次の内容で修正します
+$ cat .cargo/config
+</code></pre>
+<pre><code class="language-toml">[target.thumbv7m-none-eabi]
+rustflags = [&quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;]
+
+[build]
+target = &quot;thumbv7m-none-eabi&quot;
+</code></pre>
+<!-- 
+The `[target.thumbv7m-none-eabi]` part says that these flags will only be used
+when cross compiling to that target.
+ -->
+<p><code>[target.thumbv7m-none-eabi]</code>の部分は、このフラグがターゲット向けのクロスコンパイル時のみ有効であることを意味しています。</p>
+<!-- ## Inspecting it -->
+<h2><a class="header" href="#調査" id="調査">調査</a></h2>
+<!-- 
+Now let's inspect the output binary to confirm the memory layout looks the way we want:
+ -->
+<p>それでは、望み通りのメモリレイアウトになっているか確認するため、出力バイナリを調査してみましょう。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -d -no-show-raw-insn
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+Reset:
+	sub	sp, #4
+	movs	r0, #42
+	str	r0, [sp]
+	b	#-2 &lt;Reset+0x8&gt;
+	b	#-4 &lt;Reset+0x8&gt;
+</code></pre>
+<!-- 
+This is the disassembly of the `.text` section. We see that the reset handler, named `Reset`, is
+located at address `0x8`.
+ -->
+<p>これは<code>.text</code>セクションの逆アセンブリです。<code>Reset</code>というリセットハンドラが<code>0x8</code>番地に位置していることがわかります。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -s -section .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 09000000                    ... ....
+</code></pre>
+<!-- 
+This shows the contents of the `.vector_table` section. We can see that the section starts at
+address `0x0` and that the first word of the section is `0x2001_0000` (the `objdump` output is in
+little endian format). This is the initial SP value and matches the end address of RAM. The second
+word is `0x9`; this is the *thumb mode* address of the reset handler. When a function is to be
+executed in thumb mode the first bit of its address is set to 1.
+ -->
+<p>これは、<code>.vector_table</code>セクションの内容を示しています。セクションは<code>0x0</code>番地から開始しており、セクションの1つ目のワードは、<code>0x2001_0000</code>であることがわかります
+（<code>objdump</code>はリトリエンディアン形式で出力します）。これはSPの初期値で、RAMの最後のアドレスと一致します。
+2つ目のワードは<code>0x9</code>です。これは、リセットハンドラの<em>thumbモード</em>アドレスです。
+関数がthumbモードで実行される場合、そのアドレスの1ビット目は1に設定されます。</p>
+<!-- ## Testing it -->
+<h2><a class="header" href="#テスト" id="テスト">テスト</a></h2>
+<!-- 
+This program is a valid LM3S6965 program; we can execute it in a virtual microcontroller (QEMU) to
+test it out.
+ -->
+<p>このプログラムは、有効なLM3S6965プログラムです。このプログラムをテストするため、仮想のマイクロコントローラ（QEMU）で実行できます。</p>
+<pre><code class="language-console">$ # this program will block
+$ qemu-system-arm \
+      -cpu cortex-m3 \
+      -machine lm3s6965evb \
+      -gdb tcp::3333 \
+      -S \
+      -nographic \
+      -kernel target/thumbv7m-none-eabi/debug/app
+</code></pre>
+<pre><code class="language-console">$ # 別ターミナル
+$ arm-none-eabi-gdb -q target/thumbv7m-none-eabi/debug/app
+Reading symbols from target/thumbv7m-none-eabi/debug/app...done.
+
+(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at src/main.rs:8
+8       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) # SPがベクタテーブルにプログラムした初期値を持っています
+(gdb) print/x $sp
+$1 = 0x20010000
+
+(gdb) step
+9           let _x = 42;
+
+(gdb) step
+12          loop {}
+
+(gdb) # 次にスタック変数の`_x`を調査します
+(gdb) print _x
+$2 = 42
+
+(gdb) print &amp;_x
+$3 = (i32 *) 0x2000fffc
+
+(gdb) quit
+</code></pre>
+<!-- # A `main` interface -->
+<h1><a class="header" href="#mainインタフェース" id="mainインタフェース"><code>main</code>インタフェース</a></h1>
+<!-- 
+We have a minimal working program now, but we need to package it in a way that the end user can build
+safe programs on top of it. In this section, we'll implement a `main` interface like the one standard
+Rust programs use.
+ -->
+<p>現在、最小限の動くプログラムがあります。しかし、エンドユーザーが安全なプログラムをビルドできるようにパッケージを作る必要があります。
+このセクションでは、標準のRustプログラムが使うような<code>main</code>インタフェースを実装します。</p>
+<!-- First, we'll convert our binary crate into a library crate: -->
+<p>まず最初に、バイナリクレートをライブラリクレートに変換します。</p>
+<pre><code class="language-console">$ mv src/main.rs src/lib.rs
+</code></pre>
+<!-- And then rename it to `rt` which stands for "runtime". -->
+<p>そして、クレートを「runtime」を意味する<code>rt</code>という名前に変えます。</p>
+<pre><code class="language-console">$ sed -i s/app/rt/ Cargo.toml
+
+$ head -n4 Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[package]
+edition = &quot;2018&quot;
+name = &quot;rt&quot; # &lt;-
+version = &quot;0.1.0&quot;
+</code></pre>
+<!-- The first change is to have the reset handler call an external `main` function: -->
+<p>最初の変更は、リセットハンドから外部の<code>main</code>関数を呼び出すようにすることです。</p>
+<pre><code class="language-console">$ head -n13 src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+
+use core::panic::PanicInfo;
+
+// 変更しました！
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    extern &quot;Rust&quot; {
+        fn main() -&gt; !;
+    }
+
+    main()
+}
+</code></pre></pre>
+<!-- We also drop the `#![no_main]` attribute has it has no effect on library crates. -->
+<p><code>#![no_main]</code>アトリビュートも取り除いています。このアトリビュートはライブラリクレートには効果がありません。</p>
+<!-- 
+> There's an orthogonal question that arises at this stage: Should the `rt`
+> library provide a standard panicking behavior, or should it *not* provide a
+> `#[panic_handler]` function and leave the end user choose the panicking
+> behavior? This document won't delve into that question and for simplicity will
+> leave the dummy `#[panic_handler]` function in the `rt` crate. However, we
+> wanted to inform the reader that there are other options.
+ -->
+<blockquote>
+<p>ここで、直交する疑問が湧きます。<code>rt</code>ライブラリは標準のパニック動作を提供すべきでしょうか？それとも、
+<code>#[panic_handler]</code>関数を提供せずに、ユーザーがパニック動作を選べるように残しておくべきでしょうか？
+本ドキュメントでは、この疑問を深堀りせず、単純化のために<code>rt</code>クレートにダミーの<code>#[panic_handler]</code>関数を残しておきます。
+しかしながら、他の選択肢があることを読者に伝えておきます。</p>
+</blockquote>
+<!-- 
+The second change involves providing the linker script we wrote before to the application crate. You
+see the linker will search for linker scripts in the library search path (`-L`) and in the directory
+from which it's invoked. The application crate shouldn't need to carry around a copy of `link.x` so
+we'll have the `rt` crate put the linker script in the library search path using a [build script].
+ -->
+<p>2つ目の変更は、これまでに書いたリンカスクリプトを、アプリケーションクレートに提供することです。
+リンカがライブラリサーチパス（<code>-L</code>）とリンカを呼び出したディレクトリから、リンカスクリプトを探すことはご存知でしょう。
+アプリケーションクレートが<code>link.x</code>のコピーを持たなくて済むように、<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">ビルドスクリプト</a>を使って<code>rt</code>クレートが、
+ライブラリサーチパスにリンカスクリプトを置くようにします。</p>
+<!-- [build script]: https://doc.rust-lang.org/cargo/reference/build-scripts.html -->
+<pre><code class="language-console">$ # `rt`のルートディレクトリに、以下の内容でbuild.rsを作ります
+$ cat build.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">use std::{env, error::Error, fs::File, io::Write, path::PathBuf};
+
+fn main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {
+    // このクレート用のビルドディレクトリです
+    let out_dir = PathBuf::from(env::var_os(&quot;OUT_DIR&quot;).unwrap());
+
+    // ライブラリサーチパスを追加します
+    println!(&quot;cargo:rustc-link-search={}&quot;, out_dir.display());
+
+    // `link.x`をビルドディレクトリに置きます
+    File::create(out_dir.join(&quot;link.x&quot;))?.write_all(include_bytes!(&quot;link.x&quot;))?;
+
+    Ok(())
+}
+</code></pre></pre>
+<!-- 
+Now the user can write an application that exposes the `main` symbol and link it to the `rt` crate.
+The `rt` will take care of giving the program the right memory layout.
+ -->
+<p>これで、ユーザーは<code>main</code>シンボルを公開するアプリケーションを書くことができ、<code>rt</code>クレートとリンクすることができます。
+<code>rt</code>は、アプリケーションプログラムに正しいメモリレイアウトを提供します。</p>
+<pre><code class="language-console">$ cd ..
+
+$ cargo new --edition 2018 --bin app
+
+$ cd app
+
+$ # Cargo.tomlを`rt`クレートとの依存関係を持つように修正します
+$ tail -n2 Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[dependencies]
+rt = { path = &quot;../rt&quot; }
+</code></pre>
+<pre><code class="language-console">$ # デフォルトターゲットとリンカ呼び出しを微調整した設定ファイルをコピーします
+$ cp -r ../rt/.cargo .
+
+$ # `main.rs`の内容を下記の通り変更します
+$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+extern crate rt;
+
+#[no_mangle]
+pub fn main() -&gt; ! {
+    let _x = 42;
+
+    loop {}
+}
+</code></pre></pre>
+<!-- The disassembly will be similar but will now include the user `main` function. -->
+<p>逆アセンブリの結果は似ていますが、ここではユーザーの<code>main</code>関数を含んでいます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -d -no-show-raw-insn
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+main:
+	sub	sp, #4
+	movs	r0, #42
+	str	r0, [sp]
+	b	#-2 &lt;main+0x8&gt;
+	b	#-4 &lt;main+0x8&gt;
+
+Reset:
+	bl	#-14
+	trap
+</code></pre>
+<!-- ## Making it type safe -->
+<h2><a class="header" href="#型安全にする" id="型安全にする">型安全にする</a></h2>
+<!-- 
+The `main` interface works, but it's easy to get it wrong: For example, the user could write `main`
+as a non-divergent function, and they would get no compile time error and undefined behavior (the
+compiler will misoptimize the program).
+ -->
+<p><code>main</code>インタフェースは機能しますが、簡単に誤った使い方ができてしまいます。
+例えば、ユーザーは発散しない関数として<code>main</code>関数を書くかもしれません。その結果、コンパイルエラーは発生しませんが、
+未定義動作になるでしょう（コンパイラはプログラムに誤った最適化を行います）。</p>
+<!-- 
+We can add type safety by exposing a macro to the user instead of the symbol interface. In the
+`rt` crate, we can write this macro:
+ -->
+<p>シンボルインタフェースではなくマクロをユーザーに公開することで、型安全性を追加することができます。
+<code>rt</code>クレートに、次のマクロを書くことができます。</p>
+<pre><code class="language-console">$ tail -n12 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[macro_export]
+macro_rules! entry {
+    ($path:path) =&gt; {
+        #[export_name = &quot;main&quot;]
+        pub unsafe fn __main() -&gt; ! {
+            // 与えられたパスの型チェック
+            let f: fn() -&gt; ! = $path;
+
+            f()
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- Then the application writers can invoke it like this: -->
+<p>そして、アプリケーション作成者は、このマクロを次のように呼び出します。</p>
+<pre><code class="language-console">$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let _x = 42;
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+Now the author will get an error if they change the signature of `main` to be
+non divergent function, e.g. `fn()`.
+ -->
+<p>今度は、アプリケーション作成者は、<code>main</code>のシグネチャを<code>fn()</code>のような発散しない関数に変更すると、
+エラーに遭遇するでしょう。</p>
+<!-- ## Life before main -->
+<h2><a class="header" href="#main前の生活" id="main前の生活">main前の生活</a></h2>
+<!-- 
+`rt` is looking good but it's not feature complete! Applications written against it can't use
+`static` variables or string literals because `rt`'s linker script doesn't define the standard
+`.bss`, `.data` and `.rodata` sections. Let's fix that!
+ -->
+<p><code>rt</code>は良さそうに見えますが、まだ機能が完全ではありません！rtクレートに対して書かれたアプリケーションは、
+<code>static</code>変数や文字列リテラルを使うことができません。<code>rt</code>のリンカスクリプトが、
+標準の<code>.bss</code>、<code>.data</code>、<code>.rodata</code>セクションを定義していないからです。これを直していきましょう！</p>
+<!-- The first step is to define these sections in the linker script: -->
+<p>最初のステップはリンカスクリプトに下記のセクションを定義することです。</p>
+<pre><code class="language-console">$ # ファイルの一部のみを見せます
+$ sed -n 25,46p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /* 追加! */
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+
+  .bss :
+  {
+    *(.bss .bss.*);
+  } &gt; RAM
+
+  .data :
+  {
+    *(.data .data.*);
+  } &gt; RAM
+
+  /DISCARD/ :
+</code></pre>
+<!-- 
+They just re-export the input sections and specify in which memory region each output section will
+go.
+ -->
+<p>これらは入力セクションを単に再度エスクポートし、各メモリ領域のどこに出力セクションが置かれるかを指定しているだけです。</p>
+<!-- With these changes, the following program will compile: -->
+<p>これらの変更で、下記のプログラムがコンパイル可能になります。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+#![no_main]
+
+use rt::entry;
+
+entry!(main);
+
+static RODATA: &amp;[u8] = b&quot;Hello, world!&quot;;
+static mut BSS: u8 = 0;
+static mut DATA: u16 = 1;
+
+fn main() -&gt; ! {
+    let _x = RODATA;
+    let _y = unsafe { &amp;BSS };
+    let _z = unsafe { &amp;DATA };
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+However if you run this program on real hardware and debug it, you'll observe that the `static`
+variables `BSS` and `DATA` don't have the values `0` and `1` by the time `main` has been reached.
+Instead, these variables will have junk values. The problem is that the contents of RAM are
+random after powering up the device. You won't be able to observe this effect if you run the
+program in QEMU.
+ -->
+<p>しかし、実際のハードウェア上でプログラムを実行し、デバッグすると、<code>main</code>に到達した時点で、
+<code>static</code>変数の<code>BSS</code>と<code>DATA</code>が、<code>0</code>と<code>1</code>になっていないことに気づくでしょう。
+代わりに、これらの変数はゴミデータを持っています。この問題は、デバイスの電源投入時、RAMがランダムなデータを持つためです。
+プログラムをQEMUで実行すると、この現象は観測できません。</p>
+<!-- 
+As things stand if your program reads any `static` variable before performing a write to it then
+your program has undefined behavior. Let's fix that by initializing all `static` variables before
+calling `main`.
+ -->
+<p>実は、プログラムが<code>static</code>変数に書き込みを行う前に、その変数を読むことは、未定義動作です。
+<code>main</code>を呼ぶ前に、全ての<code>static</code>変数を初期化するように修正しましょう。</p>
+<!-- We'll need to tweak the linker script a bit more to do the RAM initialization: -->
+<p>RAM初期化のために、リンカスクリプトをさらに微修正しなければなりません。</p>
+<pre><code class="language-console">$ # ファイルの一部のみを見せます
+$ sed -n 25,52p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">  .text :
+  {
+    *(.text .text.*);
+  } &gt; FLASH
+
+  /* 変更! */
+  .rodata :
+  {
+    *(.rodata .rodata.*);
+  } &gt; FLASH
+
+  .bss :
+  {
+    _sbss = .;
+    *(.bss .bss.*);
+    _ebss = .;
+  } &gt; RAM
+
+  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+  {
+    _sdata = .;
+    *(.data .data.*);
+    _edata = .;
+  } &gt; RAM
+
+  _sidata = LOADADDR(.data);
+
+  /DISCARD/ :
+</code></pre>
+<!-- Let's go into the details of these changes: -->
+<p>変更内容を詳細に見ていきましょう。</p>
+<pre><code class="language-text">    _sbss = .;
+</code></pre>
+<pre><code class="language-text">    _ebss = .;
+</code></pre>
+<pre><code class="language-text">    _sdata = .;
+</code></pre>
+<pre><code class="language-text">    _edata = .;
+</code></pre>
+<!-- 
+We associate symbols to the start and end addresses of the `.bss` and `.data` sections, which we'll
+later use from Rust code.
+ -->
+<p>シンボルを<code>.bss</code>セクションと<code>.data</code>セクションの開始アドレスと終了アドレスに関連付けます。
+これらは後ほど、Rustコードで使用します。</p>
+<pre><code class="language-text">  .data : AT(ADDR(.rodata) + SIZEOF(.rodata))
+</code></pre>
+<!-- 
+We set the Load Memory Address (LMA) of the `.data` section to the end of the `.rodata`
+section. The `.data` contains `static` variables with a non-zero initial value; the Virtual Memory
+Address (VMA) of the `.data` section is somewhere in RAM -- this is where the `static` variables are
+located. The initial values of those `static` variables, however, must be allocated in non volatile
+memory (Flash); the LMA is where in Flash those initial values are stored.
+ -->
+<p><code>.rodata</code>セクションの終わりに、<code>.data</code>セクションのロードメモリアドレス（LMA; Load Memory Address）を設定します。
+<code>.data</code>はゼロでない初期値をもった<code>static</code>変数が含まれています。<code>.data</code>セクションの仮想メモリアドレス（VMA; Virtual Memory Address）は、
+RAMのどこかにあります。これは、<code>static</code>変数が配置されている場所です。
+しかし、これらの<code>static</code>変数の初期値は、不揮発性メモリ（Flash）に割り当てられなければなりません。
+LMAは、これらの初期値が格納されるFlashの場所を示しています。</p>
+<pre><code class="language-text">  _sidata = LOADADDR(.data);
+</code></pre>
+<!-- Finally, we associate a symbol to the LMA of `.data`. -->
+<p>最後に、<code>.data</code>セクションのLMAをシンボルに関連付けます。</p>
+<!-- 
+On the Rust side, we zero the `.bss` section and initialize the `.data` section. We can reference
+the symbols we created in the linker script from the Rust code. The *addresses*[^1] of these symbols are
+the boundaries of the `.bss` and `.data` sections.
+ -->
+<p>Rust側では、<code>.bss</code>セクションをゼロクリアし、<code>.data</code>セクションを初期化します。Rustコードからリンカスクリプトで作成したシンボルを参照できます。
+これらのシンボルの<em>アドレス</em><sup class="footnote-reference"><a href="#1">1</a></sup>は、<code>.bss</code>セクションと<code>.data</code>セクションの境界になります。</p>
+<!-- The updated reset handler is shown below: -->
+<p>リセットハンドラを、次のように更新します。</p>
+<pre><code class="language-console">$ head -n32 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_std]
+
+use core::panic::PanicInfo;
+use core::ptr;
+
+#[no_mangle]
+pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+    // 追加!
+    // RAMの初期化
+    extern &quot;C&quot; {
+        static mut _sbss: u8;
+        static mut _ebss: u8;
+
+        static mut _sdata: u8;
+        static mut _edata: u8;
+        static _sidata: u8;
+    }
+
+    let count = &amp;_ebss as *const u8 as usize - &amp;_sbss as *const u8 as usize;
+    ptr::write_bytes(&amp;mut _sbss as *mut u8, 0, count);
+
+    let count = &amp;_edata as *const u8 as usize - &amp;_sdata as *const u8 as usize;
+    ptr::copy_nonoverlapping(&amp;_sidata as *const u8, &amp;mut _sdata as *mut u8, count);
+
+    // ユーザーエントリポイントを呼び出します
+    extern &quot;Rust&quot; {
+        fn main() -&gt; !;
+    }
+
+    main()
+}
+</code></pre></pre>
+<!-- 
+Now end users can directly and indirectly make use of `static` variables without running into
+undefined behavior!
+ -->
+<p>これで、未定義動作なしに、エンドユーザーは直接的にも間接的にも<code>static</code>変数を使うことができます。</p>
+<!-- 
+> In the code above we performed the memory initialization in a bytewise fashion. It's possible to
+> force the `.bss` and `.data` sections to be aligned to, say, 4 bytes. This fact can then be used
+> in the Rust code to perform the initialization wordwise while omitting alignment checks. If you
+> are interested in learning how this can be achieved check the [`cortex-m-rt`] crate.
+ -->
+<blockquote>
+<p>上記のコードでは、メモリ初期化をバイト単位の方法で初期化しています。<code>.bss</code>セクションと<code>.data</code>セクションを例えば4バイトでアライメントすることが可能です。
+このことは、アライメントチェックなしにワード単位の初期化を行うために、Rustコードで使うことができます。
+どのようにやるのか興味がある場合、<a href="https://github.com/japaric/cortex-m-rt/tree/v0.5.1"><code>cortex-m-rt</code></a>クレートをチェックして下さい。</p>
+</blockquote>
+<!-- 
+[^1]: The fact that the addresses of the linker script symbols must be used here can be confusing and
+unintuitive. An elaborate explanation for this oddity can be found [here](https://stackoverflow.com/a/40392131).
+ -->
+<div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
+<p>ここで使っているリンカスクリプトシンボルのアドレスを使用する必要があるということは、混乱を招きやすく、直感的ではありません。
+この奇妙さについての詳細な説明は、<a href="https://stackoverflow.com/a/40392131">ここ</a>にあります。</p>
+</div>
+<!-- # Exception handling -->
+<h2><a class="header" href="#例外処理" id="例外処理">例外処理</a></h2>
+<!-- 
+During the "Memory layout" section, we decided to start out simple and leave out handling of
+exceptions. In this section, we'll add support for handling them; this serves as an example of
+how to achieve compile time overridable behavior in stable Rust (i.e. without relying on the
+unstable `#[linkage = "weak"]` attribute, which makes a symbol weak).
+ -->
+<p>「メモリレイアウト」セクションでは、簡単なところから始め、例外処理を省くことにしました。
+このセクションでは、例外処理サポートを追加します。stable Rustでコンパル時にオーバーライド可能な振る舞いを実装する例を示します
+（すなわち、シンボルをウィークにするunstableの<code>#[linkage = &quot;weak&quot;]</code>アトリビュートに頼りません）。</p>
+<!-- ## Background information -->
+<h2><a class="header" href="#背景となる情報-1" id="背景となる情報-1">背景となる情報</a></h2>
+<!-- 
+In a nutshell, *exceptions* are a mechanism the Cortex-M and other architectures provide to let
+applications respond to asynchronous, usually external, events. The most prominent type of exception,
+that most people will know, is the classical (hardware) interrupt.
+ -->
+<p>一言で言えば、<em>例外</em>は、アプリケーションが（主に外部からの）非同期イベントに応答するための、
+Cortex-Mや他のアーキテクチャが提供する機構です。最も有名なほとんどの人々が知っているであろう例外の種別は、
+古典的な（ハードウェア）割り込みです。</p>
+<!-- 
+The Cortex-M exception mechanism works like this:
+When the processor receives a signal or event associated to a type of exception, it suspends
+the execution of the current subroutine (by stashing the state in the call stack) and then proceeds
+to execute the corresponding exception handler, another subroutine, in a new stack frame. After
+finishing the execution of the exception handler (i.e. returning from it), the processor resumes the
+execution of the suspended subroutine.
+ -->
+<p>Cortex-Mの例外機能は次のように動きます。
+プロセッサが例外の種別に応じたシグナルもしくはイベントを受信すると、
+（コールスタックに現在の状態を入れておくことで）現在のサブルーチンの実行を一時停止し、
+関連する例外ハンドラ（別のサブルーチン）の実行を新しいスタックフレームで開始します。
+例外ハンドラの実行が終了すると（つまり例外ハンドラから戻ると）、プロセッサは一時停止したサブルーチンの実行を再開します。</p>
+<!-- 
+The processor uses the vector table to decide what handler to execute. Each entry in the table
+contains a pointer to a handler, and each entry corresponds to a different exception type. For
+example, the second entry is the reset handler, the third entry is the NMI (Non Maskable Interrupt)
+handler, and so on.
+ -->
+<p>プロセッサはどのハンドラを実行するか、を決めるためにベクタテーブルを使います。テーブルの各エントリはハンドラへのポインタです。
+そして、各エントリは、異なる例外種別に対応しています。例えば、2つ目のエントリはリセットハンドラで、3つ目のエントリは、
+NMI（Non Maskable Interrupt）と言った具合です。</p>
+<!-- 
+As mentioned before, the processor expects the vector table to be at some specific location in memory,
+and each entry in it can potentially be used by the processor at runtime. Hence, the entries must always
+contain valid values. Furthermore, we want the `rt` crate to be flexible so the end user can customize the
+behavior of each exception handler. Finally, the vector table resides in read only memory, or rather in not
+easily modified memory, so the user has to register the handler statically, rather than at runtime.
+ -->
+<p>これまで述べた通り、プロセッサはベクタテーブルがメモリ内の所定の位置にあることを期待しています。そして、各エントリは、
+実行時にプロセッサによって使用される可能性があります。したがって、エントリは必ず値を持たなければなりません。
+加えて、<code>rt</code>クレートにはエンドユーザーが各例外ハンドラの動作をカスタマイズできる柔軟さを持たせたいです。
+最後に、ベクタテーブルは読み込み専用メモリ、もしくは、変更が容易でないメモリにあるため、ユーザーは実行時ではなく、
+静的にハンドラを登録しなければなりません。</p>
+<!-- 
+To satisfy all these constraints, we'll assign a *default* value to all the entries of the vector
+table in the `rt` crate, but make these values kind of *weak* to let the end user override them
+at compile time.
+ -->
+<p>これら全ての制約を満たすため、<code>rt</code>クレートのベクタテーブルの全エントリに<em>デフォルト</em>値を割り当てますが、
+このデフォルト値は、ユーザーがコンパイル時にオーバーライドできるように<em>ウィーク</em>相当のものにします。</p>
+<!-- ## Rust side -->
+<h2><a class="header" href="#rust側-1" id="rust側-1">Rust側</a></h2>
+<!-- 
+Let's see how all this can be implemented. For simplicity, we'll only work with the first 16 entries
+of the vector table; these entries are not device specific so they have the same function on any
+kind of Cortex-M microcontroller.
+ -->
+<p>これを全て実装できる方法を見ていきましょう。簡単化のために、ベクタテーブルの最初の16エントリだけを扱います。
+これらのエントリは、デバイス固有のものではなく、全てのCortex-Mマイクロコントローラ上に同じ機能があります。</p>
+<!-- 
+The first thing we'll do is create an array of vectors (pointers to exception handlers) in the
+`rt` crate's code:
+ -->
+<p>まず最初にやることは、<code>rt</code>クレートのコードにベクタ配列（例外ハンドラへのポインタ）を作ることです。</p>
+<pre><code class="language-console">$ sed -n 56,91p ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub union Vector {
+    reserved: u32,
+    handler: unsafe extern &quot;C&quot; fn(),
+}
+
+extern &quot;C&quot; {
+    fn NMI();
+    fn HardFault();
+    fn MemManage();
+    fn BusFault();
+    fn UsageFault();
+    fn SVCall();
+    fn PendSV();
+    fn SysTick();
+}
+
+#[link_section = &quot;.vector_table.exceptions&quot;]
+#[no_mangle]
+pub static EXCEPTIONS: [Vector; 14] = [
+    Vector { handler: NMI },
+    Vector { handler: HardFault },
+    Vector { handler: MemManage },
+    Vector { handler: BusFault },
+    Vector {
+        handler: UsageFault,
+    },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: SVCall },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: PendSV },
+    Vector { handler: SysTick },
+];
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Some of the entries in the vector table are *reserved*; the ARM documentation states that they
+should be assigned the value `0` so we use a union to do exactly that. The entries that must point
+to a handler make use of *external* functions; this is important because it lets the end user
+*provide* the actual function definition.
+ -->
+<p>ベクタテーブル内のいくつかのエントリは<em>予約済み</em>です。ARMのドキュメントには、これらのエントリに<code>0</code>を割り当てなければならないと書いてあります。
+そこで、ユニオンを使って正確に実装します。
+エントリは<em>外部</em>関数として使えるようにしたハンドラを指している必要があります。
+これは、エンドユーザーが実際の関数定義を<em>提供する</em>ために重要です。</p>
+<!-- 
+Next, we define a default exception handler in the Rust code. Exceptions that have not been assigned
+a handler by the end user will make use of this default handler.
+ -->
+<p>次に、Rustコードにデフォルトの例外ハンドラを定義します。
+エンドユーザーによってハンドラが割り当てられない例外は、このデフォルトハンドラを使います。</p>
+<pre><code class="language-console">$ tail -n4 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[no_mangle]
+pub extern &quot;C&quot; fn DefaultExceptionHandler() {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- ## Linker script side -->
+<h2><a class="header" href="#リンカスクリプト側-1" id="リンカスクリプト側-1">リンカスクリプト側</a></h2>
+<!-- 
+On the linker script side, we place these new exception vectors right after the reset vector.
+ -->
+<p>リンカスクリプト側では、リセットベクタの直後に新しい例外ベクタを配置します。</p>
+<pre><code class="language-console">$ sed -n 12,25p ../rt/link.x
+</code></pre>
+<pre><code class="language-text">EXTERN(RESET_VECTOR);
+EXTERN(EXCEPTIONS); /* &lt;- 追加 */
+
+SECTIONS
+{
+  .vector_table ORIGIN(FLASH) :
+  {
+    /* 1つ目のエントリ。スタックポインタの初期値 */
+    LONG(ORIGIN(RAM) + LENGTH(RAM));
+
+    /* 2つ目のエントリ。リセットベクタ */
+    KEEP(*(.vector_table.reset_vector));
+
+    /* 続く14エントリは例外ベクタです */
+    KEEP(*(.vector_table.exceptions)); /* &lt;- 追加 */
+  } &gt; FLASH
+</code></pre>
+<!-- 
+And we use `PROVIDE` to give a default value to the handlers that we left undefined in `rt` (`NMI`
+and the others above):
+ -->
+<p><code>rt</code>で未定義のハンドラ（<code>NMI</code>など）にデフォルト値を与えるため、<code>PROVIDE</code>を使います。</p>
+<pre><code class="language-console">$ tail -n8 ../rt/link.x
+</code></pre>
+<pre><code class="language-text">PROVIDE(NMI = DefaultExceptionHandler);
+PROVIDE(HardFault = DefaultExceptionHandler);
+PROVIDE(MemManage = DefaultExceptionHandler);
+PROVIDE(BusFault = DefaultExceptionHandler);
+PROVIDE(UsageFault = DefaultExceptionHandler);
+PROVIDE(SVCall = DefaultExceptionHandler);
+PROVIDE(PendSV = DefaultExceptionHandler);
+PROVIDE(SysTick = DefaultExceptionHandler);
+</code></pre>
+<!-- 
+`PROVIDE` only takes effect when the symbol to the left of the equal sign is still undefined after
+inspecting all the input object files. This is the scenario where the user didn't implement the
+handler for the respective exception.
+ -->
+<p><code>PROVIDE</code>は、全ての入力オブジェクトファイルを調べた後、=の左辺が未定義のときのみ効果を発揮します。
+これは、ユーザーが各例外についてハンドラを実装しなかった場合です。</p>
+<!-- ## Testing it -->
+<h2><a class="header" href="#テスト-1" id="テスト-1">テスト</a></h2>
+<!-- 
+That's it! The `rt` crate now has support for exception handlers. We can test it out with following
+application:
+ -->
+<p>これで全てです！これで、<code>rt</code>クレートは例外ハンドラをサポートします。
+次のアプリケーションを使って、テストができます。</p>
+<!-- 
+> **NOTE**: Turns out it's hard to generate an exception in QEMU. On real
+> hardware a read to an invalid memory address (i.e. outside of the Flash and
+> RAM regions) would be enough but QEMU happily accepts the operation and
+> returns zero. A trap instruction works on both QEMU and hardware but
+> unfortunately it's not available on stable so you'll have to temporarily
+> switch to nightly to run this and the next example.
+ -->
+<blockquote>
+<p><strong>注記</strong> QEMU上で例外を生成するのは難しいことがわかりました。実際のハードウェアでは、
+不正なメモリアドレス（つまりFlashとRAM領域の外側）を読むだけで十分ですが、QEMUは幸運なことにこの操作を受け付け、ゼロを返します。
+トラップ命令はQEMUとハードウェア両方で機能しますが、不運なことにstableのRustでは利用できません。
+そのため、今回と次の例を動かすために、一時的にnightlyに切り替える必要があります。</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">#![feature(core_intrinsics)]
+#![no_main]
+#![no_std]
+
+use core::intrinsics;
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    // これは未定義命令（UDF）を実行し、HardFault例外を引き起こします
+    unsafe { intrinsics::abort() }
+}
+</code></pre></pre>
+<pre><code class="language-console">(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at ../rt/src/lib.rs:7
+7       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) b DefaultExceptionHandler
+Breakpoint 1 at 0xec: file ../rt/src/lib.rs, line 95.
+
+(gdb) continue
+Continuing.
+
+Breakpoint 1, DefaultExceptionHandler ()
+    at ../rt/src/lib.rs:95
+95          loop {}
+
+(gdb) list
+90          Vector { handler: SysTick },
+91      ];
+92
+93      #[no_mangle]
+94      pub extern &quot;C&quot; fn DefaultExceptionHandler() {
+95          loop {}
+96      }
+</code></pre>
+<!-- 
+And for completeness, here's the disassembly of the optimized version of the program:
+ -->
+<p>完全を期するため、最適化されたバージョンのプログラムの逆アセンブリを見せます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -d -no-show-raw-insn -print-imm-hex
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+main:
+	trap
+	trap
+
+Reset:
+	movw	r1, #0x0
+	movw	r0, #0x0
+	movt	r1, #0x2000
+	movt	r0, #0x2000
+	subs	r1, r1, r0
+	bl	#0xd2
+	movw	r1, #0x0
+	movw	r0, #0x0
+	movt	r1, #0x2000
+	movt	r0, #0x2000
+	subs	r2, r1, r0
+	movw	r1, #0x0
+	movt	r1, #0x0
+	bl	#0x8
+	bl	#-0x3c
+	trap
+
+DefaultExceptionHandler:
+	b	#-0x4 &lt;DefaultExceptionHandler&gt;
+</code></pre>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -s -j .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 45000000 7f000000 7f000000  ... E...........
+ 0010 7f000000 7f000000 7f000000 00000000  ................
+ 0020 00000000 00000000 00000000 7f000000  ................
+ 0030 00000000 00000000 7f000000 7f000000  ................
+</code></pre>
+<!-- 
+The vector table now resembles the results of all the code snippets in this book
+  so far. To summarize:
+- In the [_Inspecting it_] section of the earlier memory chapter, we learned
+  that:
+    - The first entry in the vector table contains the initial value of the
+      stack pointer.
+    - Objdump prints in `little endian` format, so the stack starts at
+      `0x2001_0000`.
+    - The second entry points to address `0x0000_0045`, the Reset handler.
+        - The address of the Reset handler can be seen in the disassembly above,
+          being `0x44`.
+        - The first bit being set to 1 does not alter the address due to
+          alignment requirements. Instead, it causes the function to be executed
+          in _thumb mode_.
+- Afterwards, a pattern of addresses alternating between `0x7f` and `0x00` is
+  visible.
+    - Looking at the disassembly above, it is clear that `0x7f` refers to the
+      `DefaultExceptionHandler` (`0x7e` executed in thumb mode).
+    - Cross referencing the pattern to the vector table that was set up earlier
+      in this chapter (see the definition of `pub static EXCEPTIONS`) with [the
+      vector table layout for the Cortex-M], it is clear that the address of the
+      `DefaultExceptionHandler` is present each time a respective handler entry
+      is present in the table.
+    - In turn, it is also visible that the layout of the vector table data
+      structure in the Rust code is aligned with all the reserved slots in the
+      Cortex-M vector table. Hence, all reserved slots are correctly set to a
+      value of zero.
+ -->
+<p>ベクタテーブルは、この本にあるこれまでのコードスニペット全ての結果を象徴しています。まとめると</p>
+<ul>
+<li>メモリレイアウトの章の<a href="https://docs.rust-embedded.org/embedonomicon/memory-layout.html#inspecting-it"><em>調査</em></a>セクションで、次のことを学びました。
+<ul>
+<li>ベクタテーブルの1つ目のエントリは、スタックポインタの初期値です。</li>
+<li>objdumpは、<code>little endin</code>フォーマットで出力され、スタックは<code>0x2001_0000</code>から始まります。</li>
+<li><code>0x0000_0045</code>番地を指す2つ目のエントリは、リセットハンドラです。
+<ul>
+<li>リセットハンドラのアドレスは、上の逆アセンブリで<code>0x44</code>であることがわかります。</li>
+<li>最初のビットが1に設定されていますが、アライメント要件のため、アドレスは変わりません。代わりに、<em>thumbモード</em>で関数が実行されるようになります。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>その後は、<code>0x7f</code>と<code>0x00</code>が交互に現れるアドレスのパターンが見えます。
+<ul>
+<li>上の逆アセンブリを見ると、<code>0x7f</code>が<code>DefaultExceptionHandler</code>（<code>0x7e</code>がthumbモードで実行される）を参照しているのは明らかです。</li>
+<li>この章の前半で設定したベクタテーブルへのパターン（<code>pub static EXCEPTIONS</code>の定義を見て下さい）と<a href="https://developer.arm.com/docs/dui0552/latest/the-cortex-m3-processor/exception-model/vector-table">Cortex-Mのベクタテーブルレイアウト</a>とを相互参照すると、<code>DefaultExceptionHandler</code>のアドレスがテーブル内の各ハンドラエントリにあることが明らかです。</li>
+<li>次に、Rustコードのベクタテーブルのデータ構造のレイアウトが予約済みスロットも含めて、Cortex-Mベクタテーブルにアライメントされていることも見ることができます。そのため。全ての予約済みスロットは、正しくゼロに設定されています。</li>
+</ul>
+</li>
+</ul>
+<!-- ## Overriding a handler -->
+<h2><a class="header" href="#ハンドラのオーバーライド" id="ハンドラのオーバーライド">ハンドラのオーバーライド</a></h2>
+<!-- 
+To override an exception handler, the user has to provide a function whose symbol name exactly
+matches the name we used in `EXCEPTIONS`.
+ -->
+<p>例外ハンドラをオーバーライドするため、ユーザーは<code>EXCEPTIONS</code>で使った名前と完全に一致するシンボルの関数を提供しなければなりません。</p>
+<pre><pre class="playground"><code class="language-rust">#![feature(core_intrinsics)]
+#![no_main]
+#![no_std]
+
+use core::intrinsics;
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    unsafe { intrinsics::abort() }
+}
+
+#[no_mangle]
+pub extern &quot;C&quot; fn HardFault() -&gt; ! {
+    // ここで何か面白いことをやります
+    loop {}
+}
+</code></pre></pre>
+<!-- You can test it in QEMU -->
+<p>QEMUでテストできます。</p>
+<pre><code class="language-console">(gdb) target remote :3333
+Remote debugging using :3333
+Reset () at /home/japaric/rust/embedonomicon/ci/exceptions/rt/src/lib.rs:7
+7       pub unsafe extern &quot;C&quot; fn Reset() -&gt; ! {
+
+(gdb) b HardFault
+Breakpoint 1 at 0x44: file src/main.rs, line 18.
+
+(gdb) continue
+Continuing.
+
+Breakpoint 1, HardFault () at src/main.rs:18
+18          loop {}
+
+(gdb) list
+13      }
+14
+15      #[no_mangle]
+16      pub extern &quot;C&quot; fn HardFault() -&gt; ! {
+17          // ここで何か面白いことをして下さい
+18          loop {}
+19      }
+</code></pre>
+<!-- 
+The program now executes the user defined `HardFault` function instead of the
+`DefaultExceptionHandler` in the `rt` crate.
+ -->
+<p>今回は、プログラムは、<code>rt</code>クレートの<code>DefaultExceptionHandler</code>ではなく、ユーザーが定義した<code>HardFault</code>関数を実行します。</p>
+<!-- 
+Like our first attempt at a `main` interface, this first implementation has the problem of having no
+type safety. It's also easy to mistype the name of the exception, but that doesn't produce an error
+or warning. Instead the user defined handler is simply ignored. Those problems can be fixed using a
+macro like the [`exception!`] macro defined in `cortex-m-rt` v0.5.x or the
+[`exception`] attribute in `cortex-m-rt` v0.6.x.
+ -->
+<p><code>main</code>インタフェースでの最初の試みのように、最初の実装は型安全でないという問題があります。
+簡単に、例外の名前を間違ってしまいますが、エラーも警告も発しません。
+代わりに、ユーザー定義のハンドラは単に無視されます。
+これらの問題は、<code>cortex-m-rt</code> v0.5.xの<a href="https://github.com/japaric/cortex-m-rt/blob/v0.5.1/src/lib.rs#L792"><code>exception!</code></a>マクロか、<code>cortex-m-rt</code> v0.6.x.の<a href="https://github.com/rust-embedded/cortex-m-rt/blob/v0.6.3/macros/src/lib.rs#L254"><code>exception</code></a>アトリビュートにより解決できます。</p>
+<!-- # Assembly on stable -->
+<h1><a class="header" href="#stableでのアセンブリ" id="stableでのアセンブリ">stableでのアセンブリ</a></h1>
+<!-- 
+So far we have managed to boot the device and handle interrupts without a single
+line of assembly. That's quite a feat! But depending on the architecture you are
+targeting you may need some assembly to get to this point. There are also some
+operations like context switching that require assembly, etc.
+ -->
+<p>ここまで、デバイスの起動と割り込み処理とを、1行のアセンブリも書くことなくうまくやって来ました。
+これはかなりの偉業です！しかし、ターゲットアーキテクチャ次第では、
+ここまで到達するためにアセンブリが必要になるかもしれません。
+他にも、コンテキストスイッチのようなアセンブリを必要とする操作があります。</p>
+<!-- 
+The problem is that both *inline* assembly (`asm!`) and *free form* assembly
+(`global_asm!`) are unstable, and there's no estimate for when they'll be
+stabilized, so you can't use them on stable . This is not a showstopper because
+there are some workarounds which we'll document here.
+ -->
+<p>問題は、<em>インライン</em>アセンブリ（<code>asm!</code>）も<em>自由形式</em>アセンブリ（<code>global_asm!</code>）もunstableなことです。
+そして、これらがいつ安定化されるかは分かっていないため、stableでは使えません。
+これから説明するように、いくつかのワークアラウンドがあるため、致命的な問題ではありません。</p>
+<!-- 
+To motivate this section we'll tweak the `HardFault` handler to provide
+information about the stack frame that generated the exception.
+ -->
+<p>本セクションの動機付けとして、<code>HardFault</code>ハンドラを、
+例外を発生させたスタックフレームの情報を提供するように修正します。</p>
+<!-- Here's what we want to do: -->
+<p>やりたいことは下記の通りです。</p>
+<!-- 
+Instead of letting the user directly put their `HardFault` handler in the vector
+table we'll make the `rt` crate put a trampoline to the user-defined `HardFault`
+handler in the vector table.
+ -->
+<p>ベクタテーブルにユーザーが<code>HardFault</code>ハンドラを直接配置する代わりに、
+<code>rt</code>クレートがユーザー定義の<code>HardFault</code>をトランポリンするハンドラをベクタテーブルに配置します。</p>
+<pre><code class="language-console">$ tail -n36 ../rt/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>extern &quot;C&quot; {
+    fn NMI();
+    fn HardFaultTrampoline(); // &lt;- 変更点!
+    fn MemManage();
+    fn BusFault();
+    fn UsageFault();
+    fn SVCall();
+    fn PendSV();
+    fn SysTick();
+}
+
+#[link_section = &quot;.vector_table.exceptions&quot;]
+#[no_mangle]
+pub static EXCEPTIONS: [Vector; 14] = [
+    Vector { handler: NMI },
+    Vector { handler: HardFaultTrampoline }, // &lt;- 変更点!
+    Vector { handler: MemManage },
+    Vector { handler: BusFault },
+    Vector {
+        handler: UsageFault,
+    },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: SVCall },
+    Vector { reserved: 0 },
+    Vector { reserved: 0 },
+    Vector { handler: PendSV },
+    Vector { handler: SysTick },
+];
+
+#[no_mangle]
+pub extern &quot;C&quot; fn DefaultExceptionHandler() {
+    loop {}
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+This trampoline will read the stack pointer and then call the user `HardFault`
+handler. The trampoline will have to be written in assembly:
+ -->
+<p>このトランポリンはスタックポインタを読んで、ユーザーの<code>HardFault</code>ハンドラを呼びます。
+トランポリンはアセンブリで次のように書かなければなりません。</p>
+<pre><code class="language-armasm">  mrs r0, MSP
+  b HardFault
+</code></pre>
+<!-- 
+Due to how the ARM ABI works this sets the Main Stack Pointer (MSP) as the first
+argument of the `HardFault` function / routine. This MSP value also happens to
+be a pointer to the registers pushed to the stack by the exception. With these
+changes the user `HardFault` handler must now have signature
+`fn(&StackedRegisters) -> !`.
+ -->
+<p>ARM ABIでは、このメインスタックポインタ（MSP; Main Stack Pointer）の設定は、<code>HardFault</code>関数/ルーチンの第一引数になります。
+このMSPの値は、例外によってスタックにプッシュされたレジスタへのポインタです。
+これらの変更により、ユーザーの<code>HardFault</code>ハンドラは、<code>fn(&amp;StackedRegisters) -&gt; !</code>というシグネチャを持たなければなりません。</p>
+<!-- ## `.s` files -->
+<h2><a class="header" href="#sファイル" id="sファイル"><code>.s</code>ファイル</a></h2>
+<!-- One approach to stable assembly is to write the assembly in an external file: -->
+<p>stableでアセンブリを書く方法の1つは、アセンブリを外部ファイルに書くことです。</p>
+<pre><code class="language-console">$ cat ../rt/asm.s
+</code></pre>
+<pre><code class="language-armasm">  .section .text.HardFaultTrampoline
+  .global HardFaultTrampoline
+  .thumb_func
+HardFaultTrampoline:
+  mrs r0, MSP
+  b HardFault
+</code></pre>
+<!-- 
+And use the `cc` crate in the build script of the `rt` crate to assemble that
+file into an object file (`.o`) and then into an archive (`.a`).
+ -->
+<p>そして、<code>rt</code>クレートのビルドスクリプト内で、アセンブリファイルをオブジェクトファイル（<code>.o</code>）にアセンブルし、
+アーカイブ（<code>.a</code>）にするために、<code>cc</code>クレートを使います。</p>
+<pre><code class="language-console">$ cat ../rt/build.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">use std::{env, error::Error, fs::File, io::Write, path::PathBuf};
+
+use cc::Build;
+
+fn main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {
+    // このクレートのビルドディレクトリです
+    let out_dir = PathBuf::from(env::var_os(&quot;OUT_DIR&quot;).unwrap());
+
+    // ライブラリサーチパスを追加します
+    println!(&quot;cargo:rustc-link-search={}&quot;, out_dir.display());
+
+    // `link.x`をビルドディレクトリに置きます
+    File::create(out_dir.join(&quot;link.x&quot;))?.write_all(include_bytes!(&quot;link.x&quot;))?;
+
+    // `asm.s`ファイルをアセンブルします
+    Build::new().file(&quot;asm.s&quot;).compile(&quot;asm&quot;); // &lt;- 追加!
+
+    Ok(())
+}
+</code></pre></pre>
+<pre><code class="language-console">$ tail -n2 ../rt/Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[build-dependencies]
+cc = &quot;1.0.25&quot;
+</code></pre>
+<!-- And that's it! -->
+<p>これで全てです！</p>
+<!-- 
+We can confirm that the vector table contains a pointer to `HardFaultTrampoline`
+by writing a very simple program.
+ -->
+<p>とても簡単なプログラムを書くだけで、ベクタテーブルが<code>HardFaultTrampoline</code>へのポインタを持つことが確認できます。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    loop {}
+}
+
+#[allow(non_snake_case)]
+#[no_mangle]
+pub fn HardFault(_ef: *const u32) -&gt; ! {
+    loop {}
+}
+</code></pre></pre>
+<!-- Here's the disassembly. Look at the address of `HardFaultTrampoline`. -->
+<p>逆アセンブリの結果は、以下の通りです。<code>HardFaultTrampoline</code>のアドレスを見て下さい。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -d -no-show-raw-insn -print-imm-hex
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+HardFault:
+	b	#-0x4 &lt;HardFault&gt;
+
+main:
+	trap
+
+Reset:
+	bl	#-0x6
+	trap
+
+DefaultExceptionHandler:
+	b	#-0x4 &lt;DefaultExceptionHandler&gt;
+
+UsageFault:
+ &lt;unknown&gt;
+
+HardFaultTrampoline:
+	mrs	r0, msp
+	b	#-0x14 &lt;HardFault&gt;
+</code></pre>
+<!-- 
+> **NOTE:** To make this disassembly smaller I commented out the initialization
+> of RAM
+ -->
+<blockquote>
+<p><strong>注記</strong> この逆アセンブリ結果を小さくするために、RAMの初期化をコメントアウトしています。</p>
+</blockquote>
+<!-- 
+Now look at the vector table. The 4th entry should be the address of
+`HardFaultTrampoline` plus one.
+ -->
+<p>ここで、ベクタテーブルを見ます。
+4つ目のエントリは、<code>HardFaultTrampoline</code>に1を足したアドレスになっているはずです。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -s -j .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 45000000 4b000000 4d000000  ... E...K...M...
+ 0010 4b000000 4b000000 4b000000 00000000  K...K...K.......
+ 0020 00000000 00000000 00000000 4b000000  ............K...
+ 0030 00000000 00000000 4b000000 4b000000  ........K...K...
+</code></pre>
+<!-- ## `.o` / `.a` files -->
+<h2><a class="header" href="#o--aファイル" id="o--aファイル"><code>.o</code> / <code>.a</code>ファイル</a></h2>
+<!-- 
+The downside of using the `cc` crate is that it requires some assembler program
+on the build machine. For example when targeting ARM Cortex-M the `cc` crate
+uses `arm-none-eabi-gcc` as the assembler.
+ -->
+<p><code>cc</code>クレートを使う欠点は、ビルドマシンにアセンブラプログラムが必要なことです。
+例えば、ARM Cortex-Mをターゲットにする時、<code>cc</code>クレートはアセンブラとして<code>arm-none-eabi-gcc</code>を使います。</p>
+<!-- 
+Instead of assembling the file on the build machine we can ship a pre-assembled
+file with the `rt` crate. That way no assembler program is required on the build
+machine. However, you would still need an assembler on the machine that packages
+and publishes the crate.
+ -->
+<p>ビルドマシン上でファイルをアセンブルする代わりに、<code>rt</code>クレートと一緒にあらかじめアセンブルしたファイルを配布できます。
+この方法なら、ビルドマシンにアセンブラプログラムは必要ありません。
+しかしながら、rtクレートをパッケージして発行するマシン上には、アセンブラが必要です。</p>
+<!-- 
+There's not much difference between an assembly (`.s`) file and its *compiled*
+version: the object (`.o`) file. The assembler doesn't do any optimization; it
+simply chooses the right object file format for the target architecture.
+ -->
+<p>アセンブリファイル（<code>.s</code>）と、コンパイルしたオブジェクトファイル（<code>.o</code>）とは、それほど違いがありません。
+アセンブラは最適化を行いません。単純にターゲットアーキテクチャ向けに正しいオブジェクトファイル形式を選ぶだけです。</p>
+<!-- 
+Cargo provides support for bundling archives (`.a`) with crates. We can package
+object files into an archive using the `ar` command and then bundle the archive
+with the crate. In fact, this what the `cc` crate does; you can see the commands
+it invoked by searching for a file named `output` in the `target` directory.
+ -->
+<p>Cargoは、クレートとアーカイブ（<code>.a</code>）をまとめる機能を提供しています。<code>ar</code>コマンドを使ってオブジェクトファイルをアーカイブにパッケージできます。
+その後、アーカイブをクレートにまとめます。実は、これは<code>cc</code>クレートが行っていることなのです。
+ccクレートが呼び出しているコマンドは、<code>target</code>ディレクトリの<code>output</code>という名前のファイルを探すと見つかります。</p>
+<pre><code class="language-console">$ grep running $(find target -name output)
+</code></pre>
+<pre><code class="language-text">running: &quot;arm-none-eabi-gcc&quot; &quot;-O0&quot; &quot;-ffunction-sections&quot; &quot;-fdata-sections&quot; &quot;-fPIC&quot; &quot;-g&quot; &quot;-fno-omit-frame-pointer&quot; &quot;-mthumb&quot; &quot;-march=armv7-m&quot; &quot;-Wall&quot; &quot;-Wextra&quot; &quot;-o&quot; &quot;/tmp/app/target/thumbv7m-none-eabi/debug/build/rt-6ee84e54724f2044/out/asm.o&quot; &quot;-c&quot; &quot;asm.s&quot;
+running: &quot;ar&quot; &quot;crs&quot; &quot;/tmp/app/target/thumbv7m-none-eabi/debug/build/rt-6ee84e54724f2044/out/libasm.a&quot; &quot;/home/japaric/rust-embedded/embedonomicon/ci/asm/app/target/thumbv7m-none-eabi/debug/build/rt-6ee84e54724f2044/out/asm.o&quot;
+</code></pre>
+<pre><code class="language-console">$ grep cargo $(find target -name output)
+</code></pre>
+<pre><code class="language-tetx">cargo:rustc-link-search=/tmp/app/target/thumbv7m-none-eabi/debug/build/rt-6ee84e54724f2044/out
+cargo:rustc-link-lib=static=asm
+cargo:rustc-link-search=native=/tmp/app/target/thumbv7m-none-eabi/debug/build/rt-6ee84e54724f2044/out
+</code></pre>
+<!-- We'll do something similar to produce an archive. -->
+<p>アーカイブを作成するために似たことを行います。</p>
+<pre><code class="language-console">$ # `cc`が使う多くのフラグはアセンブル時には意味がないため、それらは取り除きます
+$ arm-none-eabi-as -march=armv7-m asm.s -o asm.o
+
+$ ar crs librt.a asm.o
+
+$ arm-none-eabi-objdump -Cd librt.a
+</code></pre>
+<pre><code class="language-text">In archive librt.a:
+
+asm.o:     file format elf32-littlearm
+
+
+Disassembly of section .text.HardFaultTrampoline:
+
+00000000 &lt;HardFaultTrampoline&gt;:
+   0:	f3ef 8008 	mrs	r0, MSP
+   4:	e7fe      	b.n	0 &lt;HardFault&gt;
+</code></pre>
+<!-- 
+Next we modify the build script to bundle this archive with the `rt` rlib.
+ -->
+<p>次に、<code>rt</code> rlibにアーカイブをまとめるために、ビルドスクリプトを修正します。</p>
+<pre><code class="language-console">$ cat ../rt/build.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">use std::{
+    env,
+    error::Error,
+    fs::{self, File},
+    io::Write,
+    path::PathBuf,
+};
+
+fn main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {
+    // このクレートのビルドディレクトリです
+    let out_dir = PathBuf::from(env::var_os(&quot;OUT_DIR&quot;).unwrap());
+
+    // ライブラリサーチパスを追加します
+    println!(&quot;cargo:rustc-link-search={}&quot;, out_dir.display());
+
+    // `link.x`をビルドディレクトリに置きます
+    File::create(out_dir.join(&quot;link.x&quot;))?.write_all(include_bytes!(&quot;link.x&quot;))?;
+
+    // `librt.a`にリンクします
+    fs::copy(&quot;librt.a&quot;, out_dir.join(&quot;librt.a&quot;))?; // &lt;- 追加!
+    println!(&quot;cargo:rustc-link-lib=static=rt&quot;); // &lt;- 追加!
+
+    Ok(())
+}
+</code></pre></pre>
+<!-- 
+Now we can test this new version against the simple program from before and
+we'll get the same output.
+ -->
+<p>ここで、新バージョンが前のシンプルなプログラムと同じ出力をすることをテストできます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -d -no-show-raw-insn -print-imm-hex
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Disassembly of section .text:
+HardFault:
+	b	#-0x4 &lt;HardFault&gt;
+
+main:
+	trap
+
+Reset:
+	bl	#-0x6
+	trap
+
+DefaultExceptionHandler:
+	b	#-0x4 &lt;DefaultExceptionHandler&gt;
+
+UsageFault:
+ &lt;unknown&gt;
+
+HardFaultTrampoline:
+	mrs	r0, msp
+	b	#-0x14 &lt;HardFault&gt;
+</code></pre>
+<!-- 
+> **NOTE**: As before I have commented out the RAM initialization to make the
+> disassembly smaller.
+ -->
+<blockquote>
+<p><strong>注記</strong> 前回同様、逆アセンブリの結果を小さくするために、RAMの初期化をコメントアウトしています。</p>
+</blockquote>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -s -j .vector_table
+</code></pre>
+<pre><code class="language-text">
+app:	file format ELF32-arm-little
+
+Contents of section .vector_table:
+ 0000 00000120 45000000 4b000000 4d000000  ... E...K...M...
+ 0010 4b000000 4b000000 4b000000 00000000  K...K...K.......
+ 0020 00000000 00000000 00000000 4b000000  ............K...
+ 0030 00000000 00000000 4b000000 4b000000  ........K...K...
+</code></pre>
+<!-- 
+The downside of shipping pre-assembled archives is that, in the worst case
+scenario, you'll need to ship one build artifact for each compilation target
+your library supports.
+ -->
+<p>あらかじめアセンブルしたアーカイブを配布する欠点は、最悪の場合、
+ライブラリがサポートするターゲットごとにビルド生成物を配布しないといけないことです。</p>
+<!-- # Logging with symbols -->
+<h1><a class="header" href="#シンボルでのロギング" id="シンボルでのロギング">シンボルでのロギング</a></h1>
+<!-- 
+This section will show you how to utilize symbols and the ELF format to achieve
+super cheap logging.
+ -->
+<p>このセクションでは、極めて軽量なロギングを行うために、シンボルとELFフォーマットを利用する方法をお見せします。</p>
+<!-- ## Arbitrary symbols -->
+<h2><a class="header" href="#任意のシンボル" id="任意のシンボル">任意のシンボル</a></h2>
+<!-- 
+Whenever we needed a stable symbol interface between crates we have mainly used
+the `no_mangle` attribute and sometimes the `export_name` attribute. The
+`export_name` attribute takes a string which becomes the name of the symbol
+whereas `#[no_mangle]` is basically sugar for `#[export_name = <item-name>]`.
+ -->
+<p>クレート間で、安定したシンボルインタフェースが必要な場合、<code>no_mangle</code>アトリビュートを主に使用し、
+時には、<code>export_name</code>アトリビュートを使用します。
+<code>export_name</code>アトリビュートは、シンボル名になる文字列を引数に取ります。
+一方、<code>#[no_mangle]</code>は、基本的に<code>#[export_name = &lt;item-name&gt;]</code>のシンタックスシュガーです。</p>
+<!-- 
+Turns out we are not limited to single word names; we can use arbitrary strings,
+e.g. sentences, as the argument of the `export_name` attribute. As least when
+the output format is ELF anything that doesn't contain a null byte is fine.
+ -->
+<p>引数に取れる文字列は、1単語の名前だけに限定されないことがわかりました。
+例えば、文のような任意の文字列を<code>export_name</code>アトリビュートの引数として使うことができます。
+少なくても出力形式がELFの場合、nullバイトを含まないものならば何でも構いません。</p>
+<!-- Let's check that out: -->
+<p>そのことを確認してみましょう。</p>
+<pre><code class="language-console">$ cargo new --lib foo
+
+$ cat foo/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[export_name = &quot;Hello, world!&quot;]
+#[used]
+static A: u8 = 0;
+
+#[export_name = &quot;こんにちは&quot;]
+#[used]
+static B: u8 = 0;
+<span class="boring">}
+</span></code></pre></pre>
+<pre><code class="language-console">$ ( cd foo &amp;&amp; cargo nm --lib )
+foo-d26a39c34b4e80ce.3lnzqy0jbpxj4pld.rcgu.o:
+0000000000000000 r Hello, world!
+0000000000000000 V __rustc_debug_gdb_scripts_section__
+0000000000000000 r こんにちは
+</code></pre>
+<!-- Can you see where this is going? -->
+<p>これがどこに繋がるか、わかりますか？</p>
+<!-- ## Encoding -->
+<h2><a class="header" href="#エンコードする" id="エンコードする">エンコードする</a></h2>
+<!-- 
+Here's what we'll do: we'll create one `static` variable per log message but
+instead of storing the messages *in* the variables we'll store the messages in
+the variables' *symbol names*. What we'll log then will not be the contents of
+the `static` variables but their addresses.
+ -->
+<p>やることは、次の通りです。ログメッセージごとに<code>static</code>変数を1つ作りますが、
+メッセージをその変数の<em>中に</em>格納せずに、変数の<em>シンボル名</em>にメッセージを格納します。
+ログ出力するものは、<code>static</code>変数の内容ではなく、そのアドレスです。</p>
+<!-- 
+As long as the `static` variables are not zero sized each one will have a
+different address. What we're doing here is effectively encoding each message
+into a unique identifier, which happens to be the variable address. Some part of
+the log system will have to decode this id back into the message.
+ -->
+<p><code>static</code>変数のサイズがゼロでない限り、各変数は異なるアドレスを持ちます。
+ここで行うことは、各メッセージを一意の識別子（変数のアドレスになります）に効率的にエンコードすることです。
+ログシステムの一部は、この識別子をメッセージにデコードしなければなりません。</p>
+<!-- Let's write some code to illustrate the idea. -->
+<p>このアイデアを実現するコードを書いていきましょう。</p>
+<!-- 
+In this example we'll need some way to do I/O so we'll use the
+[`cortex-m-semihosting`] crate for that. Semihosting is a technique for having a
+target device borrow the host I/O capabilities; the host here usually refers to
+the machine that's debugging the target device. In our case, QEMU supports
+semihosting out of the box so there's no need for a debugger. On a real device
+you'll have other ways to do I/O like a serial port; we use semihosting in this
+case because it's the easiest way to do I/O on QEMU.
+ -->
+<p>この例では、I/Oが必要なため、<a href="https://crates.io/crates/cortex-m-semihosting"><code>cortex-m-semihosting</code></a>クレートを使用します。
+セミホスティングは、ターゲットデバイスがホストのI/O機能を借りられるようにするための技術です。
+今回の場合、QEMUは細かい設定なしでセミホスティングが使えるため、デバッガは不要です。
+実機の場合、シリアルポートのようなI/Oが必要になります。
+QEMU上でI/Oを使う最も簡単な方法であるため、今回はセミホスティングを使います。</p>
+<!-- Here's the code -->
+<p>コードは次のとおりです。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use core::fmt::Write;
+use cortex_m_semihosting::{debug, hio};
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let mut hstdout = hio::hstdout().unwrap();
+
+    #[export_name = &quot;Hello, world!&quot;]
+    static A: u8 = 0;
+
+    writeln!(hstdout, &quot;{:#x}&quot;, &amp;A as *const u8 as usize);
+
+    #[export_name = &quot;Goodbye&quot;]
+    static B: u8 = 0;
+
+    writeln!(hstdout, &quot;{:#x}&quot;, &amp;B as *const u8 as usize);
+
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+We also make use of the `debug::exit` API to have the program terminate the QEMU
+process. This is a convenience so we don't have to manually terminate the QEMU
+process.
+ -->
+<p>プログラムがQEMUプロセスを終了できるようにするため、<code>debug::exit</code>も使えるようにしてあります。
+QEMUプロセスを手動で終了しなくて良いため、便利です。</p>
+<!-- 
+And here's the `dependencies` section of the Cargo.toml:
+ -->
+<p>そして、こちらはCargo.tomlの<code>dependencies</code>セクションです。</p>
+<pre><code class="language-toml">[dependencies]
+cortex-m-semihosting = &quot;0.3.1&quot;
+rt = { path = &quot;../rt&quot; }
+</code></pre>
+<!-- Now we can build the program -->
+<p>これでプログラムをビルドできます。</p>
+<pre><code class="language-console">$ cargo build
+</code></pre>
+<!-- 
+To run it we'll have to add the `--semihosting-config` flag to our QEMU
+invocation:
+ -->
+<p>実行するためには、QEMU起動時に、<code>--semihosting-config</code>フラグを付け加えます。</p>
+<pre><code class="language-console">$ qemu-system-arm \
+      -cpu cortex-m3 \
+      -machine lm3s6965evb \
+      -nographic \
+      -semihosting-config enable=on,target=native \
+      -kernel target/thumbv7m-none-eabi/debug/app
+</code></pre>
+<pre><code class="language-text">0x1fe0
+0x1fe1
+</code></pre>
+<!-- 
+> **NOTE**: These addresses may not be the ones you get locally because
+> addresses of `static` variable are not guaranteed to remain the same when the
+> toolchain is changed (e.g. optimizations may have improved).
+ -->
+<blockquote>
+<p><strong>注記</strong> これらのアドレスは、あなたが得たアドレスと異なるかもしれません。
+<code>static</code>変数のアドレスは、
+ツールチェインが更新された時（例えば、最適化が改善されるかもしれません）に変わる可能性があるからです。</p>
+</blockquote>
+<!-- 
+Now we have two addresses printed to the console.
+ -->
+<p>コンソールに2つのアドレスが表示されました。</p>
+<!-- ## Decoding -->
+<h2><a class="header" href="#デコードする" id="デコードする">デコードする</a></h2>
+<!-- 
+How do we convert these addresses into strings? The answer is in the symbol
+table of the ELF file.
+ -->
+<p>どのようにして、このアドレスを文字列に変換するのでしょうか？
+答えはELFファイルのシンボルテーブルです。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -t | grep '\.rodata\s*0*1\b'
+</code></pre>
+<pre><code class="language-text">00001fe1 g       .rodata		 00000001 Goodbye
+00001fe0 g       .rodata		 00000001 Hello, world!
+$ # 1列目はシンボルのアドレス、最終列はシンボル名です。
+</code></pre>
+<!-- 
+`objdump -t` prints the symbol table. This table contains *all* the symbols but
+we are only looking for the ones in the `.rodata` section and whose size is one
+byte (our variables have type `u8`).
+ -->
+<p><code>objdump -t</code>はシンボルテーブルを表示します。このテーブルは<em>全ての</em>シンボルを含んでいますが、
+<code>.rodata</code>セクションの中にある1バイトの大きさ（変数の型は<code>u8</code>です）のアドレスだけを詳しく見ていきます。</p>
+<!-- 
+It's important to note that the address of the symbols will likely change when
+optimizing the program. Let's check that.
+ -->
+<p>プログラムを最適化すると、シンボルのアドレスが変わる可能性があるため、注意して下さい。
+確認してみましょう。</p>
+<!-- 
+> **PROTIP** You can set `target.thumbv7m-none-eabi.runner` to the long QEMU
+> command from before (`qemu-system-arm -cpu (..) -kernel`) in the Cargo
+> configuration file (`.cargo/conifg`) to have `cargo run` use that *runner* to
+> execute the output binary.
+ -->
+<blockquote>
+<p><strong>専門家によるアドバイス</strong> <code>target.thumbv7m-none-eabi.runner</code>を、
+長いQEMUコマンド（<code>qemu-system-arm -cpu (..) -kernel</code>）に設定することができます。
+Cargo設定ファイル（<code>.cargo/config</code>）にコマンドを書くことで、
+<code>cargo run</code>がその<em>ランナー</em>を使ってバイナリを実行します。</p>
+</blockquote>
+<pre><code class="language-console">$ head -n2 .cargo/config
+</code></pre>
+<pre><code class="language-toml">[target.thumbv7m-none-eabi]
+runner = &quot;qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel&quot;
+</code></pre>
+<pre><code class="language-console">$ cargo run --release
+     Running `qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel target/thumbv7m-none-eabi/release/app`
+</code></pre>
+<pre><code class="language-text">0xb9c
+0xb9d
+</code></pre>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -t | grep '\.rodata\s*0*1\b'
+</code></pre>
+<pre><code class="language-text">00000b9d g     O .rodata	00000001 Goodbye
+00000b9c g     O .rodata	00000001 Hello, world!
+</code></pre>
+<!-- 
+So make sure to always look for the strings in the ELF file you executed.
+ -->
+<p>常に実行したELFファイル内の文字列を探すようにして下さい。</p>
+<!-- 
+Of course, the process of looking up the strings in the ELF file can be automated
+using a tool that parses the symbol table (`.symtab` section) contained in the
+ELF file. Implementing such tool is out of scope for this book and it's left as
+an exercise for the reader.
+ -->
+<p>もちろん、ELFファイルに含まれるシンボルテーブル（<code>.symtab</code>セクション）を解析するツールを使うことで、
+ELFファイル内の文字列を探すプロセスを自動化することが可能です。
+そのようなツールを実装することは、本書のスコープ外です。
+そのため、読者の演習とします。</p>
+<!-- ## Making it zero cost -->
+<h2><a class="header" href="#ゼロコストにする" id="ゼロコストにする">ゼロコストにする</a></h2>
+<!-- 
+Can we do better? Yes, we can!
+ -->
+<p>より良いものにできるでしょうか？もちろんできます！</p>
+<!-- 
+The current implementation places the `static` variables in `.rodata`, which
+means they occupy size in Flash even though we never use their contents. Using a
+little bit of linker script magic we can make them occupy *zero* space in Flash.
+ -->
+<p>現在の実装は、<code>static</code>変数を<code>.rodata</code>に配置しています。これは、その変数の値を決して使わないにも関わらず、
+Flashの容量を専有することを意味します。
+リンカスクリプトの魔法を少し使うことで、Flashの使用量を<em>ゼロ</em>にできます。</p>
+<pre><code class="language-console">$ cat log.x
+</code></pre>
+<pre><code class="language-text">SECTIONS
+{
+  .log 0 (INFO) : {
+    *(.log);
+  }
+}
+</code></pre>
+<!-- 
+We'll place the `static` variables in this new output `.log` section. This
+linker script will collect all the symbols in the `.log` sections of input
+object files and put them in an output `.log` section. We have seen this pattern
+in the [Memory layout] chapter.
+ -->
+<p><code>static</code>変数を新しい<code>.log</code>出力セクションに配置します。
+このリンカスクリプトは、入力オブジェクトファイルの<code>.log</code>セクションにある全てのシンボルを集め、
+<code>.log</code>出力セクションに置きます。
+このパターンは、<a href="/memory-layout.html">メモリレイアウト</a>の章でやりました。</p>
+<!-- [Memory layout]: /memory-layout.html -->
+<!-- 
+The new bit here is the `(INFO)` part; this tells the linker that this section
+is a non-allocatable section. Non-allocatable sections are kept in the ELF
+binary as metadata but they are not loaded onto the target device.
+ -->
+<p>少し新しい部分は、<code>(INFO)</code>の部分です。これは、リンカに、このセクションは割当不可セクションであることを教えます。
+割当不可セクションは、ELFバイナリにメタデータとして残りますが、ターゲットデバイスにはロードされません。</p>
+<!-- 
+We also specified the start address of this output section: the `0` in `.log 0
+(INFO)`.
+ -->
+<p>また、この出力セクションの開始アドレスを<code>.log 0 (INFO)</code>で<code>0</code>に指定しています。</p>
+<!-- 
+The other improvement we can do is switch from formatted I/O (`fmt::Write`) to
+binary I/O, that is send the addresses to the host as bytes rather than as
+strings.
+ -->
+<p>他に改善点は、フォーマットされたI/O（<code>fmt::Write</code>）から、バイナリI/Oに切り替えることです。
+つまり、文字列としてではなく、バイトとしてホストにアドレスを送ります。</p>
+<!-- 
+Binary serialization can be hard but we'll keep things super simple by
+serializing each address as a single byte. With this approach we don't have to
+worry about endianness or framing. The downside of this format is that a single
+byte can only represent up to 256 different addresses.
+ -->
+<p>バイナリシリアライゼーションは、複雑になる可能性がありますが、各アドレスを1バイトとしてシリアライズすることで、
+極めて簡潔になります。この方法により、エンディアネスやフレーム化について悩まなくて済みます。
+この形式の欠点は、1バイトは256のアドレスしか表現できないことです。</p>
+<!-- Let's make those changes: -->
+<p>これらの変更を加えましょう。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{debug, hio};
+
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let mut hstdout = hio::hstdout().unwrap();
+
+    #[export_name = &quot;Hello, world!&quot;]
+    #[link_section = &quot;.log&quot;] // &lt;- 追加!
+    static A: u8 = 0;
+
+    let address = &amp;A as *const u8 as usize as u8;
+    hstdout.write_all(&amp;[address]).unwrap(); // &lt;- 変更!
+
+    #[export_name = &quot;Goodbye&quot;]
+    #[link_section = &quot;.log&quot;] // &lt;- 追加!
+    static B: u8 = 0;
+
+    let address = &amp;B as *const u8 as usize as u8;
+    hstdout.write_all(&amp;[address]).unwrap(); // &lt;- 変更!
+
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+Before you run this you'll have to append `-Tlog.x` to the arguments passed to
+the linker. That can be done in the Cargo configuration file.
+ -->
+<p>実行する前に、リンカに渡す引数に<code>-Tlog.x</code>を追加しなければなりません。
+Cargo設定ファイルで、追加できます。</p>
+<pre><code class="language-console">$ cat .cargo/config
+</code></pre>
+<pre><code class="language-toml">[target.thumbv7m-none-eabi]
+runner = &quot;qemu-system-arm -cpu cortex-m3 -machine lm3s6965evb -nographic -semihosting-config enable=on,target=native -kernel&quot;
+rustflags = [
+  &quot;-C&quot;, &quot;link-arg=-Tlink.x&quot;,
+  &quot;-C&quot;, &quot;link-arg=-Tlog.x&quot;, # &lt;- 追加!
+]
+
+[build]
+target = &quot;thumbv7m-none-eabi&quot;
+</code></pre>
+<!-- 
+Now you can run it! Since the output now has a binary format we'll pipe it
+through the `xxd` command to reformat it as a hexadecimal string.
+ -->
+<p>これで実行することができます！今回、出力はバイナリ形式であるため、
+<code>xxd</code>コマンドにパイプし、16進数の文字列に再変換します。</p>
+<pre><code class="language-console">$ cargo run | xxd -p
+</code></pre>
+<pre><code class="language-text">0001
+</code></pre>
+<!-- 
+The addresses are `0x00` and `0x01`. Let's now look at the symbol table.
+ -->
+<p>アドレスは、<code>0x00</code>と<code>0x01</code>です。では、シンボルテーブルを見てみましょう。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -t | grep '\.log'
+</code></pre>
+<pre><code class="language-text">00000001 g     O .log		 00000001 Goodbye
+00000000 g     O .log		 00000001 Hello, world!
+</code></pre>
+<!-- 
+There are our strings. You'll notice that their addresses now start at zero;
+this is because we set a start address for the output `.log` section.
+ -->
+<p>目的の文字列があります。今回は、アドレスがゼロから開始していることに気づくでしょう。
+これは、<code>.log</code>出力セクションに、開始アドレスを設定したためです。</p>
+<!-- 
+Each variable is 1 byte in size because we are using `u8` as their type. If we
+used something like `u16` then all address would be even and we would not be
+able to efficiently use all the address space (`0...255`).
+ -->
+<p><code>u8</code>を型として使っているため、各変数は1バイトの大きさです。
+もし<code>u16</code>のような型を使った場合、全てのアドレスは偶数になり、全てのアドレス空間（<code>0...255</code>）を、
+効率的に利用することができないでしょう。</p>
+<!-- ## Packaging it up -->
+<h2><a class="header" href="#パッケージする" id="パッケージする">パッケージする</a></h2>
+<!-- 
+You've noticed that the steps to log a string are always the same so we can
+refactor them into a macro that lives in its own crate. Also, we can make the
+logging library more reusable by abstracting the I/O part behind a trait.
+ -->
+<p>文字列をログ出力するステップは、常に一緒です。そこで、
+クレート内でだけ利用可能なマクロにリファクタリングします。
+また、I/O部分をトレイトで抽象化することで、ロギングライブラリをより再利用可能にできます。</p>
+<pre><code class="language-console">$ cargo new --lib log
+
+$ cat log/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_std]
+
+<span class="boring">fn main() {
+</span>pub trait Log {
+    type Error;
+
+    fn log(&amp;mut self, address: u8) -&gt; Result&lt;(), Self::Error&gt;;
+}
+
+#[macro_export]
+macro_rules! log {
+    ($logger:expr, $string:expr) =&gt; {{
+        #[export_name = $string]
+        #[link_section = &quot;.log&quot;]
+        static SYMBOL: u8 = 0;
+
+        $crate::Log::log(&amp;mut $logger, &amp;SYMBOL as *const u8 as usize as u8)
+    }};
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Given that this library depends on the `.log` section it should be its
+responsibility to provide the `log.x` linker script so let's make that happen.
+ -->
+<p>このライブラリが<code>.log</code>セクションに依存することを考えると、このライブラリが<code>log.x</code>リンカスクリプトの提供に責任を持つべきです。
+それでは、そうしましょう。</p>
+<pre><code class="language-console">$ mv log.x ../log/
+</code></pre>
+<pre><code class="language-console">$ cat ../log/build.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">use std::{env, error::Error, fs::File, io::Write, path::PathBuf};
+
+fn main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {
+    // リンカスクリプトをリンカが見つけられる場所に置きます
+    let out = PathBuf::from(env::var(&quot;OUT_DIR&quot;)?);
+
+    File::create(out.join(&quot;log.x&quot;))?.write_all(include_bytes!(&quot;log.x&quot;))?;
+
+    println!(&quot;cargo:rustc-link-search={}&quot;, out.display());
+
+    Ok(())
+}
+</code></pre></pre>
+<!-- 
+Now we can refactor our application to use the `log!` macro:
+ -->
+<p>それでは、<code>log!</code>マクロを使って、アプリケーションをリファクタリングしましょう。</p>
+<pre><code class="language-console">$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{
+    debug,
+    hio::{self, HStdout},
+};
+
+use log::{log, Log};
+use rt::entry;
+
+struct Logger {
+    hstdout: HStdout,
+}
+
+impl Log for Logger {
+    type Error = ();
+
+    fn log(&amp;mut self, address: u8) -&gt; Result&lt;(), ()&gt; {
+        self.hstdout.write_all(&amp;[address])
+    }
+}
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let hstdout = hio::hstdout().unwrap();
+    let mut logger = Logger { hstdout };
+
+    log!(logger, &quot;Hello, world!&quot;);
+
+    log!(logger, &quot;Goodbye&quot;);
+
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+</code></pre></pre>
+<!-- 
+Don't forget to update the `Cargo.toml` file to depend on the new `log` crate.
+ -->
+<p>新しい<code>log</code>クレートへの依存を、<code>Cargo.toml</code>に追加するのを忘れないようにしましょう。</p>
+<pre><code class="language-console">$ tail -n4 Cargo.toml
+</code></pre>
+<pre><code class="language-toml">[dependencies]
+cortex-m-semihosting = &quot;0.3.1&quot;
+log = { path = &quot;../log&quot; }
+rt = { path = &quot;../rt&quot; }
+</code></pre>
+<pre><code class="language-console">$ cargo run | xxd -p
+</code></pre>
+<pre><code class="language-text">0001
+</code></pre>
+<pre><code class="language-console">$ cargo objdump --bin app -- -t | grep '\.log'
+</code></pre>
+<pre><code class="language-text">00000001 g     O .log		 00000001 Goodbye
+00000000 g     O .log		 00000001 Hello, world!
+</code></pre>
+<!-- Same output as before! -->
+<p>以前と同じ出力になりました！</p>
+<!-- ## Bonus: Multiple log levels -->
+<h2><a class="header" href="#おまけ複数のログレベル" id="おまけ複数のログレベル">おまけ：複数のログレベル</a></h2>
+<!-- 
+Many logging frameworks provide ways to log messages at different *log levels*.
+These log levels convey the severity of the message: "this is an error", "this
+is just a warning", etc. These log levels can be used to filter out unimportant
+messages when searching for e.g. error messages.
+ -->
+<p>多くのログフレームワークは、異なる<em>ログレベル</em>でメッセージをロギングする方法を提供しています。
+これらのログレベルは、メッセージの重要度を告げています。「これはエラーです」、「これはただの警告です」、など。
+これらのログレベルは、例えばエラーメッセージを検索する時に、重要でないメッセージを除去するために使用されます。</p>
+<!-- 
+We can extend our logging library to support log levels without increasing its
+footprint. Here's how we'll do that:
+ -->
+<p>私達のログライブラリを、フットプリントの増加なしに、ログレベルをサポートするように拡張できます。
+やることは、次の通りです。</p>
+<!-- 
+We have a flat address space for the messages: from `0` to `255` (inclusive). To
+keep things simple let's say we only want to differentiate between error
+messages and warning messages. We can place all the error messages at the
+beginning of the address space, and all the warning messages *after* the error
+messages. If the decoder knows the address of the first warning message then it
+can classify the messages. This idea can be extended to support more than two
+log levels.
+ -->
+<p>メッセージ用に、0以上、255以下のフラットなアドレス空間があります。
+簡単化のために、エラーメッセージと警告メッセージを区別したいだけ、としましょう。
+全てのエラーメッセージをアドレス空間の最初に置き、警告メッセージをエラーメッセージの<em>後</em>に置きます。
+デコーダが最初の警告メッセージのアドレスを知っていれば、メッセージを分類可能です。
+このアイデアは、3つ以上のログレベルをサポートするときに拡張できます。</p>
+<!-- 
+Let's test the idea by replacing the `log` macro with two new macros: `error!`
+and `warn!`.
+ -->
+<p><code>log</code>マクロを、<code>error!</code>と<code>warn!</code>の2つの新しいマクロで置き換えて、このアイデアを試してみましょう。</p>
+<pre><code class="language-console">$ cat ../log/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_std]
+
+<span class="boring">fn main() {
+</span>pub trait Log {
+    type Error;
+
+    fn log(&amp;mut self, address: u8) -&gt; Result&lt;(), Self::Error&gt;;
+}
+
+/// エラーログレベルでメッセージをログ出力します
+#[macro_export]
+macro_rules! error {
+    ($logger:expr, $string:expr) =&gt; {{
+        #[export_name = $string]
+        #[link_section = &quot;.log.error&quot;] // &lt;- 変更!
+        static SYMBOL: u8 = 0;
+
+        $crate::Log::log(&amp;mut $logger, &amp;SYMBOL as *const u8 as usize as u8)
+    }};
+}
+
+/// 警告ログレベルでメッセージをログ出力します
+#[macro_export]
+macro_rules! warn {
+    ($logger:expr, $string:expr) =&gt; {{
+        #[export_name = $string]
+        #[link_section = &quot;.log.warning&quot;] // &lt;- 変更!
+        static SYMBOL: u8 = 0;
+
+        $crate::Log::log(&amp;mut $logger, &amp;SYMBOL as *const u8 as usize as u8)
+    }};
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+We distinguish errors from warnings by placing the messages in different link
+sections.
+ -->
+<p>メッセージを異なるリンクセクションに配置することでエラーと警告を区別します。</p>
+<!-- 
+The next thing we have to do is update the linker script to place error messages
+before the warning messages.
+ -->
+<p>次にやらなければならないことは、エラーメッセージを警告メッセージの前に配置するように、
+リンカスクリプトを更新することです。</p>
+<pre><code class="language-console">$ cat ../log/log.x
+</code></pre>
+<pre><code class="language-text">SECTIONS
+{
+  .log 0 (INFO) : {
+    *(.log.error);
+    __log_warning_start__ = .;
+    *(.log.warning);
+  }
+}
+</code></pre>
+<!-- 
+We also give a name, `__log_warning_start__`, to the boundary between the errors
+and the warnings. The address of this symbol will be the address of the first
+warning message.
+ -->
+<p>エラーと警告との境界に、<code>__log_warning_start__</code>という名前をつけています。
+このシンボルのアドレスは、最初の警告メッセージのアドレスになります。</p>
+<!-- 
+We can now update the application to make use of these new macros.
+ -->
+<p>次に、これらの新しいマクロを使うように、アプリケーションを更新します。</p>
+<pre><code class="language-console">$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_semihosting::{
+    debug,
+    hio::{self, HStdout},
+};
+
+use log::{error, warn, Log};
+use rt::entry;
+
+entry!(main);
+
+fn main() -&gt; ! {
+    let hstdout = hio::hstdout().unwrap();
+    let mut logger = Logger { hstdout };
+
+    warn!(logger, &quot;Hello, world!&quot;); // &lt;- 変更!
+
+    error!(logger, &quot;Goodbye&quot;); // &lt;- 変更!
+
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+
+struct Logger {
+    hstdout: HStdout,
+}
+
+impl Log for Logger {
+    type Error = ();
+
+    fn log(&amp;mut self, address: u8) -&gt; Result&lt;(), ()&gt; {
+        self.hstdout.write_all(&amp;[address])
+    }
+}
+</code></pre></pre>
+<!-- The output won't change much: -->
+<p>出力は、それほど変わりません。</p>
+<pre><code class="language-console">$ cargo run | xxd -p
+</code></pre>
+<pre><code class="language-text">0100
+</code></pre>
+<!-- 
+We still get two bytes in the output but the error is given the address 0 and
+the warning is given the address 1 even though the warning was logged first.
+ -->
+<p>相変わらず2バイトの出力が得られています。
+しかし、警告が最初にログ出力されているにも関わらず、エラーが0番地、警告が1番地になっています。</p>
+<!-- Now look at the symbol table. -->
+<p>それでは、シンボルテーブルを見てみます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app -- -t | grep '\.log'
+</code></pre>
+<pre><code class="language-text">00000000 g     O .log		 00000001 Goodbye
+00000001 g     O .log		 00000001 Hello, world!
+00000001         .log		 00000000 __log_warning_start__
+</code></pre>
+<!-- 
+There's now an extra symbol, `__log_warning_start__`, in the `.log` section.
+The address of this symbol is the address of the first warning message.
+Symbols with addresses lower than this value are errors, and the rest of symbols
+are warnings.
+ -->
+<p><code>.log</code>セクション内に<code>__log_warning_start__</code>という追加のシンボルがあります。
+このシンボルのアドレスは、最初の警告メッセージのアドレスです。
+この値より小さいアドレスを持つシンボルは、エラーになります。
+それ以外のシンボルは警告です。</p>
+<!-- 
+With an appropriate decoder you could get the following human readable output
+from all this information:
+ -->
+<p>適切なデコーダを使うと、これら全ての情報から、次の人間が読みやすい出力を得ることができます。</p>
+<pre><code class="language-text">WARNING Hello, world!
+ERROR Goodbye
+</code></pre>
+<hr />
+<!-- 
+If you liked this section check out the [`stlog`] logging framework which is a
+complete implementation of this idea.
+ -->
+<p>このセクションを気に入った場合、<a href="https://crates.io/crates/stlog"><code>stlog</code></a>ログフレームワークを確認して下さい。
+このアイデアを完全に実装しています。</p>
+<!-- # Global singletons -->
+<h1><a class="header" href="#グローバルシングルトン" id="グローバルシングルトン">グローバルシングルトン</a></h1>
+<!-- 
+In this section we'll cover how to implement a global, shared singleton. The
+embedded Rust book covered local, owned singletons which are pretty much unique
+to Rust. Global singletons are essentially the singleton pattern you see in C
+and C++; they are not specific to embedded development but since they involve
+symbols they seemed a good fit for the embedonomicon.
+ -->
+<p>このセクションでは、グローバルに共有されるシングルトンの実装方法を説明します。
+The embedded Rust bookは、Rust特有のローカルで所有されるシングルトンを説明しました。
+グローバルシングルトンは、本質的にCやC++で見かけるシングルトンパターンです。
+これは、組込み開発固有のものではありませんが、シンボルに関係するため、embedonomiconに相応しい内容のように思えます。</p>
+<!-- 内部的なTODOなので、そのまま残してあります。 -->
+<blockquote>
+<p><strong>TODO</strong>(resources team) link &quot;the embedded Rust book&quot; to the singletons
+section when it's up</p>
+</blockquote>
+<!-- 
+To illustrate this section we'll extend the logger we developed in the last
+section to support global logging. The result will be very similar to the
+`#[global_allocator]` feature covered in the embedded Rust book.
+ -->
+<p>グローバルシングルトンを説明するために、このセクションでは、前のセクションで開発したロガーを、
+グローバルにログ出力できるように拡張します。
+結果は、the embedded Rust bookで説明した<code>#[global_allocator]</code>フィーチャと非常に似たものになります。</p>
+<!-- 内部的なTODOなので、そのまま残してあります。 -->
+<blockquote>
+<p><strong>TODO</strong>(resources team) link <code>#[global_allocator]</code> to the collections chapter
+of the book when it's in a more stable location.</p>
+</blockquote>
+<!-- Here's the summary of what we want to: -->
+<p>やりたいことを、下記にまとめます。</p>
+<!-- 
+In the last section we created a `log!` macro to log messages through a specific
+logger, a value that implements the `Log` trait. The syntax of the `log!` macro
+is `log!(logger, "String")`. We want to extend the macro such that
+`log!("String")` also works. Using the `logger`-less version should log the
+message through a global logger; this is how `std::println!` works. We'll also
+need a mechanism to declare what the global logger is; this is the part that's
+similar to `#[global_allocator]`.
+ -->
+<p>前のセクションでは、<code>Log</code>トレイトを実装している特定のロガーを通してログメッセージを出力するために、<code>log!</code>マクロを作りました。
+<code>log!</code>マクロのシンタックスは、<code>log!(logger, &quot;String&quot;)</code>です。
+このマクロを、<code>log!(&quot;String&quot;)</code>でも動くように拡張します。
+<code>logger</code>なしのバージョンを使うと、グローバルロガーを通してメッセージをログ出力しなければなりません。
+これは、<code>std::println!</code>が動作する方法と同じです。
+また、何がグローバルロガーか、を宣言するための機構が必要です。
+これは、<code>#[global_allocator]</code>と似ている部分です。</p>
+<!-- 
+It could be that the global logger is declared in the top crate and it could
+also be that the type of the global logger is defined in the top crate. In this
+scenario the dependencies can *not* know the exact type of the global logger. To
+support this scenario we'll need some indirection.
+ -->
+<p>グローバルロガーが最上位クレートで宣言される可能性があり、
+グローバルロガーの型もまた最上位クレートで定義される可能性があります。
+この場合、依存関係から正確なグローバルロガーの型を知ることは<em>できません</em>。
+この場合をサポートするために、いくらか間接的な方法が必要になります。</p>
+<!-- 
+Instead of hardcoding the type of the global logger in the `log` crate we'll
+declare only the *interface* of the global logger in that crate. That is we'll
+add a new trait, `GlobalLog`, to the `log` crate. The `log!` macro will also
+have to make use of that trait.
+ -->
+<p><code>log</code>クレートにグローバルロガーの型をハードコーディングする代わりに、logクレート内で、
+グローバルロガーの<em>インタフェース</em>だけを宣言します。
+そのインタフェースは、<code>log</code>クレートに新しく追加する<code>GlobalLog</code>というトレイトです。
+<code>log!</code>マクロもそのトレイトを使うようにします。</p>
+<pre><code class="language-console">$ cat ../log/src/lib.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![no_std]
+
+<span class="boring">fn main() {
+</span>// 追加!
+pub trait GlobalLog: Sync {
+    fn log(&amp;self, address: u8);
+}
+
+pub trait Log {
+    type Error;
+
+    fn log(&amp;mut self, address: u8) -&gt; Result&lt;(), Self::Error&gt;;
+}
+
+#[macro_export]
+macro_rules! log {
+    // 追加!
+    ($string:expr) =&gt; {
+        unsafe {
+            extern &quot;Rust&quot; {
+                static LOGGER: &amp;'static dyn $crate::GlobalLog;
+            }
+
+            #[export_name = $string]
+            #[link_section = &quot;.log&quot;]
+            static SYMBOL: u8 = 0;
+
+            $crate::GlobalLog::log(LOGGER, &amp;SYMBOL as *const u8 as usize as u8)
+        }
+    };
+
+    ($logger:expr, $string:expr) =&gt; {{
+        #[export_name = $string]
+        #[link_section = &quot;.log&quot;]
+        static SYMBOL: u8 = 0;
+
+        $crate::Log::log(&amp;mut $logger, &amp;SYMBOL as *const u8 as usize as u8)
+    }};
+}
+
+// 追加!
+#[macro_export]
+macro_rules! global_logger {
+    ($logger:expr) =&gt; {
+        #[no_mangle]
+        pub static LOGGER: &amp;dyn $crate::GlobalLog = &amp;$logger;
+    };
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- There's quite a bit to unpack here. -->
+<p>解説することがたくさんあります。</p>
+<!-- Let's start with the trait. -->
+<p>トレイトから始めましょう。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait GlobalLog: Sync {
+    fn log(&amp;self, address: u8);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Both `GlobalLog` and `Log` have a `log` method. The difference is that
+`GlobalLog.log` takes a shared reference to the receiver (`&self`). This is
+necessary because the global logger will be a `static` variable. More on that
+later.
+ -->
+<p><code>GlobalLog</code>と<code>Log</code>とは、<code>log</code>メソッドを持っています。違いは、<code>GlobalLog.log</code>がレシーバの共有参照(<code>&amp;self</code>)を取ることです。
+グローバルロガーは<code>static</code>変数なので、これが必要です。後ほど、詳しく見ます。</p>
+<!-- 
+The other difference is that `GlobalLog.log` doesn't return a `Result`. This
+means that it can *not* report errors to the caller. This is not a strict
+requirement for traits used to implement global singletons. Error handling in
+global singletons is fine but then all users of the global version of the `log!`
+macro have to agree on the error type. Here we are simplifying the interface a
+bit by having the `GlobalLog` implementer deal with the errors.
+ -->
+<p>もう1つの違う点は、<code>GlobalLog.log</code>は<code>Result</code>を返さないことです。
+これは、呼び出し側にエラーを報告<em>できない</em>ことを意味します。
+これはグローバルシングルトンを実装するトレイトを使うための必要条件ではありません。
+グローバルシングルトンでエラー処理をすることは良いことですが、グローバルバージョンの<code>log!</code>マクロの全てのユーザーが、
+エラー型に同意する必要があります。
+ここでは、<code>GlobalLog</code>実装者がエラーを処理するようにして、インタフェースを少し簡略化します。</p>
+<!-- 
+Yet another difference is that `GlobalLog` requires that the implementer is
+`Sync`, that is that it can be shared between threads. This is a requirement for
+values placed in `static` variables; their types must implement the `Sync`
+trait.
+ -->
+<p>さらに別の違いは、<code>GlobalLog</code>が実装者に、スレッド間で共有できるようにするための<code>Sync</code>を要求する点です。
+これは、<code>static</code>変数内の値への要求です。それらの値の型は、<code>Sync</code>を実装しなければなりません。</p>
+<!-- 
+At this point it may not be entirely clear why the interface has to look this
+way. The other parts of the crate will make this clearer so keep reading.
+ -->
+<p>現時点では、インタフェースがこのようになっていなければならない理由は、完全には明らかではないかもしれません。
+クレートの他の部分を見ることで、より明らかになっていきますので、読み進めて下さい。</p>
+<!-- Next up is the `log!` macro: -->
+<p>次は<code>log!</code>マクロです。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>    ($string:expr) =&gt; {
+        unsafe {
+            extern &quot;Rust&quot; {
+                static LOGGER: &amp;'static dyn $crate::GlobalLog;
+            }
+
+            #[export_name = $string]
+            #[link_section = &quot;.log&quot;]
+            static SYMBOL: u8 = 0;
+
+            $crate::GlobalLog::log(LOGGER, &amp;SYMBOL as *const u8 as usize as u8)
+        }
+    };
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+When called without a specific `$logger` the macros uses an `extern` `static`
+variable called `LOGGER` to log the message. This variable *is* the global
+logger that's defined somewhere else; that's why we use the `extern` block. We
+saw this pattern in the [main interface] chapter.
+ -->
+<p>特定の<code>$logger</code>なしでマクロを呼び出すと、マクロはメッセージをログ出力するために<code>LOGGER</code>と呼ばれる<code>extern</code> <code>static</code>変数を使います。
+この変数<em>は</em>どこかで定義されたグローバルロガーです。そのため、<code>extern</code>ブロックを使っています。
+このパターンは<a href="/main.html">メインインタフェース</a>の章で見ました。</p>
+<!-- [main interface]: /main.html -->
+<!-- 
+We need to declare a type for `LOGGER` or the code won't type check. We don't
+know the concrete type of `LOGGER` at this point but we know, or rather require,
+that it implements the `GlobalLog` trait so we can use a trait object here.
+ -->
+<p><code>LOGGER</code>の型を宣言する必要があります。そうでなければ、コードは型チェックを行いません。
+<code>LOGGER</code>の具体的な型はここではわかりませんが、
+その型が<code>GlobalLog</code>トレイトを実装していることを知っています（むしろ必要としています）。
+そこで、トレイトオブジェクトを使うことができます。</p>
+<!-- 
+The rest of the macro expansion looks very similar to the expansion of the local
+version of the `log!` macro so I won't explain it here as it's explained in the
+[previous] chapter.
+ -->
+<p>残りのマクロ拡張は、<code>log!</code>マクロのローカルバージョンの拡張ととてもよく似ています。
+そのため、<a href="/logging.html">前の</a>章で説明したことは、ここでは説明しません。</p>
+<!-- [previous]: /logging.html -->
+<!-- 
+Now that we know that `LOGGER` has to be a trait object it's clearer why we
+omitted the associated `Error` type in `GlobalLog`. If we had not omitted then
+we would have need to pick a type for `Error` in the type signature of `LOGGER`.
+This is what I earlier meant by "all users of `log!` would need to agree on the
+error type".
+ -->
+<p>ここで、<code>LOGGER</code>がトレイトオブジェクトでなければならないことを知っているので、
+<code>GlobalLog</code>で関連型の<code>Error</code>を除去する理由はより明白です。もし除去しなければ、
+<code>LOGGER</code>の型シグネチャの中で<code>Error</code>の型を1つ選ばなければなりません。
+これが先程、「<code>log!</code>マクロの全てのユーザーが、エラー型に同意する必要があります。」と書いた意味です。</p>
+<!-- 
+Now the final piece: the `global_logger!` macro. It could have been a proc macro
+attribute but it's easier to write a `macro_rules!` macro.
+ -->
+<p>そして、最後のピースの<code>global_logger!</code>マクロです。
+これは、手続きマクロアトリビュートにもできますが、<code>macro_rules!</code>でマクロを書くほうが簡単です。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[macro_export]
+macro_rules! global_logger {
+    ($logger:expr) =&gt; {
+        #[no_mangle]
+        pub static LOGGER: &amp;dyn $crate::GlobalLog = &amp;$logger;
+    };
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+This macro creates the `LOGGER` variable that `log!` uses. Because we need a
+stable ABI interface we use the `no_mangle` attribute. This way the symbol name
+of `LOGGER` will be "LOGGER" which is what the `log!` macro expects.
+ -->
+<p>このマクロは、<code>log!</code>が使用する<code>LOGGER</code>変数を作ります。安定したABIインタフェースが必要なので、
+<code>no_mangle</code>アトリビュートを使用します。
+この方法により、<code>LOGGER</code>のシンボル名は<code>log!</code>マクロが期待する「LOGGER」になります。</p>
+<!-- 
+The other important bit is that the type of this static variable must exactly
+match the type used in the expansion of the `log!` macro. If they don't match
+Bad Stuff will happen due to ABI mismatch.
+ -->
+<p>他の重要な点は、このstatic変数の型は、<code>log!</code>マクロの展開で使用される型と正確に一致しなければなりません。
+もし一致しない場合、ABIの不一致により、良くないことが起こるでしょう。</p>
+<!-- 
+Let's write an example that uses this new global logger functionality.
+ -->
+<p>新しいグローバルロガーの機能を使う例を書いてみましょう。</p>
+<pre><code class="language-console">$ cat src/main.rs
+</code></pre>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m::interrupt;
+use cortex_m_semihosting::{
+    debug,
+    hio::{self, HStdout},
+};
+
+use log::{global_logger, log, GlobalLog};
+use rt::entry;
+
+struct Logger;
+
+global_logger!(Logger);
+
+entry!(main);
+
+fn main() -&gt; ! {
+    log!(&quot;Hello, world!&quot;);
+
+    log!(&quot;Goodbye&quot;);
+
+    debug::exit(debug::EXIT_SUCCESS);
+
+    loop {}
+}
+
+impl GlobalLog for Logger {
+    fn log(&amp;self, address: u8) {
+        // `static mut`変数へのアクセスを割り込み安全にするため（これはメモリ安全のために要求されます）、
+        // クリティカルセクション（`interrupt::free`）を使います。
+        interrupt::free(|_| unsafe {
+            static mut HSTDOUT: Option&lt;HStdout&gt; = None;
+
+            // 遅延初期化
+            if HSTDOUT.is_none() {
+                HSTDOUT = Some(hio::hstdout()?);
+            }
+
+            let hstdout = HSTDOUT.as_mut().unwrap();
+
+            hstdout.write_all(&amp;[address])
+        }).ok(); // `.ok()` = エラーを無視します
+    }
+}
+</code></pre></pre>
+<!-- 内部的なTODOなので、そのまま残してあります。 -->
+<blockquote>
+<p><strong>TODO</strong>(resources team) use <code>cortex_m::Mutex</code> instead of a <code>static mut</code>
+variable when <code>const fn</code> is stabilized.</p>
+</blockquote>
+<!-- We had to add `cortex-m` to the dependencies. -->
+<p>依存関係に<code>cortex-m</code>を追加する必要があります。</p>
+<pre><code class="language-console">$ tail -n5 Cargo.toml
+</code></pre>
+<pre><code class="language-text">[dependencies]
+cortex-m = &quot;0.5.7&quot;
+cortex-m-semihosting = &quot;0.3.1&quot;
+log = { path = &quot;../log&quot; }
+rt = { path = &quot;../rt&quot; }
+</code></pre>
+<!-- 
+This is a port of one of the examples written in the [previous] section. The
+output is the same as what we got back there.
+ -->
+<p>これは、<a href="/logging.html">前の</a>セクションで書いた例を移植したものです。
+出力は、以前のものと同じです。</p>
+<pre><code class="language-console">$ cargo run | xxd -p
+</code></pre>
+<pre><code class="language-text">0001
+</code></pre>
+<pre><code class="language-console">$ cargo objdump --bin app -- -t | grep '\.log'
+</code></pre>
+<pre><code class="language-text">00000001 g     O .log		 00000001 Goodbye
+00000000 g     O .log		 00000001 Hello, world!
+</code></pre>
+<hr />
+<!-- 
+Some readers may be concerned about this implementation of global singletons not
+being zero cost because it uses trait objects which involve dynamic dispatch,
+that is method calls are performed through a vtable lookup.
+ -->
+<p>このグローバルシングルトンの実装がゼロコストでないことが気になる読者も居るかと思います。
+なぜなら、トレイトオブジェクトを使用しており、vtableを参照してメソッド呼び出しを行う動的ディスパッチになるためです。</p>
+<!-- 
+However, it appears that LLVM is smart enough to eliminate the dynamic dispatch
+when compiling with optimizations / LTO. This can be confirmed by searching for
+`LOGGER` in the symbol table.
+ -->
+<p>しかし、LLVMは十分に賢く、この動的ディスパッチをコンパイラの最適化 / LTOで消去してくれます。
+このことは、シンボルテーブル内の<code>LOGGER</code>を探すことで確認できます。</p>
+<pre><code class="language-console">$ cargo objdump --bin app --release -- -t | grep LOGGER
+</code></pre>
+<pre><code class="language-text">
+</code></pre>
+<!-- 
+If the `static` is missing that means that there is no vtable and that LLVM was
+capable of transforming all the `LOGGER.log` calls into `Logger.log` calls.
+ -->
+<p>もし<code>static</code>が見つからない場合、vtableがないことと、
+LLVMが<code>LOGGER.log</code>の呼び出しを<code>Logger.log</code>の呼び出しに変換できたことを意味します。</p>
+<h1><a class="header" href="#direct-memory-access-dma" id="direct-memory-access-dma">Direct Memory Access (DMA)</a></h1>
+<!-- 
+This section covers the core requirements for building a memory safe API around
+DMA transfers.
+ -->
+<p>このセクションは、DMA転送周りのメモリ安全なAPI構築における主要な要件について、説明します。</p>
+<!-- 
+The DMA peripheral is used to perform memory transfers in parallel to the work
+of the processor (the execution of the main program). A DMA transfer is more or
+less equivalent to spawning a thread (see [`thread::spawn`]) to do a `memcpy`.
+We'll use the fork-join model to illustrate the requirements of a memory safe
+API.
+ -->
+<p>DMAペリフェラルは、プロセッサの動作（メインプログラムの実行）と並行してメモリ転送を行うために使用されます。
+DMA転送は、<code>memcpy</code>を実行するためにスレッドを生成すること（<a href="https://doc.rust-lang.org/std/thread/fn.spawn.html"><code>thread::spawn</code></a>を参照）とほぼ同等です。
+メモリ安全なAPIの要件を説明するために、fork-joinのモデルを使用します。</p>
+<!-- Consider the following DMA primitives: -->
+<p>次のDMAプリミティブを考えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// 1つのDMAチャネル（ここではチャネル1）を表すシングルトンです
+/// 
+/// このシングルトンは、DMAチャネル１のレジスタへの排他アクセスを持ちます
+pub struct Dma1Channel1 {
+    // ..
+}
+
+impl Dma1Channel1 {
+    /// データは`address`に書かれます
+    /// 
+    /// `inc`は、各転送の後にアドレスをインクリメントするかどうか、を意味します
+    /// 
+    /// 注記 この関数はvolatileな書き込みを行います
+    pub fn set_destination_address(&amp;mut self, address: usize, inc: bool) {
+        // ..
+    }
+
+    /// データは`address`から読まれます
+    /// 
+    /// `inc`は、各転送の後にアドレスをインクリメントするかどうか、を意味します
+    /// 
+    /// 注記 この関数はvolatileな書き込みを行います
+    pub fn set_source_address(&amp;mut self, address: usize, inc: bool) {
+        // ..
+    }
+
+    /// 転送するバイト数です
+    /// 
+    /// 注記 この関数はvolatileな書き込みを行います
+    pub fn set_transfer_length(&amp;mut self, len: usize) {
+        // ..
+    }
+
+    /// DMA転送を開始します
+    /// 
+    /// 注記 この関数はvolatileな書き込みを行います
+    pub fn start(&amp;mut self) {
+        // ..
+    }
+
+    /// DMA転送を停止します
+    /// 
+    /// 注記 この関数はvolatileな書き込みを行います
+    pub fn stop(&amp;mut self) {
+        // ..
+    }
+
+    /// 転送中なら`true`を返します
+    /// 
+    ///  注記 この関数はvolatileな読み込みを行います
+    pub fn in_progress() -&gt; bool {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Assume that the `Dma1Channel1` is statically configured to work with serial port
+(AKA UART or USART) #1, `Serial1`, in one-shot mode (i.e. not circular mode).
+`Serial1` provides the following *blocking* API:
+ -->
+<p><code>Dma1Channel1</code>は、<code>Serial1</code>というシリアルポート（別名UARTまたはUSART）#1と1ショットモード（つまりサーキュラーモードでない）でやり取りするように、
+静的に設定されていると想定して下さい。
+<code>Serial1</code>は次のような<em>ブロッキングする</em>APIを提供します。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// シリアルポート#1を表すシングルトンです
+pub struct Serial1 {
+    // ..
+}
+
+impl Serial1 {
+    /// 1バイト読み込みます
+    /// 
+    /// 注記：読み込めるバイトがないとブロックします
+    pub fn read(&amp;mut self) -&gt; Result&lt;u8, Error&gt; {
+        // ..
+    }
+
+    /// １バイト送信します
+    /// 
+    /// 注記：出力FIFOバッファに空きがなければブロックします
+    pub fn write(&amp;mut self, byte: u8) -&gt; Result&lt;(), Error&gt; {
+        // ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Let's say we want to extend `Serial1` API to (a) asynchronously send out a
+buffer and (b) asynchronously fill a buffer.
+ -->
+<p>例えば、(a)非同期にバッファを送信し、(b)非同期にバッファを埋めるように、<code>Serial1</code> APIを拡張したいとしましょう。</p>
+<!-- 
+We'll start with a memory unsafe API and we'll iterate on it until it's
+completely memory safe. On each step we'll show you how the API can be broken to
+make you aware of the issues that need to be addressed when dealing with
+asynchronous memory operations.
+ -->
+<p>メモリアンセーフなAPIから出発し、完全にメモリ安全になるまで繰り返し改善していきます。
+各ステップで、非同期メモリ操作を扱う際に対処すべき問題を理解するために、
+APIがどのように壊れる可能性があるか、を説明します。</p>
+<!-- ## A first stab -->
+<h2><a class="header" href="#最初の挑戦" id="最初の挑戦">最初の挑戦</a></h2>
+<!-- 
+For starters, let's try to use the [`Write::write_all`] API as a reference. To
+keep things simple let's ignore all error handling.
+ -->
+<p>初心者向けに、<a href="https://doc.rust-lang.org/std/io/trait.Write.html#method.write_all"><code>Write::write_all</code></a>を参考に使ってみましょう。
+単純化のため、全てのエラー処理を無視します。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// シリアルポート#1を表すシングルトンです
+pub struct Serial1 {
+    // 注記：DMAチャネルシングルトンを追加することで、このstructを拡張します
+    dma: Dma1Channel1,
+    // ..
+}
+
+impl Serial1 {
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all&lt;'a&gt;(mut self, buffer: &amp;'a [u8]) -&gt; Transfer&lt;&amp;'a [u8]&gt; {
+        self.dma.set_destination_address(USART1_TX, false);
+        self.dma.set_source_address(buffer.as_ptr() as usize, true);
+        self.dma.set_transfer_length(buffer.len());
+
+        self.dma.start();
+
+        Transfer { buffer }
+    }
+}
+
+/// 1回のDMA転送です
+pub struct Transfer&lt;B&gt; {
+    buffer: B,
+}
+
+impl&lt;B&gt; Transfer&lt;B&gt; {
+    /// DMA転送が完了すると`true`を返します
+    pub fn is_done(&amp;self) -&gt; bool {
+        !Dma1Channel1::in_progress()
+    }
+
+    /// 転送が完了するまでブロックし、バッファを返します。
+    pub fn wait(self) -&gt; B {
+        // 転送が完了するまでビジーウェイトします
+        while !self.is_done() {}
+
+        self.buffer
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+> **NOTE:** `Transfer` could expose a futures or generator based API instead of
+> the API shown above. That's an API design question that has little bearing on
+> the memory safety of the overall API so we won't delve into it in this text.
+ -->
+<blockquote>
+<p><strong>注記</strong> <code>Transfer</code>は、上述のAPIの代わりに、フューチャーやジェネレータベースのAPIとして公開できるでしょう。
+それは、API設計の問題で、API全体のメモリ安全性にはほとんど関係がありません。
+そのため、このテキストでは、詳しく説明しません。</p>
+</blockquote>
+<!-- 
+We can also implement an asynchronous version of [`Read::read_exact`].
+ -->
+<p><a href="https://doc.rust-lang.org/std/io/trait.Read.html#method.read_exact"><code>Read::read_exact</code></a>の非同期バージョンも実装できます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact&lt;'a&gt;(&amp;mut self, buffer: &amp;'a mut [u8]) -&gt; Transfer&lt;&amp;'a mut [u8]&gt; {
+        self.dma.set_source_address(USART1_RX, false);
+        self.dma
+            .set_destination_address(buffer.as_mut_ptr() as usize, true);
+        self.dma.set_transfer_length(buffer.len());
+
+        self.dma.start();
+
+        Transfer { buffer }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- Here's how to use the `write_all` API: -->
+<p><code>write_all</code> APIの使い方は次のとおりです。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn write(serial: Serial1) {
+    // 転送を開始して、忘れます
+    serial.write_all(b&quot;Hello, world!\n&quot;);
+
+    // 他のことをやります
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- And here's an example of using the `read_exact` API: -->
+<p>そして、<code>read_exact</code> APIの使用例です。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn read(mut serial: Serial1) {
+    let mut buf = [0; 16];
+    let t = serial.read_exact(&amp;mut buf);
+
+    // 他のことをやります
+
+    t.wait();
+
+    match buf.split(|b| *b == b'\n').next() {
+        Some(b&quot;some-command&quot;) =&gt; { /* 何かやります */ }
+        _ =&gt; { /* 何か他のことをやります */ }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2><a class="header" href="#memforget" id="memforget"><code>mem::forget</code></a></h2>
+<!-- 
+[`mem::forget`] is a safe API. If our API is truly safe then we should be able
+to use both together without running into undefined behavior. However, that's
+not the case; consider the following example:
+ -->
+<p><a href="https://doc.rust-lang.org/std/mem/fn.forget.html"><code>mem::forget</code></a>は安全なAPIです。もし私達のAPIが本当に安全なら、
+未定義動作を起こさずに両方のAPIを同時に使えるはずです。
+しかしながら、そうではありません。次の例を考えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn unsound(mut serial: Serial1) {
+    start(&amp;mut serial);
+    bar();
+}
+
+#[inline(never)]
+fn start(serial: &amp;mut Serial1) {
+    let mut buf = [0; 16];
+
+    // DMA転送を開始し、戻り値の`Transfer`をforgetします
+    mem::forget(serial.read_exact(&amp;mut buf));
+}
+
+#[inline(never)]
+fn bar() {
+    // スタック変数です
+    let mut x = 0;
+    let mut y = 0;
+
+    // `x`と`y`を使います
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Here we start a DMA transfer, in `foo`, to fill an array allocated on the stack
+and then `mem::forget` the returned `Transfer` value. Then we proceed to return
+from `foo` and execute the function `bar`.
+ -->
+<p>ここで、スタック上に確保された配列を埋めるために、<code>foo</code>からDMA転送を開始します。
+そして、戻り値の<code>Transfer</code>を<code>mem::forget</code>します。
+その後、<code>foo</code>から戻り、<code>bar</code>関数を実行します。</p>
+<!-- 
+This series of operations results in undefined behavior. The DMA transfer writes
+to stack memory but that memory is released when `foo` returns and then reused
+by `bar` to allocate variables like `x` and `y`. At runtime this could result in
+variables `x` and `y` changing their value at random times. The DMA transfer
+could also overwrite the state (e.g. link register) pushed onto the stack by the
+prologue of function `bar`.
+ -->
+<p>この一連の操作は、未定義動作を引き起こします。DMA転送はスタックメモリに書き込みますが、
+そのメモリは<code>foo</code>から戻った時に解放され、<code>bar</code>で<code>x</code>と<code>y</code>のような変数を確保するために再利用されます。
+実行時、<code>x</code>と<code>y</code>の値は、ランダムなタイミングで書き換わる可能性があります。
+DMA転送は<code>bar</code>関数のプロローグによりスタックにプッシュされた状態（例えば、リンクレジスタ）を上書きする可能性もあります。</p>
+<!-- 
+Note that if we had not use `mem::forget`, but `mem::drop`, it would have been
+possible to make `Transfer`'s destructor stop the DMA transfer and then the
+program would have been safe. But one can *not* rely on destructors running to
+enforce memory safety because `mem::forget` and memory leaks (see RC cycles) are
+safe in Rust.
+ -->
+<p><code>mem::forget</code>を使わずに、<code>mem::drop</code>を使うと、<code>Transfer</code>のデストラクタはDMA転送を停止し、
+プログラムを安全にすることができることに留意して下さい。
+しかし、メモリ安全性を強制するためにデストラクタの実行に頼ることは<em>できません</em>。
+なぜなら、<code>mem::forget</code>とメモリリーク（RCサイクルを参照）はRustでは安全だからです。</p>
+<!-- 
+We can fix this particular problem by changing the lifetime of the buffer from
+`'a` to `'static` in both APIs.
+ -->
+<p>両APIのバッファのライフタイムを<code>'a</code>から<code>'static</code>に変更することで、この問題を解決できます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact(&amp;mut self, buffer: &amp;'static mut [u8]) -&gt; Transfer&lt;&amp;'static mut [u8]&gt; {
+        // .. 以前と同じです ..
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all(mut self, buffer: &amp;'static [u8]) -&gt; Transfer&lt;&amp;'static [u8]&gt; {
+        // .. 以前と同じです ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+If we try to replicate the previous problem we note that `mem::forget` no longer
+causes problems.
+ -->
+<p>もし前と同じ問題を再現しようとすると、<code>mem::forget</code>はもはや問題になりません。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[allow(dead_code)]
+fn sound(mut serial: Serial1, buf: &amp;'static mut [u8; 16]) {
+    // 注記 `buf`は`foo`にムーブされます
+    foo(&amp;mut serial, buf);
+    bar();
+}
+
+#[inline(never)]
+fn foo(serial: &amp;mut Serial1, buf: &amp;'static mut [u8]) {
+    // DMA転送を開始し、戻り値の`Transfer`を忘れます
+    mem::forget(serial.read_exact(buf));
+}
+
+#[inline(never)]
+fn bar() {
+    // スタック変数です
+    let mut x = 0;
+    let mut y = 0;
+
+    // `x`と`y`を使います
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+As before, the DMA transfer continues after `mem::forget`-ing the `Transfer`
+value. This time that's not an issue because `buf` is statically allocated
+(e.g. `static mut` variable) and not on the stack.
+ -->
+<p>前回同様、<code>Transfer</code>の値を<code>mem::forget</code>した後も、DMA転送は続いています。
+今回は、これは問題になりません。なぜなら<code>buf</code>は静的に確保されており（例えば、<code>static mut</code>変数）、
+スタック上にないからです。</p>
+<!-- ## Overlapping use -->
+<h2><a class="header" href="#オーバーラップして使う" id="オーバーラップして使う">オーバーラップして使う</a></h2>
+<!-- 
+Our API doesn't prevent the user from using the `Serial` interface while the DMA
+transfer is in progress. This could lead the transfer to fail or data to be
+lost.
+ -->
+<p>私達のAPIは、DMA転送を行っている間、ユーザーが<code>Serial</code>インタフェースを使えてしまいます。
+これは、DMA転送が失敗するか、データロスを発生させる可能性があります。</p>
+<!-- 
+There are several ways to prevent overlapping use. One way is to have `Transfer`
+take ownership of `Serial1` and return it back when `wait` is called.
+ -->
+<p>オーバーラップしての利用を防ぐ方法は、いくつかあります。
+1つの方法は、<code>Transfer</code>が<code>Serial1</code>の所有権を取得し、<code>wait</code>が呼ばれた時に所有権を返すことです。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// 1回のDMA転送です
+pub struct Transfer&lt;B&gt; {
+    buffer: B,
+    // 注記：追加しました
+    serial: Serial1,
+}
+
+impl&lt;B&gt; Transfer&lt;B&gt; {
+    /// 転送が完了するまでブロックし、バッファを返します。
+    /// 注記：戻り値が変わっています
+    pub fn wait(self) -&gt; (B, Serial1) {
+        // 転送が完了するまでビジーウェイトします
+        while !self.is_done() {}
+
+        (self.buffer, self.serial)
+    }
+
+    // ..
+}
+
+impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    // 注記 今回は、`self`を値として受け取ります
+    pub fn read_exact(mut self, buffer: &amp;'static mut [u8]) -&gt; Transfer&lt;&amp;'static mut [u8]&gt; {
+        // .. 以前と同じです ..
+
+        Transfer {
+            buffer,
+            // 注記：追加しました
+            serial: self,
+        }
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    // 注記 今回は、`self`を値として受け取ります
+    pub fn write_all(mut self, buffer: &amp;'static [u8]) -&gt; Transfer&lt;&amp;'static [u8]&gt; {
+        // .. 以前と同じです ..
+
+        Transfer {
+            buffer,
+            // 注記：追加しました
+            serial: self,
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+The move semantics statically prevent access to `Serial1` while the transfer is
+in progress.
+ -->
+<p>ムーブセマンティクスは、DMA転送を行っている間、<code>Serial1</code>へのアクセスを静的に防ぎます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn read(serial: Serial1, buf: &amp;'static mut [u8; 16]) {
+    let t = serial.read_exact(buf);
+
+    // let byte = serial.read(); //~ ERROR: `serial` has been moved
+
+    // .. 何かやります ..
+
+    let (serial, buf) = t.wait();
+
+    // .. さらに何かやります ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+There are other ways to prevent overlapping use. For example, a (`Cell`) flag
+that indicates whether a DMA transfer is in progress could be added to
+`Serial1`. When the flag is set `read`, `write`, `read_exact` and `write_all`
+would all return an error (e.g. `Error::InUse`) at runtime. The flag would be
+set when `write_all` / `read_exact` is used and cleared in `Transfer.wait`.
+ -->
+<p>オーバーラップして利用できないようにする方法が他にもいくつかあります。
+例えば、<code>Serial1</code>にDMA転送中かどうかを示す（<code>Cell</code>）フラグを追加できます。
+もしフラグがセットされている時は、<code>read</code>, <code>write</code>, <code>read_exact</code>および<code>write_all</code>は、
+実行時にエラー（例えば、<code>Error::InUse</code>）を返します。
+このフラグは<code>write_all</code> / <code>read_exact</code>が使われた時にセットし、<code>Transfer.wait</code>でクリアします。</p>
+<!-- ## Compiler (mis)optimizations -->
+<h2><a class="header" href="#コンパイラの誤った最適化" id="コンパイラの誤った最適化">コンパイラの（誤った）最適化</a></h2>
+<!-- 
+The compiler is free to re-order and merge non-volatile memory operations to
+better optimize a program. With our current API, this freedom can lead to
+undefined behavior. Consider the following example:
+ -->
+<p>コンパイラは、よりプログラムを最適化するため、non-volatileなメモリ操作の順番を入れ替えたり、結合する自由があります。
+現在のAPIでは、この自由が未定義動作を引き起こします。
+次の例を考えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn reorder(serial: Serial1, buf: &amp;'static mut [u8]) {
+    // バッファをゼロクリアします（特別な理由はありません）
+    buf.iter_mut().for_each(|byte| *byte = 0);
+
+    let t = serial.read_exact(buf);
+
+    // ... 何か別のことをやります ..
+
+    let (buf, serial) = t.wait();
+
+    buf.reverse();
+
+    // .. `buf`で何かやります ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Here the compiler is free to move `buf.reverse()` before `t.wait()`, which would
+result in a data race: both the processor and the DMA would end up modifying
+`buf` at the same time. Similarly the compiler can move the zeroing operation to
+after `read_exact`, which would also result in a data race.
+ -->
+<p>ここで、コンパイラは、自由に<code>t.wait()</code>の前に<code>buf.reverse()</code>を移動することができます。
+この移動は、プロセッサとDMAが同時に<code>buf</code>を修正するデータ競合を起こします。
+同様に、コンパイラはゼロクリア操作を<code>read_exact</code>の後に移動するかもしれません。
+それもデータ競合を起こします。</p>
+<!-- 
+To prevent these problematic reorderings we can use a [`compiler_fence`]
+ -->
+<p>これらの問題ある順番の入れ替えを起こさないために、<a href="https://doc.rust-lang.org/core/sync/atomic/fn.compiler_fence.html"><code>compiler_fence</code></a>を使えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact(mut self, buffer: &amp;'static mut [u8]) -&gt; Transfer&lt;&amp;'static mut [u8]&gt; {
+        self.dma.set_source_address(USART1_RX, false);
+        self.dma
+            .set_destination_address(buffer.as_mut_ptr() as usize, true);
+        self.dma.set_transfer_length(buffer.len());
+
+        // 注記：追加しました
+        atomic::compiler_fence(Ordering::Release);
+
+        // 注記：これはvolatileな*書き込み*です
+        self.dma.start();
+
+        Transfer {
+            buffer,
+            serial: self,
+        }
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all(mut self, buffer: &amp;'static [u8]) -&gt; Transfer&lt;&amp;'static [u8]&gt; {
+        self.dma.set_destination_address(USART1_TX, false);
+        self.dma.set_source_address(buffer.as_ptr() as usize, true);
+        self.dma.set_transfer_length(buffer.len());
+
+        // 注記：追加しました
+        atomic::compiler_fence(Ordering::Release);
+
+        // 注記：これはvolatileな*書き込み*です
+        self.dma.start();
+
+        Transfer {
+            buffer,
+            serial: self,
+        }
+    }
+}
+
+impl&lt;B&gt; Transfer&lt;B&gt; {
+    /// 転送が完了するまでブロックし、バッファを返します。
+    pub fn wait(self) -&gt; (B, Serial1) {
+        // 注記： これはvolatileな*読み込み*です
+        while !self.is_done() {}
+
+        // 注記：追加しました
+        atomic::compiler_fence(Ordering::Acquire);
+
+        (self.buffer, self.serial)
+    }
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+We use `Ordering::Release` in `read_exact` and `write_all` to prevent all
+preceding memory operations from being moved *after* `self.dma.start()`, which
+performs a volatile write.
+ -->
+<p>volatileな書き込みをする<code>self.dma.start()</code>の<em>後ろに</em>先行するメモリ操作が移動されないように、
+<code>read_exact</code>と<code>write_all</code>では<code>Ordering::Release</code>を使います。</p>
+<!-- 
+Likewise, we use `Ordering::Acquire` in `Transfer.wait` to prevent all
+subsequent memory operations from being moved *before* `self.is_done()`, which
+performs a volatile read.
+ -->
+<p>同様に、volatileな読み込みをする<code>self.is_done()</code>の<em>前に</em>後続のメモリ操作が移動されないように、
+<code>Transfer.wait</code>では<code>Ordering::Acquire</code>を使います。</p>
+<!-- 
+To better visualize the effect of the fences here's a slightly tweaked version
+of the example from the previous section. We have added the fences and their
+orderings in the comments.
+ -->
+<p>フェンスの効果をより理解しやすくするために、前回セクションの例を少し修正したバージョンを示します。
+フェンスを追加しており、メモリ操作の順序はコメントで記述しています。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn reorder(serial: Serial1, buf: &amp;'static mut [u8], x: &amp;mut u32) {
+    // バッファをゼロクリアします（特別な理由はありません）
+    buf.iter_mut().for_each(|byte| *byte = 0);
+
+    *x += 1;
+
+    let t = serial.read_exact(buf); // compiler_fence(Ordering::Release) ▲
+
+    // 注記：プロセッサはフェンスの間、`buf`にアクセスできません
+    // ... 何か別のことをやります ..
+    *x += 2;
+
+    let (buf, serial) = t.wait(); // compiler_fence(Ordering::Acquire) ▼
+
+    *x += 3;
+
+    buf.reverse();
+
+    // .. `buf`で何かやります ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+The zeroing operation can *not* be moved *after* `read_exact` due to the
+`Release` fence. Similarly, the `reverse` operation can *not* be moved *before*
+`wait` due to the `Acquire` fence. The memory operations *between* both fences
+*can* be freely reordered across the fences but none of those operations
+involves `buf` so such reorderings do *not* result in undefined behavior.
+ -->
+<p><code>Release</code>フェンスのおかげで、ゼロクリアする操作は、<code>read_exact</code>より<em>後ろ</em>に動かすことが<em>できません</em>。
+同様に、<code>Acquire</code>フェンスのおかげで、<code>reverse</code>操作は<code>wait</code>より<em>前に</em>動かすことが<em>できません</em>。
+両フェンスの<em>間</em>にあるメモリ操作は、フェンスを超えて自由に順序を入れ替えることが<em>できます</em>が、
+<code>buf</code>に関わるような操作はありません。そのため、順序の入れ替えは、未定義動作を<em>起こしません</em>。</p>
+<!-- 
+Note that `compiler_fence` is a bit stronger than what's required. For example,
+the fences will prevent the operations on `x` from being merged even though we
+know that `buf` doesn't overlap with `x` (due to Rust aliasing rules). However,
+there exist no intrinsic that's more fine grained than `compiler_fence`.
+ -->
+<p><code>compiler_fence</code>は求められているものより少し強いことに注意して下さい。例えば、
+このフェンスは、<code>buf</code>と<code>x</code>とがオーバーラップしない（Rustのエイリアス規則のため）ことが分かっているにも関わらず、
+<code>x</code>に対する操作が結合されないようにします。しかしながら、
+<code>compiler_fence</code>より細かい粒度のintrinsicは存在していません。</p>
+<!-- ### Don't we need a memory barrier? -->
+<h3><a class="header" href="#メモリバリアは不要なのですか" id="メモリバリアは不要なのですか">メモリバリアは不要なのですか？</a></h3>
+<!-- 
+That depends on the target architecture. In the case of Cortex M0 to M4F cores,
+[AN321] says:
+ -->
+<p>ターゲットアーキテクチャによります。Cortex M0とM4Fコアについて、<a href="https://static.docs.arm.com/dai0321/a/DAI0321A_programming_guide_memory_barriers_for_m_profile.pdf">AN321</a>は次のように言っています。</p>
+<!-- 
+> 3.2 Typical usages
+>
+> (..)
+>
+> The use of DMB is rarely needed in Cortex-M processors because they do not
+> reorder memory transactions. However, it is needed if the software is to be
+> reused on other ARM processors, especially multi-master systems. For example:
+>
+> - DMA controller configuration. A barrier is required between a CPU memory
+>   access and a DMA operation.
+>
+> (..)
+>
+> 4.18 Multi-master systems
+>
+> (..)
+>
+> Omitting the DMB or DSB instruction in the examples in Figure 41 on page 47
+> and Figure 42 would not cause any error because the Cortex-M processors:
+>
+> - do not re-order memory transfers
+> - do not permit two write transfers to be overlapped.
+ -->
+<blockquote>
+<p>3.2 一般的な使い方</p>
+<p>(..)</p>
+<p>DMBの使用はCortex-Mプロセッサではほとんど必要ありません。なぜならCortex-Mプロセッサは
+メモリトランザクションの順序を変更しないからです。しかし、ソフトウェアが他のARMプロセッサ、
+特に複数のマスターがあるシステム、で再利用される場合は必要です。例えば、</p>
+<ul>
+<li>DMAコントローラ設定。バリアは、CPUのメモリアクセスとDMA操作との間で必要です。</li>
+</ul>
+<p>(..)</p>
+<p>4.18 複数のマスターがあるシステム</p>
+<p>(..)</p>
+<p>47ページの図41や図42でDMBやDSB命令を除去すると、何らかのエラーが発生します。なぜなら、Cortex-Mプロセッサは</p>
+<ul>
+<li>メモリ転送の順序を入れ替えない</li>
+<li>オーバーラップした2つの書き込み転送を許可しない</li>
+</ul>
+</blockquote>
+<!-- 
+Where Figure 41 shows a DMB (memory barrier) instruction being used before
+starting a DMA transaction.
+ -->
+<p>ここで、図41は、DMAトランザクションを開始する前に使用されるDMB（メモリバリア）命令を示しています。</p>
+<!-- 
+In the case of Cortex-M7 cores you'll need memory barriers (DMB/DSB) if you are
+using the data cache (DCache), unless you manually invalidate the buffer used by
+the DMA.
+ -->
+<p>Cortex-M7コアの場合、データキャッシュ（DCache）を使っていれば、
+DMAで使用されるバッファを手動で無効化しない限り、メモリバリア（DMB/DSB）が必要になります。</p>
+<!-- 
+If your target is a multi-core system then it's very likely that you'll need
+memory barriers.
+ -->
+<p>もしターゲットがマルチコアシステムの場合、メモリバリアが必要になる可能性が非常に高いです。</p>
+<!-- 
+If you do need the memory barrier then you need to use [`atomic::fence`] instead
+of `compiler_fence`. That should generate a DMB instruction on Cortex-M devices.
+ -->
+<p>もしメモリバリアが必要な場合、<code>compiler_fence</code>の代わりに<a href="https://doc.rust-lang.org/core/sync/atomic/fn.fence.html"><code>atomic::fence</code></a>を使わなければなりません。
+これは、Cortex-MデバイスではDMB命令を生成するはずです。</p>
+<!-- ## Generic buffer -->
+<h2><a class="header" href="#ジェネリックバッファ" id="ジェネリックバッファ">ジェネリックバッファ</a></h2>
+<!-- 
+Our API is more restrictive that it needs to be. For example, the following
+program won't be accepted even though it's valid.
+ -->
+<p>私達のAPIは要件よりも制約が強いです。例えば、
+次のプログラムは正しいですが、対応できません</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn reuse(serial: Serial1, msg: &amp;'static mut [u8]) {
+    // メッセージを送信します
+    let t1 = serial.write_all(msg);
+
+    // ..
+
+    let (msg, serial) = t1.wait(); // `msg`は現在`&amp;'static [u8]`です
+
+    msg.reverse();
+
+    // 今度は、逆順に送ります
+    let t2 = serial.write_all(msg);
+
+    // ..
+
+    let (buf, serial) = t2.wait();
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+To accept such program we can make the buffer argument generic.
+ -->
+<p>このようなプログラムに対応するため、バッファの引数をジェネリックにできます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// as-slice = &quot;0.1.0&quot;
+use as_slice::{AsMutSlice, AsSlice};
+
+impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact&lt;B&gt;(mut self, mut buffer: B) -&gt; Transfer&lt;B&gt;
+    where
+        B: AsMutSlice&lt;Element = u8&gt;,
+    {
+        // 注記：追加しました
+        let slice = buffer.as_mut_slice();
+        let (ptr, len) = (slice.as_mut_ptr(), slice.len());
+
+        self.dma.set_source_address(USART1_RX, false);
+
+        // 注記：微妙に変更しました
+        self.dma.set_destination_address(ptr as usize, true);
+        self.dma.set_transfer_length(len);
+
+        atomic::compiler_fence(Ordering::Release);
+        self.dma.start();
+
+        Transfer {
+            buffer,
+            serial: self,
+        }
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    fn write_all&lt;B&gt;(mut self, buffer: B) -&gt; Transfer&lt;B&gt;
+    where
+        B: AsSlice&lt;Element = u8&gt;,
+    {
+        // 注記：追加しました
+        let slice = buffer.as_slice();
+        let (ptr, len) = (slice.as_ptr(), slice.len());
+
+        self.dma.set_destination_address(USART1_TX, false);
+
+        // 注記：微妙に変更しました
+        self.dma.set_source_address(ptr as usize, true);
+        self.dma.set_transfer_length(len);
+
+        atomic::compiler_fence(Ordering::Release);
+        self.dma.start();
+
+        Transfer {
+            buffer,
+            serial: self,
+        }
+    }
+}
+
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+> **NOTE:** `AsRef<[u8]>` (`AsMut<[u8]>`) could have been used instead of
+> `AsSlice<Element = u8>` (`AsMutSlice<Element = u8`).
+ -->
+<blockquote>
+<p><strong>注記</strong>：<code>AsSlice&lt;Element = u8&gt;</code> (<code>AsMutSlice&lt;Element = u8</code>)の代わりに、
+<code>AsRef&lt;[u8]&gt;</code> (<code>AsMut&lt;[u8]&gt;</code>)を使うことができます。</p>
+</blockquote>
+<!-- Now the `reuse` program will be accepted. -->
+<p>これで、<code>reuse</code>プログラムに対応できます。</p>
+<!-- ## Immovable buffers -->
+<h2><a class="header" href="#固定バッファ" id="固定バッファ">固定バッファ</a></h2>
+<!-- 
+With this modification the API will also accept arrays by value (e.g. `[u8;
+16]`). However, using arrays can result in pointer invalidation. Consider the
+following program.
+ -->
+<p>この修正でAPIは値として配列（例えば、<code>[u8; 16]</code>）を受け取れるようになります。
+しかし、配列を使用すると、ポインタが不正になる可能性があります。
+次のプログラムを考えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn invalidate(serial: Serial1) {
+    let t = start(serial);
+
+    bar();
+
+    let (buf, serial) = t.wait();
+}
+
+#[inline(never)]
+fn start(serial: Serial1) -&gt; Transfer&lt;[u8; 16]&gt; {
+    // このフレームで確保された配列です
+    let buffer = [0; 16];
+
+    serial.read_exact(buffer)
+}
+
+#[inline(never)]
+fn bar() {
+    // スタック変数です
+    let mut x = 0;
+    let mut y = 0;
+
+    // `x`と`y`を使います
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+The `read_exact` operation will use the address of the `buffer` local to the
+`start` function. That local `buffer` will be freed when `start` returns and the
+pointer used in `read_exact` will become invalidated. You'll end up with a
+situation similar to the [`unsound`](#dealing-with-memforget) example.
+ -->
+<p><code>read_exact</code>操作は、<code>start</code>関数にある<code>buffer</code>のアドレスを使います。
+このローカル<code>buffer</code>は、<code>start</code>から戻った時に解放され、<code>read_exact</code>で使われているポインタは不正になります。
+<a href="dma.html#dealing-with-memforget"><code>unsound</code></a>の例と似たような状況になるでしょう。</p>
+<!-- 
+To avoid this problem we require that the buffer used with our API retains its
+memory location even when it's moved. The [`Pin`] newtype provides such
+guarantee. We can update our API to required that all buffers are "pinned"
+first.
+ -->
+<p>この問題を避けるため、APIで使用するバッファに、ムーブされてもメモリの位置を保ち続けることを要求します。
+<a href="https://doc.rust-lang.org/nightly/std/pin/index.html"><code>Pin</code></a>ニュータイプは、このような保証を提供します。
+全てのバッファがあらかじめ「pin」されていることを要求するように、APIを更新します。</p>
+<!-- 
+> **NOTE:** To compile all the programs below this point you'll need Rust
+> `>=1.33.0`. As of time of writing (2019-01-04) that means using the nightly
+> channel.
+ -->
+<blockquote>
+<p><strong>注記：</strong> 以降のプログラムをコンパイルするためには、Rust <code>1.33.0以上</code>が必要です。
+執筆時点（2019-01-04）では、nightlyチャネルの使用を意味します。</p>
+</blockquote>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// 1回のDMA転送です
+pub struct Transfer&lt;B&gt; {
+    // 注記：変更しました
+    buffer: Pin&lt;B&gt;,
+    serial: Serial1,
+}
+
+impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact&lt;B&gt;(mut self, mut buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        // 注記：境界を変更しました
+        B: DerefMut,
+        B::Target: AsMutSlice&lt;Element = u8&gt; + Unpin,
+    {
+        // .. 以前と同じです ..
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all&lt;B&gt;(mut self, buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        // 注記：境界を変更しました
+        B: Deref,
+        B::Target: AsSlice&lt;Element = u8&gt;,
+    {
+        // .. 以前と同じです ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+> **NOTE:** We could have used the [`StableDeref`] trait instead of the `Pin`
+> newtype but opted for `Pin` since it's provided in the standard library.
+ -->
+<blockquote>
+<p><strong>注記：</strong> <code>Pin</code>ニュータイプの代わりに<a href="https://crates.io/crates/stable_deref_trait"><code>StableDeref</code></a>トレイトを使うことができますが、
+<code>Pin</code>は標準ライブラリで提供されるため、Pinを選びました。</p>
+</blockquote>
+<!-- 
+With this new API we can use `&'static mut` references, `Box`-ed slices, `Rc`-ed
+slices, etc.
+ -->
+<p>この新しいAPIでは、<code>&amp;'static mut</code>参照、<code>Box</code>化したスライス、<code>Rc</code>化されたスライスなどを使えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn static_mut(serial: Serial1, buf: &amp;'static mut [u8]) {
+    let buf = Pin::new(buf);
+
+    let t = serial.read_exact(buf);
+
+    // ..
+
+    let (buf, serial) = t.wait();
+
+    // ..
+}
+
+fn boxed(serial: Serial1, buf: Box&lt;[u8]&gt;) {
+    let buf = Pin::new(buf);
+
+    let t = serial.read_exact(buf);
+
+    // ..
+
+    let (buf, serial) = t.wait();
+
+    // ..
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- ## `'static` bound -->
+<h2><a class="header" href="#static境界" id="static境界"><code>'static</code>境界</a></h2>
+<!-- 
+Does pinning let us safely use stack allocated arrays? The answer is *no*.
+Consider the following example.
+ -->
+<p>Pinを使うことで、スタックに割り当てられた配列を安全に使えるのでしょうか？
+答えは、<em>ノー</em>です。次の例を考えます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn unsound(serial: Serial1) {
+    start(serial);
+
+    bar();
+}
+
+// pin-utils = &quot;0.1.0-alpha.4&quot;
+use pin_utils::pin_mut;
+
+#[inline(never)]
+fn start(serial: Serial1) {
+    let buffer = [0; 16];
+
+    // `buffer`をこのスタックフレームにピン留めします
+    // `buffer`は`Pin&lt;&amp;mut [u8; 16]&gt;`の型を持ちます
+    pin_mut!(buffer);
+
+    mem::forget(serial.read_exact(buffer));
+}
+
+#[inline(never)]
+fn bar() {
+    // スタック変数
+    let mut x = 0;
+    let mut y = 0;
+
+    // `x`と`y`を使います
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+As seen many times before, the above program runs into undefined behavior due to
+stack frame corruption.
+ -->
+<p>これまで何回も見た通り、スタックフレームの破壊により、上記のプログラムは未定義動作に陥ります。</p>
+<!-- 
+The API is unsound for buffers of type `Pin<&'a mut [u8]>` where `'a` is *not*
+`'static`. To prevent the problem we have to add a `'static` bound in some
+places.
+ -->
+<p>このAPIは、<code>Pin&lt;&amp;'a mut [u8]&gt;</code>（ここで<code>'a</code>は<code>static</code>では<em>ありません</em>）の型を持つバッファに対して、
+安全ではありません。
+この問題を解決するため、どこかに<code>'static</code>境界を追加しなければなりません。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact&lt;B&gt;(mut self, mut buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        // 注記：'static境界を追加しました
+        B: DerefMut + 'static,
+        B::Target: AsMutSlice&lt;Element = u8&gt; + Unpin,
+    {
+        // .. 以前と同じです ..
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all&lt;B&gt;(mut self, buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        // 注記：'static境界を追加しました
+        B: Deref + 'static,
+        B::Target: AsSlice&lt;Element = u8&gt;,
+    {
+        // .. 以前と同じです ..
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- Now the problematic program will be rejected. -->
+<p>これで問題のプログラムは拒絶されます。</p>
+<!-- ## Destructors -->
+<h2><a class="header" href="#デストラクタ" id="デストラクタ">デストラクタ</a></h2>
+<!-- 
+Now that the API accepts `Box`-es and other types that have destructors we need
+to decide what to do when `Transfer` is early-dropped.
+ -->
+<p>これでAPIは<code>Box</code>やデストラクタを持つ型を受け入れることができます。
+<code>Transfer</code>が早めにドロップされたときに何をすべきか決める必要があります。</p>
+<!-- 
+Normally, `Transfer` values are consumed using the `wait` method but it's also
+possible to, implicitly or explicitly, `drop` the value before the transfer is
+over. For example, dropping a `Transfer<Box<[u8]>>` value will cause the buffer
+to be deallocated. This can result in undefined behavior if the transfer is
+still in progress as the DMA would end up writing to deallocated memory.
+ -->
+<p>通常、<code>Transfer</code>の値は、<code>wait</code>メソッドを使って消費されます。しかし、転送が完了する前に、
+暗黙的もしくは明示的に、値を<code>drop</code>することも可能です。
+例えば、<code>Transfer&lt;Box&lt;[u8]&gt;&gt;</code>の値をドロップすると、バッファは解放されます。
+これは、まだ転送中であれば、DMAが解放済みのメモリに書き込むため、未定義動作を引き起こします。</p>
+<!-- 
+In such scenario one option is to make `Transfer.drop` stop the DMA transfer.
+The other option is to make `Transfer.drop` wait for the transfer to finish.
+We'll pick the former option as it's cheaper.
+ -->
+<p>このような状況では、<code>Transfer.drop</code>でDMA転送を止めることが1つの選択肢です。
+他の選択肢は、<code>Transfer.drop</code>が転送完了を待つことです。
+より簡単なので、前者を選びます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// 1回のDMA転送です
+pub struct Transfer&lt;B&gt; {
+    // 注記：常に`Some`ヴァリアントです
+    inner: Option&lt;Inner&lt;B&gt;&gt;,
+}
+
+// 注記：以前は、`Transfer&lt;B&gt;という名前でした
+struct Inner&lt;B&gt; {
+    buffer: Pin&lt;B&gt;,
+    serial: Serial1,
+}
+
+impl&lt;B&gt; Transfer&lt;B&gt; {
+    /// 転送が完了するまでブロックし、バッファを返します。
+    pub fn wait(mut self) -&gt; (Pin&lt;B&gt;, Serial1) {
+        while !self.is_done() {}
+
+        atomic::compiler_fence(Ordering::Acquire);
+
+        let inner = self
+            .inner
+            .take()
+            .unwrap_or_else(|| unsafe { hint::unreachable_unchecked() });
+        (inner.buffer, inner.serial)
+    }
+}
+
+impl&lt;B&gt; Drop for Transfer&lt;B&gt; {
+    fn drop(&amp;mut self) {
+        if let Some(inner) = self.inner.as_mut() {
+            // 注記：これはvolatileな書き込みです
+            inner.serial.dma.stop();
+
+            // Acquireフェンスを有効化するため、ここで読み込みが必要です
+            // `dma.stop`がRMW操作をするのであれば、これは*不要*です
+            unsafe {
+                ptr::read_volatile(&amp;0);
+            }
+
+            // `Transfer.wait`と同じ理由でフェンスが必要です。
+            atomic::compiler_fence(Ordering::Acquire);
+        }
+    }
+}
+
+impl Serial1 {
+    /// 与えられた`buffer`が埋められるまでデータを受信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn read_exact&lt;B&gt;(mut self, mut buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        B: DerefMut + 'static,
+        B::Target: AsMutSlice&lt;Element = u8&gt; + Unpin,
+    {
+        // .. 以前と同じです ..
+
+        Transfer {
+            inner: Some(Inner {
+                buffer,
+                serial: self,
+            }),
+        }
+    }
+
+    /// 与えられた`buffer`を送信します
+    /// 
+    /// DMA転送中であることを意味する値を返します
+    pub fn write_all&lt;B&gt;(mut self, buffer: Pin&lt;B&gt;) -&gt; Transfer&lt;B&gt;
+    where
+        B: Deref + 'static,
+        B::Target: AsSlice&lt;Element = u8&gt;,
+    {
+        // .. 以前と同じです ..
+
+        Transfer {
+            inner: Some(Inner {
+                buffer,
+                serial: self,
+            }),
+        }
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- 
+Now the DMA transfer will be stopped before the buffer is deallocated.
+ -->
+<p>これで、バッファが解放される前にDMA転送が中断されます。</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn reuse(serial: Serial1) {
+    let buf = Pin::new(Box::new([0; 16]));
+
+    let t = serial.read_exact(buf); // compiler_fence(Ordering::Release) ▲
+
+    // ..
+
+    // これはDMA転送を中断し、メモリを解放します
+    mem::drop(t); // compiler_fence(Ordering::Acquire) ▼
+
+    // これは、前のメモリ割り当てを再利用する可能性が高いです
+    let mut buf = Box::new([0; 16]);
+
+    // `buf`で何かやります
+}
+<span class="boring">}
+</span></code></pre></pre>
+<!-- ## Summary -->
+<h2><a class="header" href="#まとめ" id="まとめ">まとめ</a></h2>
+<!-- 
+To sum it up, we need to consider all the following points to achieve  memory
+safe DMA transfers:
+ -->
+<p>まとめると、メモリ安全なDMA転送を行うために、これら全てを考えなければなりません。</p>
+<!-- 
+- Use immovable buffers plus indirection: `Pin<B>`. Alternatively, you can use
+  the `StableDeref` trait.
+ -->
+<ul>
+<li><code>Pin&lt;B&gt;</code>という固定バッファと間接参照を使います。あるいは、<code>StableDeref</code>トレイトを使用できます。</li>
+</ul>
+<!-- 
+- The ownership of the buffer must be passed to the DMA : `B: 'static`.
+ -->
+<ul>
+<li><code>B: 'static</code>というバッファの所有権をDMAに渡す必要があります。</li>
+</ul>
+<!-- 
+- Do *not* rely on destructors running for memory safety. Consider what happens
+  if `mem::forget` is used with your API.
+ -->
+<ul>
+<li>メモリ安全性をデストラクタの実行に頼っては<em>いけません</em>。
+APIと<code>mem::forget</code>が一緒に使われるとどうなるか、考えて下さい。</li>
+</ul>
+<!-- 
+- *Do* add a custom destructor that stops the DMA transfer, or waits for it to
+  finish. Consider what happens if `mem::drop` is used with your API.
+ -->
+<ul>
+<li>DMA転送を中断するカスタムデストラクタを<em>追加</em>、もしくは、転送完了まで待機、<em>するようにして下さい</em>。
+APIと<code>mem::drop</code>が一緒に使われるとどうなるか、考えて下さい。</li>
+</ul>
+<hr />
+<!-- 
+This text leaves out up several details required to build a production grade
+DMA abstraction, like configuring the DMA channels (e.g. streams, circular vs
+one-shot mode, etc.), alignment of buffers, error handling, how to make the
+abstraction device-agnostic, etc. All those aspects are left as an exercise for
+the reader / community (`:P`).
+ -->
+<p>このテキストでは製品レベルのDMA抽象を構築するために要求される詳細を省略しています。
+例えば、DMAチャネルの設定（ストリーム、サーキュラー vs ワンショットモードなど）、バッファのアライメント、
+エラー処置、デバイスに依存しない抽象の作り方などについてです。
+これらの点は、読者 / コミュニティの演習とします (<code>:P</code>)。</p>
+<!-- # A note on compiler support -->
+<h1><a class="header" href="#コンパイラサポートに関する覚書" id="コンパイラサポートに関する覚書">コンパイラサポートに関する覚書</a></h1>
+<!-- 
+This book makes use of a built-in *compiler* target, the `thumbv7m-none-eabi`, for which the Rust
+team distributes a `rust-std` component, which is a pre-compiled collection of crates like [`core`] and [`std`].
+ -->
+<p>本書は<code>thumbv7m-none-eabi</code>という<em>コンパイラ</em>組込みのターゲットを使いました。
+このターゲットに対しては、Rustチームが、
+<a href="https://doc.rust-lang.org/core/index.html"><code>core</code></a>や<a href="https://doc.rust-lang.org/std/index.html"><code>std</code></a>のようなコンパイル済みのクレート一式を<code>rust-std</code>コンポーネントとして配布しています。</p>
+<!-- 
+If you want to attempt replicating the contents of this book for a different target architecture, you
+need to take into account the different levels of support that Rust provides for (compilation)
+targets.
+ -->
+<p>本書の内容を異なるターゲットアーキテクチャで再現したい場合、
+Rustが（コンパイル）ターゲットに対して提供している異なるサポートレベルを考慮しなければなりません。</p>
+<!-- ## LLVM support -->
+<h2><a class="header" href="#llvmサポート" id="llvmサポート">LLVMサポート</a></h2>
+<!-- 
+As of Rust 1.28, the official Rust compiler, `rustc`, uses LLVM for (machine) code generation. The
+minimal level of support Rust provides for an architecture is having its LLVM backend enabled in
+`rustc`. You can see all the architectures that `rustc` supports, through LLVM, by running the
+following command:
+ -->
+<p>Rust 1.28現在、公式のRustコンパイラである<code>rustc</code>は、（機械語）コード生成にLLVMを使用しています。
+あるアーキテクチャに対して、Rustが提供する最低レベルのサポートは、<code>rustc</code>で有効化されているLLVMバックエンドがあることです。
+次のコマンドを実行することで、LLVMを通して、<code>rustc</code>がサポートする全てのアーキテクチャを見ることができます。</p>
+<pre><code class="language-console">$ # このコマンドを実行するためには、`cargo-binutils`のインストールが必要です
+$ cargo objdump -- -version
+LLVM (http://llvm.org/):
+  LLVM version 7.0.0svn
+  Optimized build.
+  Default target: x86_64-unknown-linux-gnu
+  Host CPU: skylake
+
+  Registered Targets:
+    aarch64    - AArch64 (little endian)
+    aarch64_be - AArch64 (big endian)
+    arm        - ARM
+    arm64      - ARM64 (little endian)
+    armeb      - ARM (big endian)
+    hexagon    - Hexagon
+    mips       - Mips
+    mips64     - Mips64 [experimental]
+    mips64el   - Mips64el [experimental]
+    mipsel     - Mipsel
+    msp430     - MSP430 [experimental]
+    nvptx      - NVIDIA PTX 32-bit
+    nvptx64    - NVIDIA PTX 64-bit
+    ppc32      - PowerPC 32
+    ppc64      - PowerPC 64
+    ppc64le    - PowerPC 64 LE
+    sparc      - Sparc
+    sparcel    - Sparc LE
+    sparcv9    - Sparc V9
+    systemz    - SystemZ
+    thumb      - Thumb
+    thumbeb    - Thumb (big endian)
+    wasm32     - WebAssembly 32-bit
+    wasm64     - WebAssembly 64-bit
+    x86        - 32-bit X86: Pentium-Pro and above
+    x86-64     - 64-bit X86: EM64T and AMD64
+</code></pre>
+<!-- 
+If LLVM supports the architecture you are interested in, but `rustc` is built with the backend
+disabled (which is the case of AVR as of Rust 1.28), then you will need to modify the Rust source
+enabling it. The first two commits of PR [rust-lang/rust#52787] give you an idea of the required
+changes.
+ -->
+<p>LLVMが興味のあるアーキテクチャをサポートしており、<code>rustc</code>がそのバックエンドを無効化してビルドされた（Rust 1.28でのAVR）場合、
+ターゲットを有効化するためにRustのソースコードを修正しなければなりません。
+Pull Request <a href="https://github.com/rust-lang/rust/pull/52787">rust-lang/rust#52787</a>の最初の2つのコミットが、必要な変更のヒントになります。</p>
+<!-- 
+On the other hand, if LLVM doesn't support the architecture, but a fork of LLVM does, you will have
+to replace the original version of LLVM with the fork before building `rustc`. The Rust build system
+allows this and in principle it should just require changing the `llvm` submodule to point to the fork.
+ -->
+<p>その一方、LLVMがアーキテクチャをサポートしていませんが、LLVMのフォークがサポートできる場合、
+<code>rustc</code>をビルドする前に、オリジナルのLLVMをフォークで置き換えなければなりません。
+Rustビルドシステムはこれができるようになっており、原則としては、フォークを指すように<code>llvm</code>サブモジュールを単に変更するだけです。</p>
+<!-- 
+If your target architecture is only supported by some vendor provided GCC, you have the option of
+using [`mrustc`], an unofficial Rust compiler, to translate your Rust program into C code and then
+compile that using GCC.
+ -->
+<p>もしベンダ提供のGCCでしかターゲットアーキテクチャがサポートされていない場合、<a href="https://github.com/thepowersgang/mrustc"><code>mrustc</code></a>を使う選択肢があります。
+これは、非公式のRustコンパイラで、RustプログラムをCコードに変換し、その後、GCCを使ってコンパイルします。</p>
+<!-- ## Built-in target -->
+<h2><a class="header" href="#組込みのターゲット" id="組込みのターゲット">組込みのターゲット</a></h2>
+<!-- 
+A compilation target is more than just its architecture. Each target has a [specification]
+associated to it that describes, among other things, its architecture, its operating system
+and the default linker.
+ -->
+<p>コンパイルターゲットは、アーキテクチャだけではありません。各ターゲットは関連する<a href="https://github.com/rust-lang/rfcs/blob/master/text/0131-target-specification.md">仕様</a>があり、
+特に、アーキテクチャ、オペレーティングシステム、デフォルトリンカが記載されています。</p>
+<!-- 
+[specification]: https://github.com/rust-lang/rfcs/blob/master/text/0131-target-specification.md
+ -->
+<!-- 
+The Rust compiler knows about several targets. These are said to be *built into* the compiler and
+can be listed by running the following command:
+ -->
+<p>Rustコンパイラはいくつかのターゲットについて知っています。これらのターゲットは、コンパイラに<em>組み込まれている</em>、
+と呼ばれており、次のコマンドでリストを表示できます。</p>
+<pre><code class="language-console">$ rustc --print target-list | column
+aarch64-fuchsia                 mips64el-unknown-linux-gnuabi64
+aarch64-linux-android           mipsel-unknown-linux-gnu
+aarch64-unknown-cloudabi        mipsel-unknown-linux-musl
+aarch64-unknown-freebsd         mipsel-unknown-linux-uclibc
+aarch64-unknown-linux-gnu       msp430-none-elf
+aarch64-unknown-linux-musl      powerpc-unknown-linux-gnu
+aarch64-unknown-openbsd         powerpc-unknown-linux-gnuspe
+arm-linux-androideabi           powerpc-unknown-netbsd
+arm-unknown-linux-gnueabi       powerpc64-unknown-linux-gnu
+arm-unknown-linux-gnueabihf     powerpc64le-unknown-linux-gnu
+arm-unknown-linux-musleabi      powerpc64le-unknown-linux-musl
+arm-unknown-linux-musleabihf    s390x-unknown-linux-gnu
+armebv7r-none-eabihf            sparc-unknown-linux-gnu
+armv4t-unknown-linux-gnueabi    sparc64-unknown-linux-gnu
+armv5te-unknown-linux-gnueabi   sparc64-unknown-netbsd
+armv5te-unknown-linux-musleabi  sparcv9-sun-solaris
+armv6-unknown-netbsd-eabihf     thumbv6m-none-eabi
+armv7-linux-androideabi         thumbv7em-none-eabi
+armv7-unknown-cloudabi-eabihf   thumbv7em-none-eabihf
+armv7-unknown-linux-gnueabihf   thumbv7m-none-eabi
+armv7-unknown-linux-musleabihf  wasm32-experimental-emscripten
+armv7-unknown-netbsd-eabihf     wasm32-unknown-emscripten
+asmjs-unknown-emscripten        wasm32-unknown-unknown
+i586-pc-windows-msvc            x86_64-apple-darwin
+i586-unknown-linux-gnu          x86_64-fuchsia
+i586-unknown-linux-musl         x86_64-linux-android
+i686-apple-darwin               x86_64-pc-windows-gnu
+i686-linux-android              x86_64-pc-windows-msvc
+i686-pc-windows-gnu             x86_64-rumprun-netbsd
+i686-pc-windows-msvc            x86_64-sun-solaris
+i686-unknown-cloudabi           x86_64-unknown-bitrig
+i686-unknown-dragonfly          x86_64-unknown-cloudabi
+i686-unknown-freebsd            x86_64-unknown-dragonfly
+i686-unknown-haiku              x86_64-unknown-freebsd
+i686-unknown-linux-gnu          x86_64-unknown-haiku
+i686-unknown-linux-musl         x86_64-unknown-l4re-uclibc
+i686-unknown-netbsd             x86_64-unknown-linux-gnu
+i686-unknown-openbsd            x86_64-unknown-linux-gnux32
+mips-unknown-linux-gnu          x86_64-unknown-linux-musl
+mips-unknown-linux-musl         x86_64-unknown-netbsd
+mips-unknown-linux-uclibc       x86_64-unknown-openbsd
+mips64-unknown-linux-gnuabi64   x86_64-unknown-redox
+</code></pre>
+<!-- 
+You can print the specification of any of these targets using the following command:
+ -->
+<p>次のコマンドを使って、これらターゲットの仕様を表示できます。</p>
+<pre><code class="language-console">$ rustc +nightly -Z unstable-options --print target-spec-json --target thumbv7m-none-eabi
+{
+  &quot;abi-blacklist&quot;: [
+    &quot;stdcall&quot;,
+    &quot;fastcall&quot;,
+    &quot;vectorcall&quot;,
+    &quot;thiscall&quot;,
+    &quot;win64&quot;,
+    &quot;sysv64&quot;
+  ],
+  &quot;arch&quot;: &quot;arm&quot;,
+  &quot;data-layout&quot;: &quot;e-m:e-p:32:32-i64:64-v128:64:128-a:0:32-n32-S64&quot;,
+  &quot;emit-debug-gdb-scripts&quot;: false,
+  &quot;env&quot;: &quot;&quot;,
+  &quot;executables&quot;: true,
+  &quot;is-builtin&quot;: true,
+  &quot;linker&quot;: &quot;arm-none-eabi-gcc&quot;,
+  &quot;linker-flavor&quot;: &quot;gcc&quot;,
+  &quot;llvm-target&quot;: &quot;thumbv7m-none-eabi&quot;,
+  &quot;max-atomic-width&quot;: 32,
+  &quot;os&quot;: &quot;none&quot;,
+  &quot;panic-strategy&quot;: &quot;abort&quot;,
+  &quot;relocation-model&quot;: &quot;static&quot;,
+  &quot;target-c-int-width&quot;: &quot;32&quot;,
+  &quot;target-endian&quot;: &quot;little&quot;,
+  &quot;target-pointer-width&quot;: &quot;32&quot;,
+  &quot;vendor&quot;: &quot;&quot;
+}
+</code></pre>
+<!-- 
+If none of these built-in targets seems appropriate for your target system, you'll have to create a
+custom target by writing your own target specification file in JSON format. The recommended way is to
+dump the specification of a built-in target that's similar to your target system into a file and then
+tweak it to match the properties of your target system. To do so, use the previously shown command,
+`rustc --print target-spec-json`. As of Rust 1.28, there's no up to date documentation on what each of
+the fields of a target specification mean, other than [the compiler source code].
+ -->
+<p>ターゲットシステムに対して適切な組込みのターゲットが無い場合、JSON形式のファイルにターゲット仕様を記述するカスタムターゲットを作らなければなりません。
+推奨する方法は、ターゲットシステムに似ている組込みターゲットの仕様をファイルに書き出し、ターゲットシステムに適合するように微調整することです。
+そのために、先程見せた<code>rustc --print target-spec-json</code>コマンドを使用します。
+Rust 1.28では、ターゲット仕様の各フィールドが何を意味するか説明する最新のドキュメントが<a href="https://github.com/rust-lang/rust/blob/1.27.2/src/librustc_target/spec/mod.rs#L376-L400">コンパイラソースコード</a>以外ありません。</p>
+<!-- 
+[the compiler source code]: https://github.com/rust-lang/rust/blob/1.27.2/src/librustc_target/spec/mod.rs#L376-L400
+ -->
+<!-- 
+Once you have a target specification file you can refer to it by its path or by its name if its in
+the current directory or in `$RUST_TARGET_PATH`. 
+ -->
+<p>ターゲット仕様ファイルを作れば、ファイルパスを指定するか、カレントディレクトリか<code>$RUST_TARGET_PATH</code>にあるのであれば、
+その名前で参照することができます。</p>
+<pre><code class="language-console">$ rustc +nightly -Z unstable-options --print target-spec-json \
+      --target thumbv7m-none-eabi \
+      &gt; foo.json
+
+$ rustc --print cfg --target foo.json # もしくは単に --target foo
+debug_assertions
+target_arch=&quot;arm&quot;
+target_endian=&quot;little&quot;
+target_env=&quot;&quot;
+target_feature=&quot;mclass&quot;
+target_feature=&quot;v7&quot;
+target_has_atomic=&quot;16&quot;
+target_has_atomic=&quot;32&quot;
+target_has_atomic=&quot;8&quot;
+target_has_atomic=&quot;cas&quot;
+target_has_atomic=&quot;ptr&quot;
+target_os=&quot;none&quot;
+target_pointer_width=&quot;32&quot;
+target_vendor=&quot;&quot;
+</code></pre>
+<!-- ## `rust-std` component -->
+<h2><a class="header" href="#rust-stdコンポーネント" id="rust-stdコンポーネント"><code>rust-std</code>コンポーネント</a></h2>
+<!-- 
+For some of the built-in target the Rust team distributes `rust-std` components via `rustup`. This
+component is a collection of pre-compiled crates like `core` and `std`, and it's required for
+cross compilation.
+ -->
+<p>いくつかの組込みターゲットに対して、Rustチームは<code>rustup</code>経由で<code>rust-std</code>コンポーネントを配布しています。
+このコンポーネントは、コンパイル済みの<code>core</code>や<code>std</code>といったクレート一式です。
+そして、このコンポーネントは、クロスコンパイルに必要です。</p>
+<!-- 
+You can find the list of targets that have a `rust-std` component available via `rustup` by running
+the following command:
+ -->
+<p>次のコマンドを実行すると、<code>rustup</code>経由で利用可能な<code>rust-std</code>コンポーネントを持つターゲット一覧が得られます。</p>
+<pre><code class="language-console">$ rustup target list | column
+aarch64-apple-ios                       mips64-unknown-linux-gnuabi64
+aarch64-linux-android                   mips64el-unknown-linux-gnuabi64
+aarch64-unknown-fuchsia                 mipsel-unknown-linux-gnu
+aarch64-unknown-linux-gnu               mipsel-unknown-linux-musl
+aarch64-unknown-linux-musl              powerpc-unknown-linux-gnu
+arm-linux-androideabi                   powerpc64-unknown-linux-gnu
+arm-unknown-linux-gnueabi               powerpc64le-unknown-linux-gnu
+arm-unknown-linux-gnueabihf             s390x-unknown-linux-gnu
+arm-unknown-linux-musleabi              sparc64-unknown-linux-gnu
+arm-unknown-linux-musleabihf            sparcv9-sun-solaris
+armv5te-unknown-linux-gnueabi           thumbv6m-none-eabi
+armv5te-unknown-linux-musleabi          thumbv7em-none-eabi
+armv7-apple-ios                         thumbv7em-none-eabihf
+armv7-linux-androideabi                 thumbv7m-none-eabi
+armv7-unknown-linux-gnueabihf           wasm32-unknown-emscripten
+armv7-unknown-linux-musleabihf          wasm32-unknown-unknown
+armv7s-apple-ios                        x86_64-apple-darwin
+asmjs-unknown-emscripten                x86_64-apple-ios
+i386-apple-ios                          x86_64-linux-android
+i586-pc-windows-msvc                    x86_64-pc-windows-gnu
+i586-unknown-linux-gnu                  x86_64-pc-windows-msvc
+i586-unknown-linux-musl                 x86_64-rumprun-netbsd
+i686-apple-darwin                       x86_64-sun-solaris
+i686-linux-android                      x86_64-unknown-cloudabi
+i686-pc-windows-gnu                     x86_64-unknown-freebsd
+i686-pc-windows-msvc                    x86_64-unknown-fuchsia
+i686-unknown-freebsd                    x86_64-unknown-linux-gnu (default)
+i686-unknown-linux-gnu                  x86_64-unknown-linux-gnux32
+i686-unknown-linux-musl                 x86_64-unknown-linux-musl
+mips-unknown-linux-gnu                  x86_64-unknown-netbsd
+mips-unknown-linux-musl                 x86_64-unknown-redox
+</code></pre>
+<!-- 
+If there's no `rust-std` component for your target or you are using a custom target, then you'll have
+to use a tool like [Xargo] to have Cargo compile the `core` crate on the fly. Note that Xargo
+requires a nightly toolchain; the long term plan is to upstream Xargo's functionality into Cargo
+and eventually have that functionality available on stable.
+ -->
+<p>ターゲットに<code>rust-std</code>コンポーネントがない場合、あるいは、カスタムターゲットを使っている場合、
+<code>core</code>クレートをCargoでコンパイルさせるために、<a href="https://github.com/japaric/xargo">Xargo</a>のようなツールが必要です。
+Xargoはnightlyツールチェインを要求することに注意して下さい。長期計画では、Xargoの機能はCargoに取り込まれ、
+最終的には安定版でその機能が利用可能になるはずです。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>序文 - The Embedonomicon</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="preface.html">序文</a></li><li class="chapter-item expanded "><a href="smallest-no-std.html"><strong aria-hidden="true">1.</strong> 最小限の#![no_std]プログラム</a></li><li class="chapter-item expanded "><a href="memory-layout.html"><strong aria-hidden="true">2.</strong> メモリレイアウト</a></li><li class="chapter-item expanded "><a href="main.html"><strong aria-hidden="true">3.</strong> mainインタフェース</a></li><li class="chapter-item expanded "><a href="exceptions.html"><strong aria-hidden="true">4.</strong> 例外処理</a></li><li class="chapter-item expanded "><a href="asm.html"><strong aria-hidden="true">5.</strong> stableでのアセンブリ</a></li><li class="chapter-item expanded "><a href="logging.html"><strong aria-hidden="true">6.</strong> シンボルでのロギング</a></li><li class="chapter-item expanded "><a href="singleton.html"><strong aria-hidden="true">7.</strong> グローバルシングルトン</a></li><li class="chapter-item expanded "><a href="dma.html"><strong aria-hidden="true">8.</strong> DMA</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="compiler-support.html">コンパイラサポートに関する覚書</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">The Embedonomicon</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#the-embedonomicon" id="the-embedonomicon">The embedonomicon</a></h1>
+<!-- 
+The embedonomicon walks you through the process of creating a `#![no_std]` application from scratch
+and through the iterative process of building architecture-specific functionality for Cortex-M
+microcontrollers.
+ -->
+<p>embedonomiconは、<code>#![no_std]</code>アプリケーションをスクラッチから作成するプロセスと、
+Cortex-Mマイクロコントローラ向けにアーキテクチャ固有の機能を作るイテレーティブなプロセスを案内します。</p>
+<!-- ## Objectives -->
+<h2><a class="header" href="#目的" id="目的">目的</a></h2>
+<!-- By reading this book you will learn -->
+<p>本書を読むことで、次のことを学べます。</p>
+<!-- 
+- How to build a `#![no_std]` application. This is much more complex than building a `#![no_std]`
+  library because the target system may not be running an OS (or you could be aiming to build an
+  OS!) and the program could be the only process running in the target (or the first one).
+  In that case, the program may need to be customized for the target system.
+ -->
+<ul>
+<li><code>#[no_std]</code>アプリケーションのビルド方法。これは、<code>#![no_std]</code>ライブラリをビルドするより、はるかに複雑です。
+なぜなら、ターゲットシステムではOSが動いていないからです（もしくは、OSを作ろうとしているかもしれません！）。
+そして、プログラムは、ターゲット上で動作する唯一（もしくは、最初の1つ）のプロセスになります。
+この場合、プログラムは、ターゲットシステム向けにカスタマイズが必要です。</li>
+</ul>
+<!-- 
+- Tricks to finely control the memory layout of a Rust program. You'll learn about linkers, linker
+  scripts and about the Rust features that let you control a bit of the ABI of Rust programs.
+ -->
+<ul>
+<li>Rustプログラムのメモリレイアウトを細かく制御するためのコツ。
+リンカ、リンカスクリプト、および、RustプログラムのABIの一部を制御できるようにするRustの機能について学びます。</li>
+</ul>
+<!-- 
+- A trick to implement default functionality that can be statically overridden (no runtime cost).
+ -->
+<ul>
+<li>（実行時にコストがかからない）静的オーバーライド可能なデフォルト機能を実装する秘訣。</li>
+</ul>
+<!-- ## Target audience -->
+<h2><a class="header" href="#対象読者" id="対象読者">対象読者</a></h2>
+<!-- This book mainly targets to two audiences: -->
+<p>本書は主に、2つの読者を対象としています。</p>
+<!-- 
+- People that wish to bootstrap bare metal support for an architecture that the ecosystem doesn't
+  yet support (e.g. Cortex-R as of Rust 1.28), or for an architecture that Rust just gained support
+  for (e.g. maybe Xtensa some time in the future).
+ -->
+<ul>
+<li>エコシステムがまだサポートしていないアーキテクチャ（例えば、Rust 1.28におけるCortex-R）や、
+Rustがサポートを始めたばかりのアーキテクチャ（例えば、Extensaは将来サポートされるかもしれません）に対して、
+ベアメタルでのブートを提供したい人々</li>
+</ul>
+<!-- 
+- People that are curious about the unusual implementation of *runtime* crates like [`cortex-m-rt`],
+  [`msp430-rt`] and [`riscv-rt`].
+ -->
+<ul>
+<li><a href="https://crates.io/crates/cortex-m-rt"><code>cortex-m-rt</code></a>、<a href="https://crates.io/crates/msp430-rt"><code>msp430-rt</code></a>、<a href="https://crates.io/crates/riscv-rt"><code>riscv-rt</code></a>のような<em>ランタイム</em>クレートの珍しい実装方法について興味がある人々。</li>
+</ul>
+<!-- ## Requirements -->
+<h2><a class="header" href="#要求事項" id="要求事項">要求事項</a></h2>
+<!-- 
+This book is self contained. The reader doesn't need to be familiar with the
+Cortex-M architecture, nor is access to a Cortex-M microcontroller needed -- all
+the examples included in this book can be tested in QEMU. You will, however,
+need to install the following tools to run and inspect the examples in this
+book:
+ -->
+<p>本書は、自己完結しています。読者は、Cortex-Mアーキテクチャについて詳しかったり、Cortex-Mマイクロコントローラを持っている必要はありません。
+本書内の例は、全てQEMU上でテストできます。しかしながら、本書内の例を実行したり調査するため、次のツールをインストールする必要があります。</p>
+<!-- 
+- All the code in this book uses the 2018 edition. If you are not familiar with
+  the 2018 features and idioms check the [`edition guide`].
+ -->
+<ul>
+<li>本書内の全コードは、2018エディションを使います。2018エディションの機能やイディオムを知らない場合は、
+<a href="https://rust-lang-nursery.github.io/edition-guide/"><code>エディションガイド</code></a>を確認して下さい。</li>
+</ul>
+<!-- - Rust 1.31 or a newer toolchain PLUS ARM Cortex-M compilation support. -->
+<ul>
+<li>Rust 1.31以上のツールチェインとARM Cortex-Mコンパイルのサポート</li>
+</ul>
+<!-- - [`cargo-binutils`](https://github.com/japaric/cargo-binutils). v0.1.4 or newer. -->
+<ul>
+<li>
+<p><a href="https://github.com/japaric/cargo-binutils"><code>cargo-binutils</code></a>。v0.1.4以上。</p>
+</li>
+<li>
+<p><a href="https://crates.io/crates/cargo-edit"><code>cargo-edit</code></a>.</p>
+</li>
+</ul>
+<!-- 
+- QEMU with support for ARM emulation. The `qemu-system-arm` program must be
+  installed on your computer.
+ -->
+<ul>
+<li>ARMエミュレーションをサポートしているQEMU。<code>qemu-system-arm</code>がインストールされていなければなりません。</li>
+</ul>
+<!-- - GDB with ARM support. -->
+<ul>
+<li>ARMサポートのGDB。</li>
+</ul>
+<!-- [`edition guide`]: https://rust-lang-nursery.github.io/edition-guide/ -->
+<!-- ### Example setup -->
+<h3><a class="header" href="#設定例" id="設定例">設定例</a></h3>
+<!-- Instructions common to all OSes -->
+<p>全てのOSに共通する手順です。</p>
+<pre><code class="language-console">$ # Rustツールチェイン
+$ # 1からやる場合、https://rustup.rs/からrustupを入手して下さい
+$ rustup default stable
+
+$ # ツールチェインは、これより新しくなければなりません
+$ rustc -V
+rustc 1.31.0 (abe02cefd 2018-12-04)
+
+$ rustup target add thumbv7m-none-eabi
+
+$ # cargo-binutils
+$ cargo install cargo-binutils
+
+$ rustup component add llvm-tools-preview
+
+</code></pre>
+<h4><a class="header" href="#macos" id="macos">macOS</a></h4>
+<pre><code class="language-console">$ # arm-none-eabi-gdb
+$ # 最初に`brew tap Caskroom/tap`を実行しなければならないかもしれません
+$ brew cask install gcc-arm-embedded
+
+$ # QEMU
+$ brew install qemu
+</code></pre>
+<h4><a class="header" href="#ubuntu-1604" id="ubuntu-1604">Ubuntu 16.04</a></h4>
+<pre><code class="language-console">$ # arm-none-eabi-gdb
+$ sudo apt install gdb-arm-none-eabi
+
+$ # QEMU
+$ sudo apt install qemu-system-arm
+</code></pre>
+<h4><a class="header" href="#ubuntu-1804-or-debian" id="ubuntu-1804-or-debian">Ubuntu 18.04 or Debian</a></h4>
+<pre><code class="language-console">$ # gdb-multiarch。gdbを起動する時は、`gdb-multiarch`を使って下さい
+$ sudo apt install gdb-multiarch
+
+$ # QEMU
+$ sudo apt install qemu-system-arm
+</code></pre>
+<h4><a class="header" href="#windows" id="windows">Windows</a></h4>
+<!-- 
+- [arm-none-eabi-gdb](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads).
+  The GNU Arm Embedded Toolchain includes GDB.
+ -->
+<ul>
+<li>
+<p><a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">arm-none-eabi-gdb</a>。
+GDBを含むGNU Arm Embeddedツールチェイン</p>
+</li>
+<li>
+<p><a href="https://www.qemu.org/download/#windows">QEMU</a></p>
+</li>
+</ul>
+<!-- ## Installing a toolchain bundle from ARM (optional step) (tested on Ubuntu 18.04) -->
+<h2><a class="header" href="#オプションのステップubuntu-1804でテスト済みarmからツールチェイン一式をインストール" id="オプションのステップubuntu-1804でテスト済みarmからツールチェイン一式をインストール">（オプションのステップ）（Ubuntu 18.04でテスト済み）ARMからツールチェイン一式をインストール</a></h2>
+<!-- 
+- With the late 2018 switch from
+[GCC's linker to LLD](https://rust-embedded.github.io/blog/2018-08-2x-psa-cortex-m-breakage/) for Cortex-M 
+microcontrollers, [gcc-arm-none-eabi][1] is no longer 
+required.  But for those wishing to use the toolchain 
+anyway, install from [here][1] and follow the steps outlined below:
+ -->
+<ul>
+<li>最近の2018では、Cortex-Mマイクロコントローラ向けのリンカが、<a href="https://rust-embedded.github.io/blog/2018-08-2x-psa-cortex-m-breakage/">GCCのリンカからLLD</a>に切り替わりました。
+<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">gcc-arm-none-eabi</a>はもはや必要ありません。しかし、このツールチェインを使いたい人は、<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">ここ</a>から下記の手順でインストールできます。</li>
+</ul>
+<pre><code class="language-console">$ tar xvjf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
+$ mv gcc-arm-none-eabi-&lt;version_downloaded&gt; &lt;your_desired_path&gt; # オプション
+$ export PATH=${PATH}:&lt;path_to_arm_none_eabi_folder&gt;/bin # 設定を永続的にするため、この行を.bashrcに追加します。
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+                            <a rel="next" href="smallest-no-std.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+                    <a rel="next" href="smallest-no-std.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
